@@ -12,8 +12,6 @@ class Jobs::ImageToBytes
       Resque.enqueue_to(Jobs::Print.queue(printer_id), Jobs::Print, encoded_image(image_path))
     end
 
-    private
-
     def encoded_image(image_path)
       img = Magick::ImageList.new(image_path)[0]
       width = img.columns
@@ -21,6 +19,8 @@ class Jobs::ImageToBytes
       bytes = image_to_bytes(img)
       base64_encoded_bytes(width, height, bytes)
     end
+
+    private
 
     def image_to_bytes(img)
       bits = []
