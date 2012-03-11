@@ -10,8 +10,6 @@ require "sudoku"
 
 class WeePrinterServer < Sinatra::Base
   get "/preview" do
-    @sections = [:welcome, :weather, :twitter_mentions, :sudoku, :quote]
-    #@sections = [:twitter_mentions]
     @sudoku_data = random_sudoku
     erb :index
   end

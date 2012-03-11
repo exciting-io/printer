@@ -12,7 +12,7 @@
   <div class="paper">
     <div class="content">
       <%= erb :header %>
-      <% @sections.each do |section| %>
+      <% [:welcome, :twitter_mentions, :weather].each do |section| %>
         <%= erb :"sections/#{section}" %>
       <% end %>
     </div>
