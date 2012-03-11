@@ -1,0 +1,20 @@
+<section class="weather">
+  <canvas id="weather" width="384px" height="200px">
+  </canvas>
+  <script>
+    var draw = function(){
+      var canvas = document.getElementById("weather");
+      var context = canvas.getContext("2d");
+      context.beginPath(); // begin custom shape
+      var scale = 1.2;
+      context.arc(100*scale, 100*scale, 50*scale, 0.5 * Math.PI, 1.5 * Math.PI);
+      context.arc(160*scale, 70*scale, 65*scale, 1.1 * Math.PI, -0.05 * Math.PI);
+      context.arc(230*scale, 105*scale, 45*scale, 1.5 * Math.PI, 0.5 * Math.PI);
+      context.closePath();
+      context.lineWidth = 5;
+      context.strokeStyle = "#000000";
+      context.stroke();
+    };
+    draw();
+  </script>
+</section>

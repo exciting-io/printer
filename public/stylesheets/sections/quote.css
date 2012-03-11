@@ -1,0 +1,18 @@
+.quote h1 {
+  font-family: "zapfino";
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: -20px; }
+.quote blockquote {
+  font-size: 36px;
+  font-family: "perpetua titling mt";
+  margin-bottom: 10px;
+  position: relative; }
+.quote cite {
+  display: block;
+  width: 100%;
+  text-align: right; }
+  .quote cite:before {
+    content: "("; }
+  .quote cite:after {
+    content: ")"; }

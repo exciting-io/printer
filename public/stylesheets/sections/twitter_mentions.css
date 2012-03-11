@@ -1,0 +1,29 @@
+.twitter_mentions h1 {
+  margin: 0 0 10px 0; }
+.twitter_mentions ol {
+  list-style: none;
+  padding-left: 0;
+  margin: 0; }
+  .twitter_mentions ol li {
+    display: relative;
+    padding: 3px;
+    margin-bottom: 10px; }
+    .twitter_mentions ol li:last-child {
+      margin-bottom: 0; }
+    .twitter_mentions ol li .username, .twitter_mentions ol li .name {
+      font-size: 14px;
+      font-weight: 900;
+      padding: 3px;
+      margin: 0; }
+    .twitter_mentions ol li .username:before {
+      content: "(@"; }
+    .twitter_mentions ol li .username:after {
+      content: "):"; }
+    .twitter_mentions ol li .text {
+      display: block;
+      padding: 0 10px;
+      font-family: "american typewriter";
+      font-weight: bold;
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+      margin: 5px 5px 0 5px; }

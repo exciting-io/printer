@@ -1,0 +1,86 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "arial rounded mt bold";
+  background-color: white;
+  /* -webkit-font-smoothing: none; */
+
+  .controls {
+    display: none
+  }
+}
+
+body.preview {
+  background-color: #ccc;
+
+  .controls {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 40px;
+  }
+}
+
+body.preview .paper {
+  background-color: white;
+  width: 440px;
+  padding-top: 25px;
+  padding-bottom: 50px;
+  margin: 30px auto;
+  box-shadow: 10px 10px 5px #888;
+}
+
+.content {
+  width: 384px;
+  margin: 0 auto;
+
+  background-color: white;
+  font-size: 22px;
+}
+
+header {
+  font-size: 14px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
+
+  p {
+    padding: 0;
+    margin: 0;
+
+    &.date {
+      float: left;
+    }
+    &.timestamp {
+      float: right;
+    }
+  }
+}
+
+section {
+  clear: both;
+  padding-bottom: 40px;
+
+  &:last-child {
+    padding-bottom: 5px;
+  }
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+h1.hatched {
+  text-align: center;
+  padding: 5px;
+  background: url(/images/thin_hatch.png);
+  color: black;
+  text-shadow:
+    -2px -2px 0 white,
+    2px -2px 0 white,
+    -2px 2px 0 white,
+    2px 2px 0 white;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 3px solid black;
+  border-right: 2px solid black;
+}

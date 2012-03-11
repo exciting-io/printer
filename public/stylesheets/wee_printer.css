@@ -1,0 +1,147 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "arial rounded mt bold";
+  background-color: white;
+  /* -webkit-font-smoothing: none; */ }
+  body .controls {
+    display: none; }
+
+body.preview {
+  background-color: #ccc; }
+  body.preview .controls {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 40px; }
+
+body.preview .paper {
+  background-color: white;
+  width: 440px;
+  padding-top: 25px;
+  padding-bottom: 50px;
+  margin: 30px auto;
+  box-shadow: 10px 10px 5px #888; }
+
+.content {
+  width: 384px;
+  margin: 0 auto;
+  background-color: white;
+  font-size: 22px; }
+
+header {
+  font-size: 14px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid black; }
+  header p {
+    padding: 0;
+    margin: 0; }
+    header p.date {
+      float: left; }
+    header p.timestamp {
+      float: right; }
+
+section {
+  clear: both;
+  padding-bottom: 40px; }
+  section:last-child {
+    padding-bottom: 5px; }
+
+p:last-child {
+  margin-bottom: 0; }
+
+h1.hatched {
+  text-align: center;
+  padding: 5px;
+  background: url(/images/thin_hatch.png);
+  color: black;
+  text-shadow: -2px -2px 0 white, 2px -2px 0 white, -2px 2px 0 white, 2px 2px 0 white;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 3px solid black;
+  border-right: 2px solid black; }
+
+.welcome h1 {
+  font-size: 34px;
+  margin-bottom: 0; }
+
+.sudoku {
+  width: 378px;
+  margin: 0 auto;
+  font-family: "american typewriter"; }
+  .sudoku h1 {
+    text-align: center;
+    font-size: 36px;
+    margin: 0 0 2px 0;
+    padding-bottom: 5px;
+    color: white;
+    background-color: black;
+    width: 100%; }
+  .sudoku table {
+    border-collapse: collapse;
+    text-align: center;
+    border-top: 1px solid black;
+    margin: 0 auto;
+    font-size: 24px; }
+    .sudoku table tr {
+      border-bottom: 1px solid black; }
+    .sudoku table td {
+      width: 38px;
+      height: 42px;
+      border-left: 1px solid black;
+      font-weight: bold; }
+    .sudoku table tbody {
+      border-bottom: 3px solid black;
+      border-top: 3px solid black; }
+    .sudoku table colgroup {
+      border-left: 3px solid black;
+      border-right: 3px solid black; }
+
+.twitter_mentions h1 {
+  margin: 0 0 10px 0; }
+.twitter_mentions ol {
+  list-style: none;
+  padding-left: 0;
+  margin: 0; }
+  .twitter_mentions ol li {
+    display: relative;
+    padding: 3px;
+    margin-bottom: 10px; }
+    .twitter_mentions ol li:last-child {
+      margin-bottom: 0; }
+    .twitter_mentions ol li .username, .twitter_mentions ol li .name {
+      font-size: 14px;
+      font-weight: 900;
+      padding: 3px;
+      margin: 0; }
+    .twitter_mentions ol li .username:before {
+      content: "(@"; }
+    .twitter_mentions ol li .username:after {
+      content: "):"; }
+    .twitter_mentions ol li .text {
+      display: block;
+      padding: 0 10px;
+      font-family: "american typewriter";
+      font-weight: bold;
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+      margin: 5px 5px 0 5px; }
+
+.quote h1 {
+  font-family: "zapfino";
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: -20px; }
+.quote blockquote {
+  font-size: 36px;
+  font-family: "perpetua titling mt";
+  margin-bottom: 10px;
+  position: relative; }
+.quote cite {
+  display: block;
+  width: 100%;
+  text-align: right; }
+  .quote cite:before {
+    content: "("; }
+  .quote cite:after {
+    content: ")"; }

@@ -1,0 +1,20 @@
+<section class="sudoku">
+  <h1>Daily Puzzle</h1>
+  <table>
+    <colgroup span="3"></colgroup>
+    <colgroup span="3"></colgroup>
+    <colgroup span="3"></colgroup>
+    <% d = @sudoku_data %>
+    <% 3.times do |block| %>
+      <tbody>
+        <% 3.times do |row| %>
+          <tr>
+            <% 9.times do |cell| %>
+              <td><%= @sudoku_data[(9*cell)+(3*block)+row]%></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>                                        
+    <% end %>
+  </table>
+</section>

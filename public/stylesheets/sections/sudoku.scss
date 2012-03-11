@@ -1,0 +1,44 @@
+.sudoku {
+  width: 378px;
+  margin: 0 auto;
+  font-family: "american typewriter";
+  
+  h1 {
+    text-align: center;
+    font-size: 36px;
+    margin: 0 0 2px 0;
+    padding-bottom: 5px;
+    color: white;
+    background-color: black;
+    width: 100%;
+  }
+
+  table {
+    border-collapse: collapse;
+    text-align: center;
+    border-top: 1px solid black;
+    margin: 0 auto;
+    font-size: 24px;
+
+    tr {
+      border-bottom: 1px solid black;
+    }
+
+    td {
+      width: 38px;
+      height: 42px;
+      border-left: 1px solid black;
+      font-weight: bold;
+    }
+
+    tbody {
+      border-bottom: 3px solid black;
+      border-top: 3px solid black;
+    }
+
+    colgroup {
+      border-left: 3px solid black;
+      border-right: 3px solid black;
+    }
+  }
+}
