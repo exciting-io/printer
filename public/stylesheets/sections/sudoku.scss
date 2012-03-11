@@ -1,16 +1,10 @@
 .sudoku {
   width: 378px;
   margin: 0 auto;
-  font-family: "american typewriter";
-  
+
   h1 {
-    text-align: center;
-    font-size: 36px;
-    margin: 0 0 2px 0;
-    padding-bottom: 5px;
-    color: white;
-    background-color: black;
-    width: 100%;
+    margin-top: 0;
+    margin-bottom: 5px;
   }
 
   table {
@@ -28,7 +22,6 @@
       width: 38px;
       height: 42px;
       border-left: 1px solid black;
-      font-weight: bold;
     }
 
     tbody {
