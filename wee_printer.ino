@@ -58,7 +58,7 @@ void setup(){
 }
 
 const char* host = "192.168.1.22";
-const int port = 9292;
+const int port = 4567;
 const char *path = "/1";
 
 int failures = 0;

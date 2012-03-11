@@ -1,6 +1,7 @@
 source :rubygems
 
 gem 'foreman'
+gem 'shotgun'
 gem 'sinatra'
 gem 'sass'
 
