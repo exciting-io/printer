@@ -3,7 +3,6 @@ body {
   padding: 0;
   font-family: "arial rounded mt bold";
   background-color: white;
-  /* -webkit-font-smoothing: none; */
 
   .controls {
     display: none
@@ -31,6 +30,7 @@ body.preview .paper {
 }
 
 .content {
+  -webkit-font-smoothing: none;
   width: 384px;
   margin: 0 auto;
 
