@@ -1,19 +1,80 @@
 <section class="weather">
-  <canvas id="weather" width="384px" height="200px">
-  </canvas>
+  <h1>Today's weather</h1>
+  <table>
+    <tr>
+      <td>Morning</td>
+      <td>Lunch</td>
+      <td>Afternoon</td>
+      <td>Evening</td>
+    </tr>
+    <tr>
+      <td><canvas id="morning_weather" width="91px" height="70px"></canvas></td>
+      <td><canvas id="lunch_weather" width="91px" height="70px"></canvas></td>
+      <td><canvas id="afternoon_weather" width="91px" height="70px"></canvas></td>
+      <td><canvas id="evening_weather" width="91px" height="70px"></canvas></td>
+    </tr>
+  </table>
   <script>
-    var draw = function(){
-      var canvas = document.getElementById("weather");
+    var drawCloud = function(id) {
+      var canvas = document.getElementById(id);
       var context = canvas.getContext("2d");
+      var base = 10;
+      var scale = 1.3;
+      context.save();
+      context.translate(5, 50);
+      context.rotate(Math.PI / 1);
+      context.scale(-1, 1);
       context.beginPath(); // begin custom shape
-      var scale = 1.2;
-      context.arc(100*scale, 100*scale, 50*scale, 0.5 * Math.PI, 1.5 * Math.PI);
-      context.arc(160*scale, 70*scale, 65*scale, 1.1 * Math.PI, -0.05 * Math.PI);
-      context.arc(230*scale, 105*scale, 45*scale, 1.5 * Math.PI, 0.5 * Math.PI);
+      var circle1 = base*scale;
+      var circle2 = base*scale * 1.4;
+      context.arc(circle1, circle1, circle1, 1.5 * Math.PI, 0.5 * Math.PI, true);
+      context.arc(circle1*1.6, circle1*2.2, circle1/1.6, 1.1 * Math.PI, 0.2 * Math.PI, true);
+      context.arc(circle1*3.4, circle1*2, circle2, 0.8 * Math.PI, 1.95 * Math.PI, true);
+      context.arc(circle1*5, circle1*0.9, circle2/1.6, 0.5 * Math.PI, 1.5 * Math.PI, true);
       context.closePath();
       context.lineWidth = 5;
       context.strokeStyle = "#000000";
       context.stroke();
+      context.restore();
+      return context;
+    }
+
+    var drawRain = function(id) {
+      var context = drawCloud(id);
+      context.beginPath();
+      context.moveTo(35, 40);
+      context.lineTo(55, 60);
+      context.moveTo(20, 40);
+      context.lineTo(40, 60);
+      context.moveTo(50, 40);
+      context.lineTo(70, 60);
+      context.lineWidth = 5;
+      context.strokeStyle = "#000000";
+      context.stroke();
+    }
+
+    var drawSun = function(id) {
+      var canvas = document.getElementById(id);
+      var context = canvas.getContext("2d");
+      context.arc(canvas.width/2, canvas.height/2, canvas.width/6, 0 * Math.PI, 2 * Math.PI);
+      context.lineWidth = 5;
+      context.strokeStyle = "#000000";
+      context.stroke();
+      context.translate(canvas.width/2, canvas.height/2);
+      for (i = 0; i < 12; i++) {
+        context.rotate(Math.PI * 2 / 12); // Rotate a 12th of 360 degrees
+        context.beginPath();
+        context.moveTo(30, 0);
+        context.lineTo(20, 0);
+        context.stroke();
+      }
+    }
+
+    var draw = function(){
+      drawCloud("morning_weather");
+      drawRain("lunch_weather");
+      drawSun("afternoon_weather");
+      drawCloud("evening_weather");
     };
     draw();
   </script>
