@@ -24,7 +24,9 @@ class Jobs::ImageToBytes
 
     def image_to_bytes(img)
       bits = []
-      img.each_pixel { |pixel, _, _| bits << (pixel.red > 0 ? 0 : 1) }
+      white = (2**16)-1
+      limit = white / 2
+      img.each_pixel { |pixel, _, _| bits << ((pixel.intensity < limit) ? 1 : 0) }
       bytes = []
       bits.each_slice(8) { |s| bytes << ("0" + s.join).to_i(2) }
       bytes
