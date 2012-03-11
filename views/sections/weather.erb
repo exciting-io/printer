@@ -13,11 +13,22 @@
       <td><canvas id="afternoon_weather" width="91px" height="70px"></canvas></td>
       <td><canvas id="evening_weather" width="91px" height="70px"></canvas></td>
     </tr>
+    <tr>
+      <td>8&deg;</td>
+      <td>13&deg;</td>
+      <td>15&deg;</td>
+      <td>10&deg;</td>
+    </tr>
   </table>
   <script>
     var drawCloud = function(id) {
-      var canvas = document.getElementById(id);
-      var context = canvas.getContext("2d");
+      if (typeof id == "string") {
+        var canvas = document.getElementById(id);
+        var context = canvas.getContext("2d");
+      } else {
+        var context = id;
+        var canvas = context.canvas;
+      }
       var base = 10;
       var scale = 1.3;
       context.save();
@@ -32,9 +43,12 @@
       context.arc(circle1*3.4, circle1*2, circle2, 0.8 * Math.PI, 1.95 * Math.PI, true);
       context.arc(circle1*5, circle1*0.9, circle2/1.6, 0.5 * Math.PI, 1.5 * Math.PI, true);
       context.closePath();
-      context.lineWidth = 5;
+      context.lineWidth = 10;
       context.strokeStyle = "#000000";
       context.stroke();
+      context.fillStyle = "#fff";
+      context.fill();
+      context.closePath();
       context.restore();
       return context;
     }
@@ -43,24 +57,34 @@
       var context = drawCloud(id);
       context.beginPath();
       context.moveTo(35, 40);
-      context.lineTo(55, 60);
+      context.lineTo(55, 65);
       context.moveTo(20, 40);
-      context.lineTo(40, 60);
+      context.lineTo(40, 65);
       context.moveTo(50, 40);
-      context.lineTo(70, 60);
-      context.lineWidth = 5;
+      context.lineTo(70, 65);
+      context.lineWidth = 3;
       context.strokeStyle = "#000000";
       context.stroke();
+      context.closePath();
     }
 
     var drawSun = function(id) {
-      var canvas = document.getElementById(id);
-      var context = canvas.getContext("2d");
-      context.arc(canvas.width/2, canvas.height/2, canvas.width/6, 0 * Math.PI, 2 * Math.PI);
-      context.lineWidth = 5;
+      if (typeof id == "string") {
+        var canvas = document.getElementById(id);
+        var context = canvas.getContext("2d");
+      } else {
+        var context = id;
+        var canvas = context.canvas;
+      }
+      context.beginPath();
+      context.arc(canvas.width/2, canvas.height/2, canvas.width/7, 0 * Math.PI, 2 * Math.PI);
+      context.lineWidth = 10;
       context.strokeStyle = "#000000";
       context.stroke();
+      context.fillStyle = "#fff";
+      context.fill();
       context.translate(canvas.width/2, canvas.height/2);
+      context.lineWidth = 5;
       for (i = 0; i < 12; i++) {
         context.rotate(Math.PI * 2 / 12); // Rotate a 12th of 360 degrees
         context.beginPath();
@@ -68,13 +92,37 @@
         context.lineTo(20, 0);
         context.stroke();
       }
+      context.closePath();
+      return context;
+    }
+
+    var drawCloudSun = function(id) {
+      var canvas = document.getElementById(id);
+      var context = canvas.getContext("2d");
+      context.save();
+      context.scale(0.7, 0.7);
+      context.translate(50, -5);
+      drawSun(context);
+      context.restore();
+      drawCloud(context);
+    }
+
+    var drawSunClouds = function(id) {
+      var canvas = document.getElementById(id);
+      var context = canvas.getContext("2d");
+      drawSun(context);
+      context.save();
+      context.scale(0.5, 0.5);
+      context.translate(-20, -12);
+      drawCloud(context);
+      context.restore();
     }
 
     var draw = function(){
       drawCloud("morning_weather");
       drawRain("lunch_weather");
-      drawSun("afternoon_weather");
-      drawCloud("evening_weather");
+      drawSunClouds("afternoon_weather");
+      drawCloudSun("evening_weather");
     };
     draw();
   </script>
