@@ -6,14 +6,12 @@
 #include <SoftwareSerial.h>
 #include <Thermal.h>
 
-byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; //physical mac address
-EthernetClient client;
-
 #define debug(a) Serial.print(millis()); Serial.print(": "); Serial.println(a);
 #define debug2(a, b) Serial.print(millis()); Serial.print(": "); Serial.print(a); Serial.println(b);
 
 const int greenPin = 6;
 const int redPin = 7;
+
 void initDiagnosticLEDs() {
   pinMode(greenPin, OUTPUT);
   pinMode(redPin, OUTPUT);
@@ -41,6 +39,9 @@ void initSD() {
   SD.begin(SD_Pin);
 }
 
+byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; //physical mac address
+EthernetClient client;
+
 void initNetwork() {
   // start the Ethernet connection:
   if (Ethernet.begin(mac) == 0) {
@@ -51,7 +52,6 @@ void initNetwork() {
   // print your local IP address:
   debug2("IP address: ", Ethernet.localIP());
 }
-
 
 void setup(){
   Serial.begin(9600);
