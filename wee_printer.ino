@@ -14,6 +14,15 @@ EthernetClient client;
 
 const int greenPin = 6;
 const int redPin = 7;
+void initDiagnosticLEDs() {
+  pinMode(greenPin, OUTPUT);
+  pinMode(redPin, OUTPUT);
+  digitalWrite(greenPin, HIGH);
+  digitalWrite(redPin, HIGH);
+  delay(100);
+  digitalWrite(greenPin, LOW);
+  digitalWrite(redPin, LOW);
+}
 
 const int printer_RX_Pin = 2;  // this is the green wire
 const int printer_TX_Pin = 3;  // this is the yellow wire
@@ -50,11 +59,7 @@ void setup(){
   initPrinter();
   initSD();
   initNetwork();
-  
-  pinMode(greenPin, OUTPUT);
-  pinMode(redPin, OUTPUT);
-  digitalWrite(greenPin, LOW);
-  digitalWrite(redPin, LOW);
+  initDiagnosticLEDs();
 }
 
 const char* host = "192.168.1.22";
