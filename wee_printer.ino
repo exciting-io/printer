@@ -80,11 +80,11 @@ void loop() {
 
   if (client.connect(host, port)) {
     requests++;
-    uint16_t content_length = 0;
+    uint32_t content_length = 0;
 
     debug("Connected.");
     client.print("GET "); client.print(path); client.println(" HTTP/1.0\n"); 
-    uint16_t length = 0;
+    uint32_t length = 0;
     if (SD.exists("TMP")) { SD.remove("TMP"); }
     File cache = SD.open("TMP", FILE_WRITE);
 
