@@ -69,17 +69,6 @@ const char *path = "/1";
 int failures = 0;
 int requests = 0;
 
-void skipHeaders(Stream *stream) {
-  unsigned int inByte = 0;
-  unsigned int lastByte = 0;
-  while (!(inByte == '\n' && lastByte == '\n')) {
-    if (inByte != '\r') {
-      lastByte = inByte;
-    }
-    inByte = stream->read();
-  }
-}
-
 void loop() {  
   digitalWrite(greenPin, LOW);
 
