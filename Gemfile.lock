@@ -1,10 +1,32 @@
+GIT
+  remote: https://github.com/freerange/recap.git
+  revision: 756e07dffdec57cc74666eb227cd456ba600c85d
+  specs:
+    recap (0.1.1)
+      capistrano (~> 2.9.0)
+      thor
+
 GEM
   remote: http://rubygems.org/
   specs:
+    capistrano (2.9.0)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.1.0)
     foreman (0.40.0)
       term-ansicolor (~> 1.0.7)
       thor (>= 0.13.6)
+    highline (1.6.11)
     multi_json (1.1.0)
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.3.0)
+    net-ssh-gateway (1.1.0)
+      net-ssh (>= 1.99.1)
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
@@ -37,6 +59,7 @@ PLATFORMS
 DEPENDENCIES
   foreman
   rake
+  recap!
   resque
   rmagick
   sass
