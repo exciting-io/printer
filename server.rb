@@ -19,8 +19,21 @@ class WeePrinterServer < Sinatra::Base
     redirect env['HTTP_REFERER']
   end
 
-  get "/test" do
-    "#" * rand(10000)
+  get "/test/fixed/:length" do
+    "#" * params['length'].to_i
+  end
+
+  get "/test/between/:min/:max" do
+    min = params['min'].to_i
+    max = params['max'].to_i
+    length = rand(max-min) + min
+    "#" * length
+  end
+
+  get "/test/maybe" do
+    if rand(10) > 7
+      "#" * (rand(100000) + 20000)
+    end
   end
 
   get "/:printer_id" do

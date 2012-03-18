@@ -74,7 +74,7 @@ void setup(){
 //const char* host = "178.79.132.137"; // interblah
 const char* host = "interblah.net";
 const uint16_t port = 4567;
-const char *path = "/maybe";
+const char *path = "/test/maybe";
 
 uint16_t failures = 0;
 uint16_t requests = 0;
