@@ -1,4 +1,3 @@
-require "RMagick"
 require "base64"
 require "jobs/print"
 
@@ -13,6 +12,7 @@ class Jobs::ImageToBytes
     end
 
     def encoded_image(image_path)
+      require "RMagick"
       img = Magick::ImageList.new(image_path)[0]
       width = img.columns
       height = img.rows
