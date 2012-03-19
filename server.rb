@@ -11,6 +11,21 @@ require "weather"
 Weather.api_key = ENV["WUNDERGROUND_API_KEY"]
 
 class WeePrinterServer < Sinatra::Base
+  helpers do
+    def period_of_day
+      case Time.now.hour
+      when 8..11
+        "morning"
+      when 12..14
+        "lunch"
+      when 15..18
+        "afternoon"
+      else
+        "evening"
+      end
+    end
+  end
+
   get "/preview" do
     @sudoku_data = random_sudoku
     @forecast = Weather.new.daily_report
