@@ -41,8 +41,10 @@ body.preview .paper {
 
 header {
   font-size: 14px;
-  padding-bottom: 20px;
+  padding-bottom: 2px;
+  margin-bottom: 20px;
   border-bottom: 1px solid black;
+  overflow: auto;
 
   p {
     padding: 0;
@@ -63,6 +65,10 @@ section {
 
   &:last-child {
     padding-bottom: 5px;
+  }
+  
+  h1 {
+    margin-top: 0;
   }
 }
 
