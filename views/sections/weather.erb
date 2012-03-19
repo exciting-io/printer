@@ -1,5 +1,5 @@
 <section class="weather">
-  <h1>Today's weather</h1>
+  <h1><%= @forecast[:day_for].capitalize %>'s weather</h1>
   <table>
     <tr>
       <td>Morning</td>
@@ -8,16 +8,16 @@
       <td>Evening</td>
     </tr>
     <tr>
-      <td><canvas id="morning_weather" width="91px" height="70px"></canvas></td>
-      <td><canvas id="lunch_weather" width="91px" height="70px"></canvas></td>
-      <td><canvas id="afternoon_weather" width="91px" height="70px"></canvas></td>
-      <td><canvas id="evening_weather" width="91px" height="70px"></canvas></td>
+      <td><canvas class="<%= @forecast[:morning][:symbol] %>" id="morning_weather" width="91px" height="70px"></canvas></td>
+      <td><canvas class="<%= @forecast[:lunch][:symbol] %>" id="lunch_weather" width="91px" height="70px"></canvas></td>
+      <td><canvas class="<%= @forecast[:afternoon][:symbol] %>" id="afternoon_weather" width="91px" height="70px"></canvas></td>
+      <td><canvas class="<%= @forecast[:evening][:symbol] %>" id="evening_weather" width="91px" height="70px"></canvas></td>
     </tr>
     <tr>
-      <td>8&deg;</td>
-      <td>13&deg;</td>
-      <td>15&deg;</td>
-      <td>10&deg;</td>
+      <td><%= @forecast[:morning][:temperature] %>&deg;</td>
+      <td><%= @forecast[:lunch][:temperature] %>&deg;</td>
+      <td><%= @forecast[:afternoon][:temperature] %>&deg;</td>
+      <td><%= @forecast[:evening][:temperature] %>&deg;</td>
     </tr>
   </table>
   <script>
@@ -118,11 +118,18 @@
       context.restore();
     }
 
+    var drawSymbol = function(canvas) {
+      var mapping = {
+        "cloudy" : drawCloud,
+        "clear"  : drawSun
+      }
+      mapping[canvas.className](canvas.id);
+    }
+
     var draw = function(){
-      drawCloud("morning_weather");
-      drawRain("lunch_weather");
-      drawSunClouds("afternoon_weather");
-      drawCloudSun("evening_weather");
+      $(".weather canvas").each(function(i, e) {
+        drawSymbol(e);
+      })
     };
     draw();
   </script>

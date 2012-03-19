@@ -41,6 +41,7 @@ Software Setup
 
 The server acts as a conduit for turning HTML-based designs into a format suitable for the printer. The printer periodically polls the server, and if some data for printing is available, it downloads it and prints it.
 
+* Add your Wunderground API key to `.env`
 * bundle install
 * `foreman start`
 * Visit http://localhost:9292/preview

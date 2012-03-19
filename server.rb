@@ -7,10 +7,13 @@ require "resque"
 $LOAD_PATH.unshift "lib"
 require "jobs"
 require "sudoku"
+require "weather"
+Weather.api_key = ENV["WUNDERGROUND_API_KEY"]
 
 class WeePrinterServer < Sinatra::Base
   get "/preview" do
     @sudoku_data = random_sudoku
+    @forecast = Weather.new.daily_report
     erb :index
   end
 
