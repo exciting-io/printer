@@ -26,10 +26,26 @@ class WeePrinterServer < Sinatra::Base
     end
   end
 
-  get "/preview" do
+  get "/" do
     @sudoku_data = random_sudoku
     @forecast = Weather.new.daily_report
     erb :index
+  end
+
+  get "/preview" do
+    if params['preview_id']
+      image_job = Resque.reserve(Jobs::PreviewReady.queue(params['preview_id']))
+      if image_job
+        @image_url = image_job.payload['args'][0]
+        erb :preview
+      else
+        erb :preview_pending
+      end
+    else
+      preview_id = (0..16).map { |x| rand(16).to_s(16) }.join
+      Resque.enqueue(Jobs::Preview, preview_id, env['HTTP_REFERER'])
+      redirect "/preview?preview_id=#{preview_id}"
+    end
   end
 
   get "/print_from_page/:printer_id" do
