@@ -14,6 +14,7 @@ class Jobs::ImageToBytes
     def encoded_image(image_path)
       require "RMagick"
       img = Magick::ImageList.new(image_path)[0]
+      img.rotate!(180) # print the bottom first
       width = img.columns
       height = img.rows
       bytes = image_to_bytes(img)

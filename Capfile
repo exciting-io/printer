@@ -1,9 +1,6 @@
-require "recap/deploy"
-require "recap/bundler"
-require "recap/foreman"
-require "recap/env"
+require "recap/ruby"
 
-server "gofreerange.com", :app
+server "interblah.net", :app
 set :application, "wee_printer"
 
 set :repository,  "git@github.com:freerange/wee_printer.git"
