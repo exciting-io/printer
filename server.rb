@@ -57,6 +57,14 @@ class WeePrinterServer < Sinatra::Base
     redirect env['HTTP_REFERER']
   end
 
+  get "/printer/:printer_id" do
+    image_job = Resque.reserve(Jobs::Print.queue(params['printer_id']))
+    if image_job
+      klass = Resque::Job.constantize(image_job.payload['class'])
+      klass.data_for_printer(*image_job.payload['args'])
+    end
+  end
+
   get "/test/fixed/:length" do
     "#" * params['length'].to_i
   end
@@ -71,14 +79,6 @@ class WeePrinterServer < Sinatra::Base
   get "/test/maybe" do
     if rand(10) > 7
       "#" * (rand(100000) + 20000)
-    end
-  end
-
-  get "/:printer_id" do
-    image_job = Resque.reserve(Jobs::Print.queue(params['printer_id']))
-    if image_job
-      klass = Resque::Job.constantize(image_job.payload['class'])
-      klass.data_for_printer(*image_job.payload['args'])
     end
   end
 end

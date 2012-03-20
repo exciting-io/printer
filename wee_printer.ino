@@ -6,6 +6,7 @@
 #include <Thermal.h>
 #include <Bounce.h>
 
+#define DEBUG
 #ifdef DEBUG
 #define debug(a) Serial.print(millis()); Serial.print(": "); Serial.println(a);
 #define debug2(a, b) Serial.print(millis()); Serial.print(": "); Serial.print(a); Serial.println(b);
@@ -72,9 +73,9 @@ void setup(){
 //const char* host = "192.168.1.22"; // uberatom
 //const char* host = "192.168.1.67"; // lazyatom
 //const char* host = "178.79.132.137"; // interblah
-const char* host = "interblah.net";
-const uint16_t port = 4567;
-const char *path = "/test/maybe";
+const char* host = "wee-printer.interblah.net";
+const uint16_t port = 80;
+const char *path = "/printer/1";
 
 uint16_t failures = 0;
 uint16_t requests = 0;
