@@ -32,20 +32,24 @@ class WeePrinterServer < Sinatra::Base
     erb :index
   end
 
-  get "/preview" do
-    if params['preview_id']
-      image_job = Resque.reserve(Jobs::PreviewReady.queue(params['preview_id']))
-      if image_job
-        @image_url = image_job.payload['args'][0]
-        erb :preview
-      else
-        erb :preview_pending
-      end
+  get "/preview/show/:preview_id" do
+    @image_url = "/previews/#{params['preview_id']}.png"
+    erb :preview
+  end
+
+  get "/preview/pending/:preview_id" do
+    image_job = Resque.reserve(Jobs::PreviewReady.queue(params['preview_id']))
+    if image_job
+      redirect "/preview/show/#{params['preview_id']}"
     else
-      preview_id = (0..16).map { |x| rand(16).to_s(16) }.join
-      Resque.enqueue(Jobs::Preview, preview_id, env['HTTP_REFERER'])
-      redirect "/preview?preview_id=#{preview_id}"
+      erb :preview_pending
     end
+  end
+
+  get "/preview" do
+    preview_id = (0..16).map { |x| rand(16).to_s(16) }.join
+    Resque.enqueue(Jobs::Preview, preview_id, env['HTTP_REFERER'])
+    redirect "/preview/pending/#{preview_id}"
   end
 
   get "/print_from_page/:printer_id" do
