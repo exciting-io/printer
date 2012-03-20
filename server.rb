@@ -8,7 +8,7 @@ $LOAD_PATH.unshift "lib"
 require "jobs"
 require "sudoku"
 require "weather"
-Weather.api_key = ENV["WUNDERGROUND_API_KEY"]
+Weather.api_key = ENV["WUNDERGROUND_API_KEY"].strip
 
 class WeePrinterServer < Sinatra::Base
   helpers do
