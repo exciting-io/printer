@@ -71,10 +71,10 @@ void setup(){
 }
 
 //const char* host = "192.168.1.22"; // uberatom
-//const char* host = "192.168.1.67"; // lazyatom
-//const char* host = "178.79.132.137"; // interblah
+// const char* host = "192.168.1.67"; // lazyatom
+// const char* host = "178.79.132.137"; // interblah
 const char* host = "wee-printer.interblah.net";
-const uint16_t port = 4567;
+const uint16_t port = 80;
 const char *path = "/printer/1";
 
 uint16_t failures = 0;
@@ -89,9 +89,12 @@ void checkForDownload() {
   if (SD.exists(cacheFilename)) SD.remove(cacheFilename);
   File cache = SD.open(cacheFilename, FILE_WRITE);
 
+  debug2("Attempting to connect to ", host);
   if (client.connect(host, port)) {
     digitalWrite(downloadLED, HIGH);
-    client.print("GET "); client.print(path); client.println(" HTTP/1.0\n"); 
+    client.print("GET "); client.print(path); client.println(" HTTP/1.0");
+    client.print("Host: "); client.print(host); client.print(":"); client.println(port);
+    client.println();
     boolean parsingHeader = true;
     unsigned long start = millis();
     while(client.connected()) {
@@ -140,7 +143,12 @@ void checkForDownload() {
     }
   } else {
     debug("Couldn't connect");
-    digitalWrite(errorLED, HIGH);
+    for(int i=0; i < 10; i++) {
+      digitalWrite(errorLED, HIGH);
+      delay(100);
+      digitalWrite(errorLED, LOW);
+      delay(100);
+    }
   }
 }
 
