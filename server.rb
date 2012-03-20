@@ -32,6 +32,10 @@ class WeePrinterServer < Sinatra::Base
     erb :index
   end
 
+  get "/message" do
+    erb :message
+  end
+
   get "/preview/show/:preview_id" do
     @image_url = "/previews/#{params['preview_id']}.png"
     erb :preview
@@ -48,12 +52,12 @@ class WeePrinterServer < Sinatra::Base
 
   get "/preview" do
     preview_id = (0..16).map { |x| rand(16).to_s(16) }.join
-    Resque.enqueue(Jobs::Preview, preview_id, env['HTTP_REFERER'])
+    Resque.enqueue(Jobs::Preview, preview_id, params['url'] || env['HTTP_REFERER'])
     redirect "/preview/pending/#{preview_id}"
   end
 
   get "/print_from_page/:printer_id" do
-    Resque.enqueue(Jobs::PreparePage, params['printer_id'], env['HTTP_REFERER'])
+    Resque.enqueue(Jobs::PreparePage, params['printer_id'], params['url'] || env['HTTP_REFERER'])
     redirect env['HTTP_REFERER']
   end
 
