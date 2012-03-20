@@ -18,6 +18,7 @@ You will need:
 You should also download and install
 
 * The [Thermal Printer Library][arduino-library] which supports printing "rich" graphics
+* The [Bounce][arduino-bounce] arduino library, which makes the button more reliable
 * [PhantomJS][], which plays a part in converting HTML-based designs into data that the printer can understand
 
 Hardware Setup
@@ -73,5 +74,6 @@ Rasterisation of HTML designs isn't great at the moment; to some extent this is 
 [adafruit]: https://www.adafruit.com/products/600
 [sparkfun]: http://www.sparkfun.com/products/10438
 [arduino-library]: https://github.com/lazyatom/Thermal-Printer-Library
+[arduino-bounce]: http://www.arduino.cc/playground/Code/Bounce
 [the sketch]: https://github.com/freerange/wee_printer/blob/master/wee_printer.ino
 [PhantomJS]: http://phantomjs.org
