@@ -99,7 +99,8 @@ var drawSymbol = function(canvas) {
   var mapping = {
     "cloudy" : drawCloud,
     "clear"  : drawSun,
-    "partlycloudy" : drawCloudSun
+    "partlycloudy" : drawCloudSun,
+    "fog" : drawCloud
   }
   mapping[canvas.className](canvas.id);
 }
