@@ -74,7 +74,7 @@ void setup(){
 //const char* host = "192.168.1.67"; // lazyatom
 //const char* host = "178.79.132.137"; // interblah
 const char* host = "wee-printer.interblah.net";
-const uint16_t port = 80;
+const uint16_t port = 4567;
 const char *path = "/printer/1";
 
 uint16_t failures = 0;
