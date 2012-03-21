@@ -8,6 +8,7 @@ gem "rmagick"
 gem "resque"
 gem "rake"
 gem "yajl-ruby"
+gem "multi_json"
 gem "unicorn"
 
 gem "recap", git: "https://github.com/freerange/recap.git"

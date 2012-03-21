@@ -9,15 +9,17 @@ describe Preview do
     end
 
     it "returns the data if preview does exist" do
-      Resque.redis.stubs(:hget).with("wee_printer_previews", "id").returns("data")
-      Preview.find("id").must_be :==, "data"
+      Resque.redis.stubs(:hget).with("wee_printer_previews", "id").returns(MultiJson.encode(["url", "/previews/id.png"]))
+      data = Preview.find("id")
+      data.original_url.must_be :==, "url"
+      data.image_path.must_be :==, "/previews/id.png"
     end
   end
 
   describe "storing a preview" do
-    it "stores the url of the file against the id" do
-      Resque.redis.expects(:hset).with("wee_printer_previews", "id", "/previews/id.png")
-      Preview.store("id", "public/previews/id.png")
+    it "stores the original url and url of the file against the id" do
+      Resque.redis.expects(:hset).with("wee_printer_previews", "id", MultiJson.encode(["url", "/previews/id.png"]))
+      Preview.store("id", "url", "public/previews/id.png")
     end
   end
 end

@@ -17,7 +17,7 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   get "/preview/show/:preview_id" do
-    @image_url = Preview.find(params['preview_id'])
+    @preview = Preview.find(params['preview_id'])
     erb :preview
   end
 

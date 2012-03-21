@@ -12,9 +12,9 @@ describe Jobs::Preview do
       Jobs::Preview.perform("id", "url")
     end
 
-    it "stores the preview data" do
+    it "stores the original url and preview data" do
       Jobs::Preview.stubs(:save_url_to_path)
-      Preview.expects(:store).with("id", "public/previews/id.png")
+      Preview.expects(:store).with("id", "url", "public/previews/id.png")
       Jobs::Preview.perform("id", "url")
     end
   end

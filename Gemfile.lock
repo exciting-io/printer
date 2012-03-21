@@ -69,6 +69,7 @@ PLATFORMS
 DEPENDENCIES
   foreman
   mocha
+  multi_json
   rack-test
   rake
   recap!
