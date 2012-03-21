@@ -78,5 +78,11 @@ describe WeePrinterBackendServer do
       last_response.redirect?.must_be :==, true
       last_response.location.must_match /#{Regexp.escape("http://example.org/preview/show/")}[a-f0-9]{16}/
     end
+
+    it "allows posting of a URL for preview" do
+      post "/preview", {url: "submitted-url"}
+      last_response.redirect?.must_be :==, true
+      last_response.location.must_match /#{Regexp.escape("http://example.org/preview/pending/")}[a-f0-9]{16}/
+    end
   end
 end
