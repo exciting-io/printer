@@ -7,9 +7,13 @@ class Jobs::PreparePage
 
   def self.perform(printer_id, url)
     output_filename = "tmp/test.png"
-    cmd = "phantomjs rasterise.js #{url} #{output_filename}"
-    `#{cmd}`
+    save_url_to_path(url, output_filename)
     Resque.enqueue(Jobs::ImageToBytes, output_filename, printer_id)
+  end
+
+  def self.save_url_to_path(url, path)
+    cmd = "phantomjs rasterise.js #{url} #{path}"
+    `#{cmd}`
   end
 end
     

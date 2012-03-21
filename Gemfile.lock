@@ -20,6 +20,9 @@ GEM
       thor (>= 0.13.6)
     highline (1.6.11)
     kgio (2.7.3)
+    metaclass (0.0.1)
+    mocha (0.10.5)
+      metaclass (~> 0.0.1)
     multi_json (1.1.0)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -62,6 +65,7 @@ PLATFORMS
 
 DEPENDENCIES
   foreman
+  mocha
   rake
   recap!
   resque
