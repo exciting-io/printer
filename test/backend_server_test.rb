@@ -11,6 +11,10 @@ describe WeePrinterBackendServer do
     WeePrinterBackendServer
   end
 
+  before do
+    Resque.stubs(:enqueue)
+  end
+
   describe "polling printers" do
     describe "with no data" do
       it "returns an empty response" do
@@ -30,10 +34,6 @@ describe WeePrinterBackendServer do
   end
 
   describe "print submissions" do
-    before do
-      Resque.stubs(:enqueue)
-    end
-
     it "enqueues the url with the printer id" do
       Resque.expects(:enqueue).with(Jobs::PreparePage, "1", "submitted-url")
       get "/print_from_page/1?url=submitted-url"
@@ -57,6 +57,26 @@ describe WeePrinterBackendServer do
     it "also accepts POSTed data" do
       post "/print_from_page/1", {url: "http://param-url"}, {"HTTP_REFERER" => "http://referer-url"}
       last_response.ok?.must_be :==, true
+    end
+  end
+
+  describe "previewing" do
+    it "enqueues a job to generate a preview" do
+      Resque.expects(:enqueue).with(Jobs::Preview, random_id = regexp_matches(/[a-f0-9]{16}/), "submitted-url")
+      get "/preview?url=submitted-url"
+    end
+
+    it "redirects to a holding page after requesting" do
+      get "/preview?url=submitted-url"
+      last_response.redirect?.must_be :==, true
+      last_response.location.must_match /#{Regexp.escape("http://example.org/preview/pending/")}[a-f0-9]{16}/
+    end
+
+    it "redirects to the preview page once the preview data exists" do
+      Preview.stubs(:find).with("abc123def456abcd").returns("data")
+      get "/preview/pending/abc123def456abcd"
+      last_response.redirect?.must_be :==, true
+      last_response.location.must_match /#{Regexp.escape("http://example.org/preview/show/")}[a-f0-9]{16}/
     end
   end
 end

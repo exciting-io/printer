@@ -1,4 +1,5 @@
 require "jobs/image_to_bytes"
+require "preview"
 
 class Jobs::Preview
   def self.queue
@@ -7,8 +8,12 @@ class Jobs::Preview
 
   def self.perform(preview_id, url)
     output_filename = "public/previews/#{preview_id}.png"
-    cmd = "phantomjs rasterise.js #{url} #{output_filename}"
+    save_url_to_path(url, output_filename)
+    ::Preview.store(preview_id, output_filename)
+  end
+
+  def self.save_url_to_path(url, path)
+    cmd = "phantomjs rasterise.js #{url} #{path}"
     `#{cmd}`
-    Resque.enqueue_to(Jobs::PreviewReady.queue(preview_id), preview_id, output_filename.gsub(/^public/, ''))
   end
 end

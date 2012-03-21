@@ -6,22 +6,24 @@ require "resque"
 
 require "jobs"
 require "printer"
+require "preview"
 
 class WeePrinterBackendServer < Sinatra::Base
   set :views, settings.root + '/../views'
+  set :public_folder, settings.root + '/../public'
 
   get "/" do
     "This is the backend server"
   end
 
   get "/preview/show/:preview_id" do
-    @image_url = "/previews/#{params['preview_id']}.png"
+    @image_url = Preview.find(params['preview_id'])
     erb :preview
   end
 
   get "/preview/pending/:preview_id" do
-    image_job = Resque.reserve(Jobs::PreviewReady.queue(params['preview_id']))
-    if image_job
+    preview = Preview.find(params['preview_id'])
+    if preview
       redirect "/preview/show/#{params['preview_id']}"
     else
       erb :preview_pending
