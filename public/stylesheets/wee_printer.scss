@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "arial rounded mt bold";
+  background-color: #ccc;
+}
+
+.info {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 200px;
+  background-color: #eee;
+  padding: 1em;
+}
+
+.content {
+  -webkit-font-smoothing: none;
+  width: 384px;
+  overflow: hidden;
+  margin: 0 auto;
+
+  background-color: white;
+  font-size: 22px;
+}
+
+.paper {
+  background-color: white;
+  width: 440px;
+  padding-top: 25px;
+  padding-bottom: 50px;
+  margin: 30px auto;
+  box-shadow: 10px 10px 5px #888;
+}
+
+.loading {
+  text-align: center;
+}
