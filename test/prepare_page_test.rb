@@ -2,6 +2,10 @@ require "test_helper"
 
 describe Jobs::PreparePage do
   describe "performing" do
+    before do
+      Resque.stubs(:enqueue)
+    end
+
     it "uses phantomjs to rasterise the url" do
       Jobs::PreparePage.expects(:"`").with("phantomjs rasterise.js url tmp/test.png")
       Jobs::PreparePage.perform("printer_id", "url")

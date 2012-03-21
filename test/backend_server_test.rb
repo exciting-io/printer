@@ -30,6 +30,10 @@ describe WeePrinterBackendServer do
   end
 
   describe "print submissions" do
+    before do
+      Resque.stubs(:enqueue)
+    end
+
     it "enqueues the url with the printer id" do
       Resque.expects(:enqueue).with(Jobs::PreparePage, "1", "submitted-url")
       get "/print_from_page/1?url=submitted-url"
