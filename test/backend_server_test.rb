@@ -1,6 +1,6 @@
 require "test_helper"
 require "rack/test"
-require File.expand_path("../../server", __FILE__)
+require "backend_server"
 
 ENV['RACK_ENV'] = 'test'
 

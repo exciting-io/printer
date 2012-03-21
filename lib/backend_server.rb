@@ -4,7 +4,6 @@ require "sinatra"
 require 'sinatra/base'
 require "resque"
 
-$LOAD_PATH.unshift "lib"
 require "jobs"
 require "printer"
 
