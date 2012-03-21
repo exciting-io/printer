@@ -8,6 +8,8 @@ require "jobs"
 require "printer"
 
 class WeePrinterBackendServer < Sinatra::Base
+  set :views, settings.root + '/../views'
+
   get "/" do
     "This is the backend server"
   end
@@ -33,8 +35,11 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   get "/print_from_page/:printer_id" do
-    Resque.enqueue(Jobs::PreparePage, params['printer_id'], params['url'] || env['HTTP_REFERER'])
-    redirect env['HTTP_REFERER']
+    queue_print(params['printer_id'], params['url'] || env['HTTP_REFERER'])
+  end
+
+  post "/print_from_page/:printer_id" do
+    queue_print(params['printer_id'], params['url'])
   end
 
   get "/printer/:printer_id" do
@@ -56,5 +61,12 @@ class WeePrinterBackendServer < Sinatra::Base
     if rand(10) > 7
       "#" * (rand(100000) + 20000)
     end
+  end
+
+  private
+
+  def queue_print(printer_id, url)
+    Resque.enqueue(Jobs::PreparePage, printer_id, url)
+    erb :queued
   end
 end

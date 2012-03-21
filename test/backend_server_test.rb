@@ -49,10 +49,14 @@ describe WeePrinterBackendServer do
       get "/print_from_page/1?url=param-url", {}, {"HTTP_REFERER" => "referer-url"}
     end
 
-    it "redirects back to the HTTP_REFERER" do
+    it "shows a success page" do
       get "/print_from_page/1", {}, {"HTTP_REFERER" => "http://referer-url"}
-      last_response.redirect?.must_be :==, true
-      last_response.location.must_be :==, "http://referer-url"
+      last_response.ok?.must_be :==, true
+    end
+
+    it "also accepts POSTed data" do
+      post "/print_from_page/1", {url: "http://param-url"}, {"HTTP_REFERER" => "http://referer-url"}
+      last_response.ok?.must_be :==, true
     end
   end
 end
