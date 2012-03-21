@@ -6,34 +6,10 @@ require "resque"
 
 $LOAD_PATH.unshift "lib"
 require "jobs"
-require "sudoku"
-require "weather"
-Weather.api_key = ENV["WUNDERGROUND_API_KEY"].strip
 
-class WeePrinterServer < Sinatra::Base
-  helpers do
-    def period_of_day
-      case Time.now.hour
-      when 8..11
-        "morning"
-      when 12..14
-        "lunch"
-      when 15..18
-        "afternoon"
-      else
-        "evening"
-      end
-    end
-  end
-
+class WeePrinterBackendServer < Sinatra::Base
   get "/" do
-    @sudoku_data = random_sudoku
-    @forecast = Weather.new.daily_report
-    erb :index
-  end
-
-  get "/message" do
-    erb :message
+    "This is the backend server"
   end
 
   get "/preview/show/:preview_id" do
