@@ -6,6 +6,7 @@ require "resque"
 
 $LOAD_PATH.unshift "lib"
 require "jobs"
+require "printer"
 
 class WeePrinterBackendServer < Sinatra::Base
   get "/" do
@@ -38,11 +39,7 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   get "/printer/:printer_id" do
-    image_job = Resque.reserve(Jobs::Print.queue(params['printer_id']))
-    if image_job
-      klass = Resque::Job.constantize(image_job.payload['class'])
-      klass.data_for_printer(*image_job.payload['args'])
-    end
+    Printer.new(params['printer_id']).archive_and_return_print_data
   end
 
   get "/test/fixed/:length" do

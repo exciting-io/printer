@@ -1,5 +1,4 @@
-require "base64"
-require "jobs/print"
+require "printer"
 
 class Jobs::ImageToBytes
   class << self
@@ -8,17 +7,17 @@ class Jobs::ImageToBytes
     end
 
     def perform(image_path, printer_id)
-      Resque.enqueue_to(Jobs::Print.queue(printer_id), Jobs::Print, encoded_image(image_path))
+      Printer.new(printer_id).add_print_data(encoded_image(image_path))
     end
 
     def encoded_image(image_path)
-      require "RMagick"
+      require "RMagick" unless Object.const_defined?(:Magick)
       img = Magick::ImageList.new(image_path)[0]
       img.rotate!(180) # print the bottom first
       width = img.columns
       height = img.rows
       bytes = image_to_bytes(img)
-      base64_encoded_bytes(width, height, bytes)
+      encoded_bytes(width, height, bytes)
     end
 
     private
@@ -37,10 +36,6 @@ class Jobs::ImageToBytes
       data = [width,height].pack("SS")
       data += bytes.pack("C*")
       data
-    end
-
-    def base64_encoded_bytes(width, height, bytes)
-      Base64.encode64(encoded_bytes(width, height, bytes))
     end
   end
 end
