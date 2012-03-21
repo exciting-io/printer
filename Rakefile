@@ -17,3 +17,10 @@ Rake::TestTask.new do |t|
 end
 
 task :default => :test
+
+namespace :data do
+  task :reset do
+    require "resque"
+    Resque.redis.keys.each { |k| Resque.redis.del k }
+  end
+end
