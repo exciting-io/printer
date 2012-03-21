@@ -31,7 +31,7 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   get "/preview" do
-    queue_preview(params['url'])
+    queue_preview(params['url'] || env['HTTP_REFERER'])
   end
 
   post "/preview" do

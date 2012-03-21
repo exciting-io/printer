@@ -66,6 +66,11 @@ describe WeePrinterBackendServer do
       get "/preview?url=submitted-url"
     end
 
+    it "determines the URL from the HTTP_REFERER if no url parameter exists" do
+      Resque.expects(:enqueue).with(Jobs::Preview, random_id = regexp_matches(/[a-f0-9]{16}/), "referer-url")
+      get "/preview", {}, {"HTTP_REFERER" => "referer-url"}
+    end
+
     it "redirects to a holding page after requesting" do
       get "/preview?url=submitted-url"
       last_response.redirect?.must_be :==, true
