@@ -8,11 +8,8 @@ describe Jobs::PrepareContent do
     end
 
     it "creates an HTML file with the content" do
-      IdGenerator.stubs(:random_id).returns("id")
+      ContentStore.expects(:write_html_content).with("content")
       Jobs::PrepareContent.perform("printer-id", "content")
-      expected_html = %{<!doctype html><html class="no-js" lang="en">content</html>}
-      file_path = File.expand_path("../../../public/temp_content/id.html", __FILE__)
-      File.read(file_path).must_equal expected_html
     end
 
     it "enqueues another job to render the content" do

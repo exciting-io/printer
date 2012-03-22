@@ -8,15 +8,13 @@ describe Jobs::PreviewContent do
     end
 
     it "creates an HTML file with the content" do
-      Jobs::PreviewContent.perform("id", "content")
-      expected_html = %{<!doctype html><html class="no-js" lang="en">content</html>}
-      file_path = File.expand_path("../../../public/temp_content/id.html", __FILE__)
-      File.read(file_path).must_equal expected_html
+      ContentStore.expects(:write_html_content).with("content", "preview-id")
+      Jobs::PreviewContent.perform("preview-id", "content")
     end
 
     it "enqueues another job to render the preview content" do
-      Resque.expects(:enqueue).with(Jobs::Preview, "id", "http://localhost:5678/temp_content/id.html")
-      Jobs::PreviewContent.perform("id", "content")
+      Resque.expects(:enqueue).with(Jobs::Preview, "preview-id", "http://localhost:5678/temp_content/preview-id.html")
+      Jobs::PreviewContent.perform("preview-id", "content")
     end
   end
 end
