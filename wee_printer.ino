@@ -73,7 +73,7 @@ void setup(){
 //const char* host = "192.168.1.22"; // uberatom
 // const char* host = "192.168.1.67"; // lazyatom
 // const char* host = "178.79.132.137"; // interblah
-const char* host = "wee-printer.interblah.net";
+const char* host = "wee-printer.gofreerange.com";
 const uint16_t port = 80;
 const char *path = "/printer/1";
 
