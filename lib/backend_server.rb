@@ -36,26 +36,26 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   get "/preview" do
-    queue_preview(params['url'] || env['HTTP_REFERER'])
+    queue_preview(url_to_process)
   end
 
   post "/preview" do
     if params['content']
       queue_preview_from_content(params['content'])
     else
-      queue_preview(params['url'])
+      queue_preview(url_to_process)
     end
   end
 
   get "/print/:printer_id" do
-    queue_print(params['printer_id'], params['url'] || env['HTTP_REFERER'])
+    queue_print(params['printer_id'], url_to_process)
   end
 
   post "/print/:printer_id" do
     if params['content']
       queue_print_from_content(params['printer_id'], params['content'])
     else
-      queue_print(params['printer_id'], params['url'])
+      queue_print(params['printer_id'], url_to_process)
     end
   end
 
@@ -81,6 +81,10 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   private
+
+  def url_to_process
+    params['url'] || env['HTTP_REFERER']
+  end
 
   def queue_print(printer_id, url)
     Resque.enqueue(Jobs::PreparePage, printer_id, url)
