@@ -6,4 +6,5 @@ module Jobs
   autoload :PreviewReady, "jobs/preview_ready"
   autoload :PreviewContent, "jobs/preview_content"
   autoload :PrepareContent, "jobs/prepare_content"
+  autoload :Content, "jobs/content"
 end

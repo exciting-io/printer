@@ -3,5 +3,4 @@ tmp
 *.css
 .env
 public/previews
-public/preview_content/*.html
 public/temp_content/*.html
