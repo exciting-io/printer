@@ -14,7 +14,7 @@
       <p>You'll be redirected to a page where, in a few seconds, you'll see an image that approximates what will be sent to the printer (although there is still some further processing to make it monochrome, for example).</p>
       <h2>Printing</h2>
       <p>To print a page, you need to make a request along these lines:</p>
-      <p><pre><code>GET http://wee-printer.gofreerange.com/print_from_page/&lt;printer_id&gt;?url=&lt;url&gt;</code></pre></p>
+      <p><pre><code>GET http://wee-printer.gofreerange.com/print/&lt;printer_id&gt;?url=&lt;url&gt;</code></pre></p>
       <p>I'll process the page at that URL, and in a short while (normally less than a minute) it will be available for the printer with that <tt>ID</tt> to download.</p>
       <p>The <tt>HTTP_REFERER</tt> trick above also works here.</p>
       <h2>Printer API</h2>

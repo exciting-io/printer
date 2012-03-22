@@ -36,26 +36,26 @@ describe WeePrinterBackendServer do
   describe "print submissions" do
     it "enqueues the url with the printer id" do
       Resque.expects(:enqueue).with(Jobs::PreparePage, "1", "submitted-url")
-      get "/print_from_page/1?url=submitted-url"
+      get "/print/1?url=submitted-url"
     end
 
     it "determines the URL from the HTTP_REFERER if no url parameter exists" do
       Resque.expects(:enqueue).with(Jobs::PreparePage, "1", "referer-url")
-      get "/print_from_page/1", {}, {"HTTP_REFERER" => "referer-url"}
+      get "/print/1", {}, {"HTTP_REFERER" => "referer-url"}
     end
 
     it "prefers the url parameter to the HTTP_REFERER" do
       Resque.expects(:enqueue).with(Jobs::PreparePage, "1", "param-url")
-      get "/print_from_page/1?url=param-url", {}, {"HTTP_REFERER" => "referer-url"}
+      get "/print/1?url=param-url", {}, {"HTTP_REFERER" => "referer-url"}
     end
 
     it "shows a success page" do
-      get "/print_from_page/1", {}, {"HTTP_REFERER" => "http://referer-url"}
+      get "/print/1", {}, {"HTTP_REFERER" => "http://referer-url"}
       last_response.ok?.must_be :==, true
     end
 
     it "also accepts POSTed data" do
-      post "/print_from_page/1", {url: "http://param-url"}, {"HTTP_REFERER" => "http://referer-url"}
+      post "/print/1", {url: "http://param-url"}, {"HTTP_REFERER" => "http://referer-url"}
       last_response.ok?.must_be :==, true
     end
   end

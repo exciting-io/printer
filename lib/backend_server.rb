@@ -42,11 +42,11 @@ class WeePrinterBackendServer < Sinatra::Base
     queue_preview(params['url'])
   end
 
-  get "/print_from_page/:printer_id" do
+  get "/print/:printer_id" do
     queue_print(params['printer_id'], params['url'] || env['HTTP_REFERER'])
   end
 
-  post "/print_from_page/:printer_id" do
+  post "/print/:printer_id" do
     queue_print(params['printer_id'], params['url'])
   end
 
