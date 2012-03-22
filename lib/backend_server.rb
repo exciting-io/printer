@@ -13,7 +13,7 @@ class WeePrinterBackendServer < Sinatra::Base
   set :public_folder, settings.root + '/../public'
 
   get "/" do
-    "This is the backend server"
+    erb :index
   end
 
   get "/preview/show/:preview_id" do

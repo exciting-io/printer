@@ -1,0 +1,26 @@
+<div class="paper">
+  <div class="content">
+    <header>
+      <p class="date"><%= Time.now.strftime("%A %d %B %Y") %></p>
+      <p class="timestamp">Printed at <%= Time.now.strftime("%l:%M%P").strip %></p>
+    </header>
+    <div class="explanation">
+      <h1>Hello!</h1>
+      <h2>I am the Wee Printer backend server.</h2>
+      <p>I am a conduit for connecting &ldquo;wee printers&rdquo; to publishers of content.</p>
+      <p>You send requests to me with a URL and printer; I take care of turning the content at that URL into data suitable for the printer, and the printer will download it from me when it's ready to print something.</p>
+      <p>Simple!</p>
+      <h2>Guidelines</h2>
+      <p>The page at your URL will be rendered at a width of <strong>384 pixels</strong> (that&rsquo;s the width of the printer paper).</p>
+      <p>Like any webpage, the content at that URL can be dynamic. When I make the request to render your URL, your page could be:</p>
+      <ul>
+      <li>Fetching weather data and rendering a forecast</li>
+      <li>Generating a todo list</li>
+      <li>Showing upcoming meetings from an online calendar</li>
+      <li>All of the above, and more!</li>
+      </ul>
+      <p>It can have any content you like on it; the only limits are your imagination and the gentle constraints of the media (low-fi black and white thermal printing).</p>
+      <p>You can use the <strong><a href="http://wee-dtp.gofreerange.com">Wee DTP</a></strong> project as a basis for your pages; it contains stylesheets tuned for my renderer.</p>
+    </div>
+  </div>
+</div>

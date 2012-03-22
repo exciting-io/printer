@@ -5,6 +5,21 @@ body {
   background-color: #ccc;
 }
 
+.system_info {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 200px;
+  background-color: #66833A;
+  color: #eee;
+  padding: 1em;
+  box-shadow: 13px 13px 20px #888;
+
+  h1 {
+    margin: 0;
+  }
+}
+
 .info {
   position: fixed;
   top: 20px;
@@ -14,14 +29,48 @@ body {
   padding: 1em;
 }
 
+header {
+  font-size: 14px;
+  padding-bottom: 2px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid black;
+  overflow: auto;
+
+  p {
+    padding: 0;
+    margin: 0;
+
+    &.date {
+      float: left;
+    }
+    &.timestamp {
+      float: right;
+    }
+  }
+}
+
 .content {
-  -webkit-font-smoothing: none;
+/*  -webkit-font-smoothing: none;*/
   width: 384px;
   overflow: hidden;
   margin: 0 auto;
 
   background-color: white;
   font-size: 22px;
+
+  .explanation {
+    h1 {
+      font-size: 52px;
+      margin: 10px 0;
+    }
+    h2 {
+      margin: 10px 0;
+    }
+    p, ul {
+      font-size: 18px;
+      font-weight: normal;
+    }
+  }
 }
 
 .paper {
