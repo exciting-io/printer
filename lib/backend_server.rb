@@ -13,13 +13,10 @@ class WeePrinterBackendServer < Sinatra::Base
   set :views, settings.root + '/../views'
   set :public_folder, settings.root + '/../public'
 
-  get "/" do
-    erb :index
-  end
-
+  get("/")                      { erb :index }
   get("/getting-a-wee-printer") { erb :getting_a_wee_printer }
-  get("/api") { erb :api }
-  get("/publishing") { erb :publishing }
+  get("/api")                   { erb :api }
+  get("/publishing")            { erb :publishing }
 
   get "/preview/show/:preview_id" do
     @preview = Preview.find(params['preview_id'])
