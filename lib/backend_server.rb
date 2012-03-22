@@ -96,9 +96,7 @@ class WeePrinterBackendServer < Sinatra::Base
   def queue_print_from_content(printer_id, content)
     Resque.enqueue(Jobs::PrepareContent, printer_id, content)
     if request.accept?('application/json')
-      headers "Access-Control-Allow-Origin" => "*"
-      content_type :json
-      MultiJson.encode({response: "ok"})
+      respond_with_json(response: "ok")
     else
       erb :queued
     end
@@ -109,12 +107,16 @@ class WeePrinterBackendServer < Sinatra::Base
     Resque.enqueue(Jobs::PreviewContent, preview_id, content)
     path = "/preview/pending/#{preview_id}"
     if request.accept?('application/json')
-      headers "Access-Control-Allow-Origin" => "*"
-      content_type :json
       url = request.scheme + "://" + request.host_with_port + path
-      MultiJson.encode({location: url})
+      respond_with_json(location: url)
     else
      redirect path
     end
+  end
+
+  def respond_with_json(data)
+    headers "Access-Control-Allow-Origin" => "*"
+    content_type :json
+    MultiJson.encode(data)
   end
 end
