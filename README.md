@@ -42,6 +42,14 @@ Software Setup
 
 The server acts as a conduit for turning HTML-based designs into a format suitable for the printer. The printer periodically polls the server, and if some data for printing is available, it downloads it and prints it.
 
+Ruby 1.9
+
+(You may need to add multiverse sources to apt - see http://askubuntu.com/questions/59890/ttf-mscorefonts-installer-is-not-available)
+
+apt-get install ttf-mscorefonts-installer xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic redis-server imagemagick libmagick++-dev
+
+Build PhantomJS by following http://code.google.com/p/phantomjs/wiki/BuildInstructions
+
 (TODO - configuring and designing)
 
 
