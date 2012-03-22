@@ -10,13 +10,17 @@ body {
   top: 20px;
   right: 20px;
   width: 200px;
-  background-color: #66833A;
-  color: #eee;
+  background-color: #ABD3A8;
+  color: #fff;
   padding: 1em;
   box-shadow: 13px 13px 20px #888;
+  text-align: center;
 
   h1 {
-    margin: 0;
+    margin: 0 0 10px 0;
+  }
+  img {
+    width: 100%;
   }
 }
 
