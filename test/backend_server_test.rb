@@ -81,52 +81,56 @@ describe WeePrinterBackendServer do
   end
 
   describe "previewing" do
+    before do
+      IdGenerator.stubs(:random_id).returns("abc123")
+    end
+
     it "enqueues a job to generate a preview" do
-      Resque.expects(:enqueue).with(Jobs::Preview, random_id = regexp_matches(/[a-f0-9]{16}/), "submitted-url")
+      Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "submitted-url")
       get "/preview?url=submitted-url"
     end
 
     it "determines the URL from the HTTP_REFERER if no url parameter exists" do
-      Resque.expects(:enqueue).with(Jobs::Preview, random_id = regexp_matches(/[a-f0-9]{16}/), "referer-url")
+      Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "referer-url")
       get "/preview", {}, {"HTTP_REFERER" => "referer-url"}
     end
 
     it "redirects to a holding page after requesting" do
       get "/preview?url=submitted-url"
       last_response.redirect?.must_be :==, true
-      last_response.location.must_match /#{Regexp.escape("http://example.org/preview/pending/")}[a-f0-9]{16}/
+      last_response.location.must_equal "http://example.org/preview/pending/abc123"
     end
 
     it "redirects to the preview page once the preview data exists" do
       Preview.stubs(:find).with("abc123def456abcd").returns("data")
       get "/preview/pending/abc123def456abcd"
       last_response.redirect?.must_be :==, true
-      last_response.location.must_match /#{Regexp.escape("http://example.org/preview/show/")}[a-f0-9]{16}/
+      last_response.location.must_equal "http://example.org/preview/show/abc123def456abcd"
     end
 
     it "allows posting of a URL for preview" do
       post "/preview", {url: "submitted-url"}
       last_response.redirect?.must_be :==, true
-      last_response.location.must_match /#{Regexp.escape("http://example.org/preview/pending/")}[a-f0-9]{16}/
+      last_response.location.must_equal "http://example.org/preview/pending/abc123"
     end
 
     describe "with content" do
       it "enqueues a job to generate a preview from the content" do
-        Resque.expects(:enqueue).with(Jobs::PreviewContent, random_id = regexp_matches(/[a-f0-9]{16}/), "<p>Some content</p>")
+        Resque.expects(:enqueue).with(Jobs::PreviewContent, "abc123", "<p>Some content</p>")
         post "/preview", {content: "<p>Some content</p>"}
       end
 
       it "redirects to the holding page" do
         post "/preview", {content: "<p>Some content</p>"}
         last_response.redirect?.must_be :==, true
-        last_response.location.must_match /#{Regexp.escape("http://example.org/preview/pending/")}[a-f0-9]{16}/
+        last_response.location.must_match "http://example.org/preview/pending/abc123"
       end
 
       it "returns a JSON object pointing at the holding page if the request accepts JSON" do
         header 'Accept', 'application/json'
         post "/preview", {content: "<p>Some content</p>"}
         last_response.ok?.must_equal true
-        MultiJson.decode(last_response.body)['location'].must_match /#{Regexp.escape("http://example.org/preview/pending/")}[a-f0-9]{16}/
+        MultiJson.decode(last_response.body)['location'].must_equal "http://example.org/preview/pending/abc123"
       end
 
       it "allows the returned JSON data to be loaded regardless of cross-domain" do

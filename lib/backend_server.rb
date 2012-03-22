@@ -7,6 +7,7 @@ require "resque"
 require "jobs"
 require "printer"
 require "preview"
+require "id_generator"
 
 class WeePrinterBackendServer < Sinatra::Base
   set :views, settings.root + '/../views'
@@ -87,7 +88,7 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   def queue_preview(url)
-    preview_id = (0..16).map { |x| rand(16).to_s(16) }.join
+    preview_id = IdGenerator.random_id
     Resque.enqueue(Jobs::Preview, preview_id, url)
     redirect "/preview/pending/#{preview_id}"
   end
@@ -104,7 +105,7 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   def queue_preview_from_content(content)
-    preview_id = (0..16).map { |x| rand(16).to_s(16) }.join
+    preview_id = IdGenerator.random_id
     Resque.enqueue(Jobs::PreviewContent, preview_id, content)
     path = "/preview/pending/#{preview_id}"
     if request.accept?('application/json')
