@@ -16,6 +16,10 @@ class WeePrinterBackendServer < Sinatra::Base
     erb :index
   end
 
+  get("/getting-a-wee-printer") { erb :getting_a_wee_printer }
+  get("/api") { erb :api }
+  get("/publishing") { erb :publishing }
+
   get "/preview/show/:preview_id" do
     @preview = Preview.find(params['preview_id'])
     erb :preview
