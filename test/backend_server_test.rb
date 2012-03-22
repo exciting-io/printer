@@ -58,6 +58,26 @@ describe WeePrinterBackendServer do
       post "/print/1", {url: "http://param-url"}, {"HTTP_REFERER" => "http://referer-url"}
       last_response.ok?.must_be :==, true
     end
+
+    describe "with content" do
+      it "enqueues a job to generate a page from the content" do
+        Resque.expects(:enqueue).with(Jobs::PrepareContent, "1", "<p>Some content</p>")
+        post "/print/1", {content: "<p>Some content</p>"}
+      end
+
+      it "returns an JSON status if the request accepts JSON" do
+        header 'Accept', 'application/json'
+        post "/print/1", {content: "<p>Some content</p>"}
+        last_response.ok?.must_equal true
+        MultiJson.decode(last_response.body).must_equal({"response" => "ok"})
+      end
+
+      it "allows the returned JSON data to be loaded regardless of cross-domain" do
+        header 'Accept', 'application/json'
+        post "/print/1", {content: "<p>Some content</p>"}
+        last_response.headers["Access-Control-Allow-Origin"].must_equal "*"
+      end
+    end
   end
 
   describe "previewing" do
@@ -88,6 +108,32 @@ describe WeePrinterBackendServer do
       post "/preview", {url: "submitted-url"}
       last_response.redirect?.must_be :==, true
       last_response.location.must_match /#{Regexp.escape("http://example.org/preview/pending/")}[a-f0-9]{16}/
+    end
+
+    describe "with content" do
+      it "enqueues a job to generate a preview from the content" do
+        Resque.expects(:enqueue).with(Jobs::PreviewContent, random_id = regexp_matches(/[a-f0-9]{16}/), "<p>Some content</p>")
+        post "/preview", {content: "<p>Some content</p>"}
+      end
+
+      it "redirects to the holding page" do
+        post "/preview", {content: "<p>Some content</p>"}
+        last_response.redirect?.must_be :==, true
+        last_response.location.must_match /#{Regexp.escape("http://example.org/preview/pending/")}[a-f0-9]{16}/
+      end
+
+      it "returns a JSON object pointing at the holding page if the request accepts JSON" do
+        header 'Accept', 'application/json'
+        post "/preview", {content: "<p>Some content</p>"}
+        last_response.ok?.must_equal true
+        MultiJson.decode(last_response.body)['location'].must_match /#{Regexp.escape("http://example.org/preview/pending/")}[a-f0-9]{16}/
+      end
+
+      it "allows the returned JSON data to be loaded regardless of cross-domain" do
+        header 'Accept', 'application/json'
+        post "/preview", {content: "<p>Some content</p>"}
+        last_response.headers["Access-Control-Allow-Origin"].must_equal "*"
+      end
     end
   end
 end

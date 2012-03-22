@@ -39,7 +39,11 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   post "/preview" do
-    queue_preview(params['url'])
+    if params['content']
+      queue_preview_from_content(params['content'])
+    else
+      queue_preview(params['url'])
+    end
   end
 
   get "/print/:printer_id" do
@@ -47,7 +51,11 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   post "/print/:printer_id" do
-    queue_print(params['printer_id'], params['url'])
+    if params['content']
+      queue_print_from_content(params['printer_id'], params['content'])
+    else
+      queue_print(params['printer_id'], params['url'])
+    end
   end
 
   get "/printer/:printer_id" do
@@ -82,5 +90,30 @@ class WeePrinterBackendServer < Sinatra::Base
     preview_id = (0..16).map { |x| rand(16).to_s(16) }.join
     Resque.enqueue(Jobs::Preview, preview_id, url)
     redirect "/preview/pending/#{preview_id}"
+  end
+
+  def queue_print_from_content(printer_id, content)
+    Resque.enqueue(Jobs::PrepareContent, printer_id, content)
+    if request.accept?('application/json')
+      headers "Access-Control-Allow-Origin" => "*"
+      content_type :json
+      MultiJson.encode({response: "ok"})
+    else
+      erb :queued
+    end
+  end
+
+  def queue_preview_from_content(content)
+    preview_id = (0..16).map { |x| rand(16).to_s(16) }.join
+    Resque.enqueue(Jobs::PreviewContent, preview_id, content)
+    path = "/preview/pending/#{preview_id}"
+    if request.accept?('application/json')
+      headers "Access-Control-Allow-Origin" => "*"
+      content_type :json
+      url = request.scheme + "://" + request.host_with_port + path
+      MultiJson.encode({location: url})
+    else
+     redirect path
+    end
   end
 end
