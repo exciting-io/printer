@@ -9,3 +9,6 @@ require "jobs"
 def fixture_path(filename)
   File.expand_path("../fixtures/#{filename}", __FILE__)
 end
+
+require "content_store"
+ContentStore.content_directory = File.expand_path("../../tmp", __FILE__)

@@ -1,11 +1,19 @@
 require "id_generator"
+require "fileutils"
 
 module ContentStore
-  def self.write_html_content(content, unique_id=IdGenerator.random_id)
-    path = "temp_content/#{unique_id}.html"
-    File.open(File.expand_path("../../public/#{path}", __FILE__), "w") do |f|
-      f.write(%{<!doctype html><html class="no-js" lang="en">#{content}</html>})
+  class << self
+    attr_accessor :content_directory
+
+    def write_html_content(content, unique_id=IdGenerator.random_id)
+      FileUtils.mkdir_p(File.join(ContentStore.content_directory, "temp_content"))
+      public_path = File.join("temp_content", "#{unique_id}.html")
+      File.open(File.join(content_directory, public_path), "w") do |f|
+        f.write(%{<!doctype html><html class="no-js" lang="en">#{content}</html>})
+      end
+      "http://localhost:5678/#{public_path}"
     end
-    "http://localhost:5678/#{path}"
   end
+
+  self.content_directory ||= File.expand_path("../../public", __FILE__)
 end
