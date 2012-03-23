@@ -26,20 +26,34 @@ describe Printer do
   end
 
   describe "#archive_and_return_print_data" do
-    it "returns nil if no print data exists" do
-      Resque.redis.stubs(:lpop).with("printer/123").returns(nil)
-      subject.archive_and_return_print_data.must_equal nil
+    describe "when no data exists" do
+      before do
+        Resque.redis.stubs(:lpop).with("printer/123").returns(nil)
+      end
+
+      it "returns nil if no print data exists" do
+        subject.archive_and_return_print_data.must_equal nil
+      end
+
+      it "doesn't put anything into the archive if no print data exists" do
+        Resque.redis.expects(:lpush).with("printer/123/archive", anything).never
+        subject.archive_and_return_print_data
+      end
     end
 
-    it "returns the base64-decoded data if some exists" do
-      Resque.redis.stubs(:lpop).with("printer/123").returns(Base64.encode64("data"))
-      subject.archive_and_return_print_data.must_equal "data"
-    end
+    describe "when data exists" do
+      before do
+        Resque.redis.stubs(:lpop).with("printer/123").returns(Base64.encode64("data"))
+      end
 
-    it "adds the data to the archive list if some is popped" do
-      Resque.redis.stubs(:lpop).with("printer/123").returns(Base64.encode64("data"))
-      Resque.redis.expects(:lpush).with("printer/123/archive", Base64.encode64("data"))
-      subject.archive_and_return_print_data
+      it "returns the base64-decoded data if some exists" do
+        subject.archive_and_return_print_data.must_equal "data"
+      end
+
+      it "adds the data to the archive list if some is popped" do
+        Resque.redis.expects(:lpush).with("printer/123/archive", Base64.encode64("data"))
+        subject.archive_and_return_print_data
+      end
     end
   end
 end
