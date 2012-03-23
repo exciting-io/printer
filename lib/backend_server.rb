@@ -8,6 +8,7 @@ require "jobs"
 require "printer"
 require "preview"
 require "id_generator"
+require "content_store"
 
 class WeePrinterBackendServer < Sinatra::Base
   set :views, settings.root + '/../views'
