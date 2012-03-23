@@ -1,4 +1,5 @@
 require "test_helper"
+require "jobs"
 
 describe Jobs::PreparePage do
   describe "performing" do
