@@ -28,7 +28,7 @@ describe WeePrinterBackendServer do
         Printer.stubs(:new).with("1").returns(printer = stub("printer"))
         printer.stubs(:archive_and_return_print_data).returns("data")
         get "/printer/1"
-        last_response.body.must_be :==, "data"
+        last_response.body.must_equal "data"
       end
     end
   end
@@ -51,12 +51,12 @@ describe WeePrinterBackendServer do
 
     it "shows a success page" do
       get "/print/1", {}, {"HTTP_REFERER" => "http://referer-url"}
-      last_response.ok?.must_be :==, true
+      last_response.ok?.must_equal true
     end
 
     it "also accepts POSTed data" do
       post "/print/1", {url: "http://param-url"}, {"HTTP_REFERER" => "http://referer-url"}
-      last_response.ok?.must_be :==, true
+      last_response.ok?.must_equal true
     end
 
     describe "with content" do
@@ -107,20 +107,20 @@ describe WeePrinterBackendServer do
 
     it "redirects to a holding page after requesting" do
       get "/preview?url=submitted-url"
-      last_response.redirect?.must_be :==, true
+      last_response.redirect?.must_equal true
       last_response.location.must_equal "http://example.org/preview/pending/abc123"
     end
 
     it "redirects to the preview page once the preview data exists" do
       Preview.stubs(:find).with("abc123def456abcd").returns("data")
       get "/preview/pending/abc123def456abcd"
-      last_response.redirect?.must_be :==, true
+      last_response.redirect?.must_equal true
       last_response.location.must_equal "http://example.org/preview/show/abc123def456abcd"
     end
 
     it "allows posting of a URL for preview" do
       post "/preview", {url: "submitted-url"}
-      last_response.redirect?.must_be :==, true
+      last_response.redirect?.must_equal true
       last_response.location.must_equal "http://example.org/preview/pending/abc123"
     end
 
@@ -142,8 +142,8 @@ describe WeePrinterBackendServer do
 
       it "redirects to the holding page" do
         post "/preview", {content: "<p>Some content</p>"}
-        last_response.redirect?.must_be :==, true
-        last_response.location.must_match "http://example.org/preview/pending/abc123"
+        last_response.redirect?.must_equal true
+        last_response.location.must_equal "http://example.org/preview/pending/abc123"
       end
 
       it "returns a JSON object pointing at the holding page if the request accepts JSON" do

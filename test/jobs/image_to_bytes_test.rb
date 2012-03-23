@@ -7,16 +7,16 @@ describe Jobs::ImageToBytes do
     end
 
     it "includes the size of the image" do
-      subject[0,8].unpack("SS").must_be :==, [8,8]
+      subject[0,8].unpack("SS").must_equal [8,8]
     end
 
     it "encodes the body of the image" do
-      subject[4..-1].unpack("C*").must_be :==, [128,64,32,16,8,4,2,1]
+      subject[4..-1].unpack("C*").must_equal [128,64,32,16,8,4,2,1]
     end
 
     it "rotates the image so the bottom is printed first" do
       data = Jobs::ImageToBytes.encoded_image(fixture_path("8x8-top.png"))
-      data[4..-1].unpack("C*").must_be :==, [0,0,0,0,0,0,0,6]
+      data[4..-1].unpack("C*").must_equal [0,0,0,0,0,0,0,6]
     end
   end
 

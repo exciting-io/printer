@@ -16,24 +16,24 @@ describe Printer do
   describe "#data_waiting?" do
     it "returns true if data exists" do
       Resque.redis.stubs(:llen).with("printer/123").returns(1)
-      subject.data_waiting?.must_be :==, true
+      subject.data_waiting?.must_equal true
     end
 
     it "returns false if data doesn't exist" do
       Resque.redis.stubs(:llen).with("printer/123").returns(0)
-      subject.data_waiting?.must_be :==, false
+      subject.data_waiting?.must_equal false
     end
   end
 
   describe "#archive_and_return_print_data" do
     it "returns nil if no print data exists" do
       Resque.redis.stubs(:lpop).with("printer/123").returns(nil)
-      subject.archive_and_return_print_data.must_be :==, nil
+      subject.archive_and_return_print_data.must_equal nil
     end
 
     it "returns the base64-decoded data if some exists" do
       Resque.redis.stubs(:lpop).with("printer/123").returns(Base64.encode64("data"))
-      subject.archive_and_return_print_data.must_be :==, "data"
+      subject.archive_and_return_print_data.must_equal "data"
     end
 
     it "adds the data to the archive list if some is popped" do

@@ -5,14 +5,14 @@ describe Preview do
   describe "retrieving a preview" do
     it "returns nil if there is no preview data" do
       Resque.redis.stubs(:hget).with("wee_printer_previews", "id").returns(nil)
-      Preview.find("id").must_be :==, nil
+      Preview.find("id").must_equal nil
     end
 
     it "returns the data if preview does exist" do
       Resque.redis.stubs(:hget).with("wee_printer_previews", "id").returns(MultiJson.encode(["url", "/previews/id.png"]))
       data = Preview.find("id")
-      data.original_url.must_be :==, "url"
-      data.image_path.must_be :==, "/previews/id.png"
+      data.original_url.must_equal "url"
+      data.image_path.must_equal "/previews/id.png"
     end
   end
 
