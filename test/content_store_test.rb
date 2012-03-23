@@ -19,4 +19,9 @@ describe ContentStore do
     ContentStore.write_html_content("content")
     File.exists?(File.join(ContentStore.content_directory, "temp_content/default-id.html")).must_equal true
   end
+
+  it "returns the public path for the file" do
+    path = ContentStore.write_html_content("content", "id")
+    path.must_equal "temp_content/id.html"
+  end
 end

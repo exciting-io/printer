@@ -60,8 +60,18 @@ describe WeePrinterBackendServer do
     end
 
     describe "with content" do
+      before do
+        IdGenerator.stubs(:random_id).returns("abc123")
+      end
+
+      it "stores the content in a publicly-accessible file" do
+        ContentStore.expects(:write_html_content).with("<p>Some content</p>", "abc123")
+        post "/preview", {content: "<p>Some content</p>"}
+      end
+
       it "enqueues a job to generate a page from the content" do
-        Resque.expects(:enqueue).with(Jobs::PrepareContent, "1", "<p>Some content</p>")
+        ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
+        Resque.expects(:enqueue).with(Jobs::PreparePage, "1", "http://example.org/path/to/abc123.html")
         post "/print/1", {content: "<p>Some content</p>"}
       end
 
@@ -115,8 +125,18 @@ describe WeePrinterBackendServer do
     end
 
     describe "with content" do
+      before do
+        IdGenerator.stubs(:random_id).returns("abc123")
+      end
+
+      it "stores the content in a publicly-accessible file" do
+        ContentStore.expects(:write_html_content).with("<p>Some content</p>", "abc123")
+        post "/preview", {content: "<p>Some content</p>"}
+      end
+
       it "enqueues a job to generate a preview from the content" do
-        Resque.expects(:enqueue).with(Jobs::PreviewContent, "abc123", "<p>Some content</p>")
+        ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
+        Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "http://example.org/path/to/abc123.html")
         post "/preview", {content: "<p>Some content</p>"}
       end
 

@@ -78,7 +78,9 @@ class WeePrinterBackendServer < Sinatra::Base
   end
 
   def queue_print_from_content(printer_id, content)
-    Resque.enqueue(Jobs::PrepareContent, printer_id, content)
+    path = ContentStore.write_html_content(content)
+    url = request.scheme + "://" + request.host_with_port + path
+    Resque.enqueue(Jobs::PreparePage, printer_id, url)
     if request.accept?('application/json')
       respond_with_json(response: "ok")
     else
@@ -88,10 +90,12 @@ class WeePrinterBackendServer < Sinatra::Base
 
   def queue_preview_from_content(content)
     preview_id = IdGenerator.random_id
-    Resque.enqueue(Jobs::PreviewContent, preview_id, content)
+    path = ContentStore.write_html_content(content, preview_id)
+    url = request.scheme + "://" + request.host_with_port + path
+    Resque.enqueue(Jobs::Preview, preview_id, url)
     path = "/preview/pending/#{preview_id}"
+    url = request.scheme + "://" + request.host_with_port + path
     if request.accept?('application/json')
-      url = request.scheme + "://" + request.host_with_port + path
       respond_with_json(location: url)
     else
      redirect path
