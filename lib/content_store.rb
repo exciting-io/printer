@@ -8,8 +8,11 @@ module ContentStore
     def write_html_content(content, unique_id=IdGenerator.random_id)
       FileUtils.mkdir_p(File.join(ContentStore.content_directory, "temp_content"))
       public_path = File.join("/temp_content", "#{unique_id}.html")
+      unless content.match(/<html>/)
+        content = %{<!doctype html><html class="no-js" lang="en">#{content}</html>}
+      end
       File.open(File.join(content_directory, public_path), "w") do |f|
-        f.write(%{<!doctype html><html class="no-js" lang="en">#{content}</html>})
+        f.write(content)
       end
       public_path
     end

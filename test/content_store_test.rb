@@ -9,6 +9,13 @@ describe ContentStore do
     File.read(file_path).must_equal expected_html
   end
 
+  it "doesn't wrap the content in HTML tags if it already contains them" do
+    ContentStore.write_html_content("<html>content</html>", "id")
+    expected_html = %{<html>content</html>}
+    file_path = File.join(ContentStore.content_directory, "/temp_content/id.html")
+    File.read(file_path).must_equal expected_html
+  end
+
   it "stores the file using the id given" do
     ContentStore.write_html_content("content", "other-id")
     File.exists?(File.join(ContentStore.content_directory, "/temp_content/other-id.html")).must_equal true
