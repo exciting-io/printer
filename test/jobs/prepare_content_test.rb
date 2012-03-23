@@ -14,7 +14,7 @@ describe Jobs::PrepareContent do
 
     it "enqueues another job to render the content" do
       IdGenerator.stubs(:random_id).returns("other-id")
-      Resque.expects(:enqueue).with(Jobs::PreparePage, "printer-id", "http://localhost:5678/temp_content/other-id.html")
+      Resque.expects(:enqueue).with(Jobs::PreparePage, "printer-id", "http://localhost:#{ENV["PORT"]}/temp_content/other-id.html")
       Jobs::PrepareContent.perform("printer-id", "content")
     end
   end

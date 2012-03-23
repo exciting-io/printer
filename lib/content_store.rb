@@ -11,7 +11,7 @@ module ContentStore
       File.open(File.join(content_directory, public_path), "w") do |f|
         f.write(%{<!doctype html><html class="no-js" lang="en">#{content}</html>})
       end
-      "http://localhost:5678/#{public_path}"
+      "http://localhost:#{ENV["PORT"]}/#{public_path}"
     end
   end
 

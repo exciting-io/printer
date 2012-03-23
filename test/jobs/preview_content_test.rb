@@ -13,7 +13,7 @@ describe Jobs::PreviewContent do
     end
 
     it "enqueues another job to render the preview content" do
-      Resque.expects(:enqueue).with(Jobs::Preview, "preview-id", "http://localhost:5678/temp_content/preview-id.html")
+      Resque.expects(:enqueue).with(Jobs::Preview, "preview-id", "http://localhost:#{ENV["PORT"]}/temp_content/preview-id.html")
       Jobs::PreviewContent.perform("preview-id", "content")
     end
   end
