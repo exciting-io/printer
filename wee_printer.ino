@@ -6,6 +6,26 @@
 #include <Thermal.h>
 #include <Bounce.h>
 
+// ------- Settings ---------------------------------------------------
+
+byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; //physical mac address
+// const char* host = "192.168.1.22"; // uberatom
+// const char* host = "192.168.1.67"; // lazyatom
+// const char* host = "178.79.132.137"; // interblah
+const char* host = "wee-printer.gofreerange.com";
+const unsigned int port = 80;
+const char *path = "/printer/1";
+unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
+
+const byte printer_RX_Pin = 2; // this is the green wire
+const byte printer_TX_Pin = 3; // this is the yellow wire
+const byte errorLED = 5;       // the red LED
+const byte downloadLED = 6;    // the amber LED
+const byte readyLED = 7;       // the green LED
+const byte buttonPin = 8;      // the print button
+
+// --------------------------------------------------------------------
+
 // #define DEBUG
 #ifdef DEBUG
 #define debug(a) Serial.print(millis()); Serial.print(": "); Serial.println(a);
@@ -14,10 +34,6 @@
 #define debug(a)
 #define debug2(a, b)
 #endif
-
-const byte errorLED = 5;
-const byte downloadLED = 6;
-const byte readyLED = 7;
 
 void initDiagnosticLEDs() {
   pinMode(errorLED, OUTPUT);
@@ -32,8 +48,6 @@ void initDiagnosticLEDs() {
   digitalWrite(readyLED, LOW);
 }
 
-const byte printer_RX_Pin = 2;  // this is the green wire
-const byte printer_TX_Pin = 3;  // this is the yellow wire
 Thermal printer(printer_RX_Pin, printer_TX_Pin);
 const byte postPrintFeed = 3;
 
@@ -47,7 +61,6 @@ void initSD() {
   SD.begin(SD_Pin);
 }
 
-byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; //physical mac address
 EthernetClient client;
 void initNetwork() {
   // start the Ethernet connection:
@@ -71,13 +84,6 @@ void setup(){
   initDiagnosticLEDs();
 #endif
 }
-
-//const char* host = "192.168.1.22"; // uberatom
-// const char* host = "192.168.1.67"; // lazyatom
-// const char* host = "178.79.132.137"; // interblah
-const char* host = "wee-printer.gofreerange.com";
-const unsigned int port = 80;
-const char *path = "/printer/1";
 
 boolean downloadWaiting = false;
 char* cacheFilename = "TMP";
@@ -163,9 +169,7 @@ void printFromDownload() {
   cache.close();
 }
 
-const byte buttonPin = 8;
 Bounce bouncer = Bounce(buttonPin, 5); // 5 millisecond debounce
-unsigned long pollingDelay = 10000; // 1 minute
 
 void loop() {
   if (downloadWaiting) {
