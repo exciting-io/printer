@@ -15,9 +15,9 @@
 #define debug2(a, b)
 #endif
 
-const int errorLED = 5;
-const int downloadLED = 6;
-const int readyLED = 7;
+const byte errorLED = 5;
+const byte downloadLED = 6;
+const byte readyLED = 7;
 
 void initDiagnosticLEDs() {
   pinMode(errorLED, OUTPUT);
@@ -32,16 +32,16 @@ void initDiagnosticLEDs() {
   digitalWrite(readyLED, LOW);
 }
 
-const int printer_RX_Pin = 2;  // this is the green wire
-const int printer_TX_Pin = 3;  // this is the yellow wire
+const byte printer_RX_Pin = 2;  // this is the green wire
+const byte printer_TX_Pin = 3;  // this is the yellow wire
 Thermal printer(printer_RX_Pin, printer_TX_Pin);
-const int postPrintFeed = 3;
+const byte postPrintFeed = 3;
 
 void initPrinter() {
   printer.begin(150);
 }
 
-const int SD_Pin = 4;
+const byte SD_Pin = 4;
 void initSD() {
   pinMode(SD_Pin, OUTPUT);
   SD.begin(SD_Pin);
@@ -76,15 +76,15 @@ void setup(){
 // const char* host = "192.168.1.67"; // lazyatom
 // const char* host = "178.79.132.137"; // interblah
 const char* host = "wee-printer.gofreerange.com";
-const uint16_t port = 80;
+const unsigned int port = 80;
 const char *path = "/printer/1";
 
 boolean downloadWaiting = false;
 char* cacheFilename = "TMP";
 
 void checkForDownload() {
-  uint32_t length = 0;
-  uint32_t content_length = 0;
+  unsigned long length = 0;
+  unsigned long content_length = 0;
 
   if (SD.exists(cacheFilename)) SD.remove(cacheFilename);
   File cache = SD.open(cacheFilename, FILE_WRITE);
@@ -146,7 +146,7 @@ void checkForDownload() {
     }
   } else {
     debug("Couldn't connect");
-    for(int i=0; i < 10; i++) {
+    for(byte i=0; i < 10; i++) {
       digitalWrite(errorLED, HIGH);
       delay(100);
       digitalWrite(errorLED, LOW);
@@ -162,7 +162,7 @@ void printFromDownload() {
   cache.close();
 }
 
-const int buttonPin = 8;
+const byte buttonPin = 8;
 Bounce bouncer = Bounce(buttonPin, 5); // 5 millisecond debounce
 unsigned long pollingDelay = 10000; // 1 minute
 
