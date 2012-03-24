@@ -15,7 +15,7 @@ byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; //physical mac address
 const char* host = "wee-printer.gofreerange.com";
 const unsigned int port = 80;
 const char *path = "/printer/1";
-unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
+const unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
 
 const byte printer_RX_Pin = 2; // this is the green wire
 const byte printer_TX_Pin = 3; // this is the yellow wire
