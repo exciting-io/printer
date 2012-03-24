@@ -6,7 +6,7 @@
 #include <Thermal.h>
 #include <Bounce.h>
 
-//#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
 #define debug(a) Serial.print(millis()); Serial.print(": "); Serial.println(a);
 #define debug2(a, b) Serial.print(millis()); Serial.print(": "); Serial.print(a); Serial.println(b);
@@ -96,7 +96,9 @@ void checkForDownload() {
     client.print("Host: "); client.print(host); client.print(":"); client.println(port);
     client.println();
     boolean parsingHeader = true;
+#ifdef DEBUG
     unsigned long start = millis();
+#endif
     while(client.connected()) {
       debug("Still connected");
       while(client.available()) {
@@ -125,10 +127,12 @@ void checkForDownload() {
     boolean success = (content_length == length) && (content_length == cache.size());
     cache.close();
 
+#ifdef DEBUG
     unsigned long duration = millis() - start;
     debug2("Total bytes: ", length);
     debug2("Duration: ", duration);
     debug2("Speed: ", length/(duration/1000.0)); // NB - floating point math increases sketch size by ~2k
+#endif
 
     if (success) {
       if (content_length > 0) {
