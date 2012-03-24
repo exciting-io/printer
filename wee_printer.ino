@@ -6,7 +6,7 @@
 #include <Thermal.h>
 #include <Bounce.h>
 
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
 #define debug(a) Serial.print(millis()); Serial.print(": "); Serial.println(a);
 #define debug2(a, b) Serial.print(millis()); Serial.print(": "); Serial.print(a); Serial.println(b);
@@ -67,7 +67,9 @@ void setup(){
   initSD();
   initNetwork();
   initPrinter();
+#ifdef DEBUG
   initDiagnosticLEDs();
+#endif
 }
 
 //const char* host = "192.168.1.22"; // uberatom
