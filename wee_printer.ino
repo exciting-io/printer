@@ -79,8 +79,6 @@ const char* host = "wee-printer.gofreerange.com";
 const uint16_t port = 80;
 const char *path = "/printer/1";
 
-uint16_t failures = 0;
-uint16_t requests = 0;
 boolean downloadWaiting = false;
 char* cacheFilename = "TMP";
 
@@ -138,8 +136,7 @@ void checkForDownload() {
         digitalWrite(readyLED, HIGH);
       }
     } else {
-      failures++;
-      debug2("Oh no, a failure: ", failures);
+      debug("Oh no, a failure.");
       digitalWrite(errorLED, HIGH);
       digitalWrite(downloadLED, HIGH);
     }
