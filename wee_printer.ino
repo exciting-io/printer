@@ -146,7 +146,8 @@ void checkForDownload() {
     }
   } else {
     debug("Couldn't connect");
-    for(byte i=0; i < 10; i++) {
+    byte i = 5;
+    while(i--) {
       digitalWrite(errorLED, HIGH);
       delay(100);
       digitalWrite(errorLED, LOW);
