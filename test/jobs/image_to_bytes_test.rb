@@ -19,6 +19,11 @@ describe Jobs::ImageToBytes do
       data = Jobs::ImageToBytes.encoded_image(fixture_path("8x8-top.png"))
       data[4..-1].unpack("C*").must_equal [0,0,0,0,0,0,0,6]
     end
+
+    it "doesn't print transparent pixels" do
+      data = Jobs::ImageToBytes.encoded_image(fixture_path("8x8-transparent.png"))
+      data[4..-1].unpack("C*").must_equal [0,0,0,0,0,0,0,129]
+    end
   end
 
   describe "performing" do
