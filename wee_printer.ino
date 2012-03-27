@@ -17,12 +17,12 @@ const unsigned int port = 80;
 const char *path = "/printer/1";
 const unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
 
-const byte printer_RX_Pin = 2; // this is the green wire
-const byte printer_TX_Pin = 3; // this is the yellow wire
-const byte errorLED = 5;       // the red LED
+const byte printer_TX_Pin = 9; // this is the yellow wire
+const byte printer_RX_Pin = 8; // this is the green wire
+const byte errorLED = 7;       // the red LED
 const byte downloadLED = 6;    // the amber LED
-const byte readyLED = 7;       // the green LED
-const byte buttonPin = 8;      // the print button
+const byte readyLED = 5;       // the green LED
+const byte buttonPin = 3;      // the print button
 
 // --------------------------------------------------------------------
 
