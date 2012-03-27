@@ -8,13 +8,14 @@
 
 // ------- Settings ---------------------------------------------------
 
-byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; //physical mac address
+const char *printerId = "abcdef123456"; // the unique ID for this printer.
+byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; // physical mac address
+
 // const char* host = "192.168.1.22"; // uberatom
 // const char* host = "192.168.1.67"; // lazyatom
 // const char* host = "178.79.132.137"; // interblah
 const char* host = "wee-printer.gofreerange.com";
 const unsigned int port = 80;
-const char *path = "/printer/1";
 const unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
 
 const byte printer_TX_Pin = 9; // this is the yellow wire
@@ -98,7 +99,7 @@ void checkForDownload() {
   debug2("Attempting to connect to ", host);
   if (client.connect(host, port)) {
     digitalWrite(downloadLED, HIGH);
-    client.print("GET "); client.print(path); client.println(" HTTP/1.0");
+    client.print("GET "); client.print("/printer/"); client.print(printerId); client.println(" HTTP/1.0");
     client.print("Host: "); client.print(host); client.print(":"); client.println(port);
     client.println();
     boolean parsingHeader = true;
