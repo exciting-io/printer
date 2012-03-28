@@ -6,22 +6,24 @@
     </header>
     <div class="explanation api">
       <h1>API</h1>
-      <p>There are two basic things I can do for you: printing, and previewing.</p>
+      <p>There are two basic things I can do for you: printing, and previewing. Let's start with the previewing.</p>
       <h2>Preview</h2>
-      <p>To preview, you make a similar request:</p>
+      <p>To preview, you make a simple request:</p>
       <p><pre><code>GET http://wee-printer.gofreerange.com/preview?url=&lt;url&gt;</code></pre></p>
-      <p>If you omit the <tt>url</tt> parameter, I'll use the <tt>HTTP_REFERER</tt> from the request. This can sometimes be convenient &mdash; for example, you could add a link to <tt>http://wee-printer.gofreerange.com/preview</tt> from the page that you wish to print. This is a trick used in the <a href="http://wee-dtp.gofreerange.com">Wee-DTP</a> application.</p>
-      <p>You'll be redirected to a page where, in a few seconds, you'll see an image that approximates what will be sent to the printer (although there is still some further processing to make it monochrome, for example).</p>
+      <p>You can also <tt>POST</tt> with the <tt>url</tt> parameter.</p>
+      <p>If you omit the <tt>url</tt> parameter, I'll use the <tt>HTTP_REFERER</tt> from the request. This can sometimes be convenient &mdash; for example, you could add a link to <tt>http://wee-printer.gofreerange.com/preview</tt> from the page that you wish to print, as long as that page is publicly accessible.</p>
+      <p>You can also <tt>POST</tt> with HTML in the <tt>content</tt> parameter; this is particularly useful if you can't make your content available at a publicly-accessible URL.
+      <p>However you send the request, you'll be redirected to a page where, in a few seconds, you'll see an image that approximates what will be sent to the printer (although there is still some further processing to make it monochrome, for example).</p>
+      <p>If you make the request programmatically, you'll probably be returned a JSON object which contains the URL for the preview.</p>
       <h2>Printing</h2>
-      <p>To print a page, you need to make a request along these lines:</p>
+      <p>To print a page, you need to make a very similar request:</p>
       <p><pre><code>GET http://wee-printer.gofreerange.com/print/&lt;printer_id&gt;?url=&lt;url&gt;</code></pre></p>
       <p>I'll process the page at that URL, and in a short while (normally less than a minute) it will be available for the printer with that <tt>ID</tt> to download.</p>
-      <p>The <tt>HTTP_REFERER</tt> trick above also works here.</p>
-      <h2>Printer API</h2>
-      <p>Prints make period requests to me at the URL <tt>http://wee-printer.gofreerange.com/printer/&lt;printer_id&gt;</tt>, and if any data is available for them to print, they'll download and print it.</p>
+      <p>The <tt>HTTP_REFERER</tt> trick above also works here, as does sending a <tt>POST</tt> request, and using the <tt>content</tt> parameter.</p>
       <h2>Render process</h2>
-      <p>When rendering, I will remove any <tt>preview</tt> class that exists on the body of the page, and then attempt to convert it to a 384-pixel-wide image.</p>
-      <p>This <tt>preview</tt> class can be very useful if you want to be able to design the page in "simulated printout" form, like the <a href="http://wee-dtp.gofreerange.com">Wee-DTP</a> application does, but the page that is finally rendered should not haave any background at all for the best results. You can achieve this by hiding any extraneous items and changing margins and backgrounds in the absence of the <tt>preview</tt> class.</p>
+      <p>When rendering (either for preview, or for printing), I will remove any <tt>preview</tt> class that exists on the <tt>body</tt> of the page, and then attempt to convert it to a 384-pixel-wide image.</p>
+      <p>This <tt>preview</tt> class can be very useful if you want to be able to design the page in "simulated printout" form, but the page that is finally rendered should not have any background at all for the best results. You can achieve this by hiding any extraneous items and changing margins and backgrounds in the absence of the <tt>preview</tt> class.</p>
+      <p>I have a <a href="/stylesheets/print.css">stylesheet</a> that will do this very simply for you.</p>
       <p>The rendering is performed by <a href="http://phantomjs.org">phantomjs</a> running on Linux, and so there are a fairly limited number of system fonts available to you. It's worth bearing this in mind.</p>
       <p>Of course, if you know how to install more fonts, you can always run your own copy of me yourself; <a href="https://github.com/freerange/wee-printer">my source code is available</a> for anyone to use and improve on.</p>
       <p>Alternatively, if you want to improve phantomjs to use web-fonts, then I'd greatly appreciate it!</p>
