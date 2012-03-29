@@ -1,4 +1,5 @@
 require "jobs/image_to_bytes"
+require "id_generator"
 
 class Jobs::PreparePage
   def self.queue
