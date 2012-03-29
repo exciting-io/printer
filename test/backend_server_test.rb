@@ -87,6 +87,13 @@ describe WeePrinterBackendServer do
         post "/print/1", {content: "<p>Some content</p>"}
         last_response.headers["Access-Control-Allow-Origin"].must_equal "*"
       end
+
+      it "allows the JSON to be returned regardless of the Referer" do
+        header 'Accept', 'application/json'
+        header 'Referer', 'http://some-external-app.example.com'
+        post "/print/1", {content: "<p>Some content</p>"}
+        last_response.ok?.must_equal true
+      end
     end
   end
 
@@ -157,6 +164,13 @@ describe WeePrinterBackendServer do
         header 'Accept', 'application/json'
         post "/preview", {content: "<p>Some content</p>"}
         last_response.headers["Access-Control-Allow-Origin"].must_equal "*"
+      end
+
+      it "allows the JSON to be returned regardless of the Referer" do
+        header 'Accept', 'application/json'
+        header 'Referer', 'http://some-external-app.example.com'
+        post "/print/1", {content: "<p>Some content</p>"}
+        last_response.ok?.must_equal true
       end
     end
   end
