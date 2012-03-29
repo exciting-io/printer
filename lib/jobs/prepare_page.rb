@@ -5,8 +5,13 @@ class Jobs::PreparePage
     :wee_printer_prepare_page
   end
 
+  def self.output_id
+    IdGenerator.random_id
+  end
+
   def self.perform(printer_id, url)
-    output_filename = "tmp/test.png"
+    FileUtils.mkdir_p("tmp/renders")
+    output_filename = "tmp/renders/#{output_id}.png"
     save_url_to_path(url, output_filename)
     Resque.enqueue(Jobs::ImageToBytes, output_filename, printer_id)
   end
