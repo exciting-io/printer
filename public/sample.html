@@ -1,16 +1,36 @@
 <!doctype html>
 <html class="no-js" lang="en">
   <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="http://wee-printer.gofreerange.com/stylesheets/print.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <script src="/javascripts/wee_printer.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(function() {
+        $("#previewPage").click(WeePrinter.previewPage);
+        $("#printPage").click(function() {
+          var printerID = prompt("Enter the ID of the printer to target");
+          WeePrinter.printPage(printerID, function(result) {
+            if (result.response == "ok") {
+              alert("Page successfully sent for printing");
+            } else {
+              alert("There was a problem sending this content");
+              console.log("Error response", result);
+            }
+          });
+        });
+      })
+    </script>
   </head>
   <body class="preview">
     <div class="controls">
       <!-- NB this link will only work with Javascript if the page has a public URL -->
-      <a href="http://wee-printer.gofreerange.com/preview">Preview</a>
+      <a id="previewPage" href="#">Preview</a>
+      <a id="printPage", href="#">Print</a>
     </div>
     <div class="paper">
       <div class="content">
-        <!-- your content here. -->
+        <h1>Your content</h1>
+        <p>(Put it here, yo.)</p>
       </div>
     </div>
   </body>
