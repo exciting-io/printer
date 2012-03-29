@@ -1,8 +1,7 @@
 Printer
 ===========
 
-A grandson to [Timmy Printface][timmy], and a cousin to [Little Printer][berg].
-
+Tools for exploring the possibilities of "internet of things" printing.
 
 Getting Started
 ---------------
