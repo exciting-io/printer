@@ -1,4 +1,4 @@
-var WeePrinter = {
+var Printer = {
   serializePage: function(callback) {
     var isRelative = function(path) {
       return !(path.match(/^http:\/\//) || path.match(/^file:\/\//));
@@ -23,11 +23,11 @@ var WeePrinter = {
     callback(pageContent);
   },
 
-  backendURL: "http://wee-printer.gofreerange.com",
+  backendURL: "http://printer.gofreerange.com",
 
   previewPage: function() {
-    WeePrinter.serializePage(function(page_content) {
-      $.post(WeePrinter.backendURL + "/preview",
+    Printer.serializePage(function(page_content) {
+      $.post(Printer.backendURL + "/preview",
              {content: page_content},
              function(data) { console.log("HERE"); window.location = data.location },
              'json');
@@ -36,8 +36,8 @@ var WeePrinter = {
   },
 
   printPage: function(printerId, callback) {
-    WeePrinter.serializePage(function(page_content) {
-      $.post(WeePrinter.backendURL + "/print/" + printerId,
+    Printer.serializePage(function(page_content) {
+      $.post(Printer.backendURL + "/print/" + printerId,
              {content: page_content},
              callback,
              'json');

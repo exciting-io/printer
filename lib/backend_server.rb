@@ -10,14 +10,14 @@ require "preview"
 require "id_generator"
 require "content_store"
 
-class WeePrinterBackendServer < Sinatra::Base
+class PrinterBackendServer < Sinatra::Base
   set :views, settings.root + '/../views'
   set :public_folder, settings.root + '/../public'
 
   set :protection, :except => :json_csrf
 
   get("/")                      { erb :index }
-  get("/getting-a-wee-printer") { erb :getting_a_wee_printer }
+  get("/getting-a-printer")     { erb :getting_a_printer }
   get("/api")                   { erb :api }
   get("/publishing")            { erb :publishing }
 

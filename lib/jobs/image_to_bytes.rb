@@ -3,7 +3,7 @@ require "printer"
 class Jobs::ImageToBytes
   class << self
     def queue
-      :wee_printer_images
+      :printer_images
     end
 
     def perform(image_path, printer_id)

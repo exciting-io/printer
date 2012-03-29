@@ -1,4 +1,4 @@
-Wee Printer
+Printer
 ===========
 
 A grandson to [Timmy Printface][timmy], and a cousin to [Little Printer][berg].
@@ -76,5 +76,5 @@ Rasterisation of HTML designs isn't great at the moment; to some extent this is 
 [sparkfun]: http://www.sparkfun.com/products/10438
 [arduino-library]: https://github.com/lazyatom/Thermal-Printer-Library
 [arduino-bounce]: http://www.arduino.cc/playground/Code/Bounce
-[the sketch]: https://github.com/freerange/wee_printer/blob/master/wee_printer.ino
+[the sketch]: https://github.com/freerange/printer/blob/master/printer.ino
 [PhantomJS]: http://phantomjs.org

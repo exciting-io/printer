@@ -4,11 +4,11 @@ require "backend_server"
 
 ENV['RACK_ENV'] = 'test'
 
-describe WeePrinterBackendServer do
+describe PrinterBackendServer do
   include Rack::Test::Methods
 
   def app
-    WeePrinterBackendServer
+    PrinterBackendServer
   end
 
   before do

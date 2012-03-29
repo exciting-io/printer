@@ -3,7 +3,7 @@ require "preview"
 
 class Jobs::Preview
   def self.queue
-    :wee_printer_preview
+    :printer_preview
   end
 
   def self.perform(preview_id, url)

@@ -9,4 +9,4 @@ require 'sass/plugin/rack'
 Sass::Plugin.options[:template_location] = 'public/stylesheets'
 use Sass::Plugin::Rack
 
-run Rack::Cascade.new [WeePrinterBackendServer, Rack::URLMap.new("/resque" => Resque::Server)]
+run Rack::Cascade.new [PrinterBackendServer, Rack::URLMap.new("/resque" => Resque::Server)]

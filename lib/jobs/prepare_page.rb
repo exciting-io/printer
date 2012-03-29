@@ -3,7 +3,7 @@ require "id_generator"
 
 class Jobs::PreparePage
   def self.queue
-    :wee_printer_prepare_page
+    :printer_prepare_page
   end
 
   def self.output_id
