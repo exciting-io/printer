@@ -55,10 +55,6 @@ Build PhantomJS by following http://code.google.com/p/phantomjs/wiki/BuildInstru
 TODO & CAVEATS
 ----
 
-Lots. This isn't generally usable yet.
-
-The Arduino sketch seems quite prone to crashing at the moment, particularly with larger printouts.
-
 The printer itself seems to prefer some types of paper over others, particularly where dark printing or horizontal lines are present. I've experienced paper from Staples jamming. If I find any good sources of paper, I'll update this.
 
 Rasterisation of HTML designs isn't great at the moment; to some extent this is limited by [PhantomJS], which:
