@@ -63,6 +63,12 @@ Rasterisation of HTML designs isn't great at the moment; to some extent this is 
 * doesn't seem to support non-antialiased rendering
 * doesn't match the exact font-sizes as seen in the browser, and this doesn't seem to be consistent either.
 
+
+LICENSE
+-------
+
+The Printer project is open source, and made available via an 'MIT License', which basically means you can do whatever you like with it as long as you retain the copyright notice and license description - see LICENSE.txt for more information.
+
 [timmy]: http://gofreerange.com/timmy
 [berg]: http://bergcloud.com/littleprinter
 [Arduino]: http://ardunio.cc
