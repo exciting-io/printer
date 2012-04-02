@@ -70,7 +70,6 @@ LICENSE
 The Printer project is open source, and made available via an 'MIT License', which basically means you can do whatever you like with it as long as you retain the copyright notice and license description - see LICENSE.txt for more information.
 
 [timmy]: http://gofreerange.com/timmy
-[berg]: http://bergcloud.com/littleprinter
 [Arduino]: http://ardunio.cc
 [ethernet-shield]: http://arduino.cc/en/Main/ArduinoEthernetShield
 [adafruit]: https://www.adafruit.com/products/600
