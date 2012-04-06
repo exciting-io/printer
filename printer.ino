@@ -11,8 +11,9 @@
 const char *printerId = "abcdef123456"; // the unique ID for this printer.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; // physical mac address
 
-const char* host = "printer.gofreerange.com";
+const char *printerType = "A2-bitmap"; // controls the format of the data sent from the server
 
+const char* host = "printer.gofreerange.com"; // the host of the backend server
 const unsigned int port = 80;
 const unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
 
@@ -99,6 +100,7 @@ void checkForDownload() {
     digitalWrite(downloadLED, HIGH);
     client.print("GET "); client.print("/printer/"); client.print(printerId); client.println(" HTTP/1.0");
     client.print("Host: "); client.print(host); client.print(":"); client.println(port);
+    client.print("Accept: application/vnd.freerange.printer."); client.println(printerType);
     client.println();
     boolean parsingHeader = true;
 #ifdef DEBUG
