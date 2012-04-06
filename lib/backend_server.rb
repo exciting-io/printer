@@ -5,7 +5,8 @@ require 'sinatra/base'
 require "resque"
 
 require "jobs"
-require "printer"
+require "print_queue"
+require "remote_printer"
 require "preview"
 require "id_generator"
 require "content_store"
@@ -60,10 +61,16 @@ class PrinterBackendServer < Sinatra::Base
   end
 
   get "/printer/:printer_id" do
-    Printer.new(params['printer_id']).archive_and_return_print_data
+    RemotePrinter.update(remote_printer_params(params))
+    PrintQueue.new(params['printer_id']).archive_and_return_print_data
   end
 
   private
+
+  def remote_printer_params(params)
+    type = env["Accept"] ? env["Accept"].split("application/vnd.freerange.printer.").last : nil
+    {id: params['printer_id'], type: type}
+  end
 
   def url_to_process
     params['url'] || env['HTTP_REFERER']

@@ -30,7 +30,7 @@ describe Jobs::ImageToBytes do
     it "puts the data into the printer" do
       data = "blah"
       Jobs::ImageToBytes.stubs(:encoded_image).with("file_path").returns(data)
-      Printer.stubs(:new).with("id").returns(printer = stub("printer"))
+      PrintQueue.stubs(:new).with("id").returns(printer = stub("printer"))
       printer.expects(:add_print_data).with(data)
       Jobs::ImageToBytes.perform("file_path", "id")
     end

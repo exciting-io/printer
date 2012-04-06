@@ -1,4 +1,4 @@
-require "printer"
+require "print_queue"
 
 class Jobs::ImageToBytes
   class << self
@@ -7,7 +7,7 @@ class Jobs::ImageToBytes
     end
 
     def perform(image_path, printer_id)
-      Printer.new(printer_id).add_print_data(encoded_image(image_path))
+      PrintQueue.new(printer_id).add_print_data(encoded_image(image_path))
     end
 
     def encoded_image(image_path)
