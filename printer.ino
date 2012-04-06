@@ -11,10 +11,8 @@
 const char *printerId = "abcdef123456"; // the unique ID for this printer.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; // physical mac address
 
-// const char* host = "192.168.1.22"; // uberatom
-// const char* host = "192.168.1.67"; // lazyatom
-// const char* host = "178.79.132.137"; // interblah
 const char* host = "printer.gofreerange.com";
+
 const unsigned int port = 80;
 const unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
 
