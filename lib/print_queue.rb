@@ -1,4 +1,6 @@
-require "base64"
+require "multi_json"
+require "print_processor"
+require "remote_printer"
 
 class PrintQueue
   def initialize(id)
@@ -7,7 +9,7 @@ class PrintQueue
   end
 
   def add_print_data(data)
-    encoded_data = Base64.encode64(data)
+    encoded_data = MultiJson.encode(data)
     redis.lpush(print_queue_redis_key, encoded_data)
   end
 
@@ -19,11 +21,15 @@ class PrintQueue
     encoded_data = redis.lpop(print_queue_redis_key)
     if encoded_data
       redis.lpush(print_archive_redis_key, encoded_data)
-      Base64.decode64(encoded_data)
+      PrintProcessor.for(remote_printer.type).process(MultiJson.decode(encoded_data))
     end
   end
 
   private
+
+  def remote_printer
+    RemotePrinter.find(@id)
+  end
 
   def redis
     Resque.redis

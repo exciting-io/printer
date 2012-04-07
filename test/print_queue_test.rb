@@ -1,15 +1,17 @@
 require "test_helper"
 require "print_queue"
+require "print_processor"
+require "remote_printer"
 
 describe PrintQueue do
   subject do
-    PrintQueue.new(123)
+    PrintQueue.new("123")
   end
 
   describe "#add_print_data" do
-    it "puts the base64-encoded data into a redis list for that printer" do
-      Resque.redis.expects(:lpush).with("printer/123/queue", Base64.encode64("data"))
-      subject.add_print_data("data")
+    it "puts the json-encoded data into a redis list for that printer" do
+      Resque.redis.expects(:lpush).with("printer/123/queue", MultiJson.encode(data: "data"))
+      subject.add_print_data(data: "data")
     end
   end
 
@@ -42,16 +44,21 @@ describe PrintQueue do
     end
 
     describe "when data exists" do
+      let(:data) { {"width" => 8, "height" => 8, "pixels" => []}}
+
       before do
-        Resque.redis.stubs(:lpop).with("printer/123/queue").returns(Base64.encode64("data"))
+        RemotePrinter.stubs(:find).with("123").returns(stub("printer", type: "A2-bitmap"))
+        Resque.redis.stubs(:lpop).with("printer/123/queue").returns(MultiJson.encode(data))
       end
 
-      it "returns the base64-decoded data if some exists" do
-        subject.archive_and_return_print_data.must_equal "data"
+      it "sends the json-decoded data through a print processor" do
+        PrintProcessor.expects(:for).with("A2-bitmap").returns(processor = stub("processor"))
+        processor.expects(:process).with(data).returns("data-for-printer")
+        subject.archive_and_return_print_data.must_equal "data-for-printer"
       end
 
-      it "adds the data to the archive list if some is popped" do
-        Resque.redis.expects(:lpush).with("printer/123/archive", Base64.encode64("data"))
+      it "adds the data to the archive list" do
+        Resque.redis.expects(:lpush).with("printer/123/archive", MultiJson.encode(data))
         subject.archive_and_return_print_data
       end
     end

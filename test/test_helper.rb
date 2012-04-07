@@ -12,3 +12,5 @@ end
 
 require "content_store"
 ContentStore.content_directory = File.expand_path("../../tmp", __FILE__)
+
+Mocha::Configuration.prevent :stubbing_non_existent_method

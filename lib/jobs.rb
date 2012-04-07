@@ -1,5 +1,5 @@
 module Jobs
-  autoload :ImageToBytes, "jobs/image_to_bytes"
+  autoload :ImageToBits, "jobs/image_to_bits"
   autoload :PrepareContent, "jobs/prepare_content"
   autoload :PreparePage, "jobs/prepare_page"
   autoload :Preview, "jobs/preview"

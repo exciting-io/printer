@@ -13,10 +13,10 @@ describe Jobs::PreparePage do
       Jobs::PreparePage.perform("printer_id", "url")
     end
 
-    it "enqueues a job to turn the image into bytes" do
+    it "enqueues a job to turn the image into bits" do
       Jobs::PreparePage.stubs(:save_url_to_path)
       Jobs::PreparePage.stubs(:output_id).returns("unique_id")
-      Resque.expects(:enqueue).with(Jobs::ImageToBytes, "tmp/renders/unique_id.png", anything)
+      Resque.expects(:enqueue).with(Jobs::ImageToBits, "tmp/renders/unique_id.png", anything)
       Jobs::PreparePage.perform("printer_id", "url")
     end
   end

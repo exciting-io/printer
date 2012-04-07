@@ -1,4 +1,3 @@
-require "jobs/image_to_bytes"
 require "preview"
 
 class Jobs::Preview

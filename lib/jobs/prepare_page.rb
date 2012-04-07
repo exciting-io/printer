@@ -1,4 +1,4 @@
-require "jobs/image_to_bytes"
+require "jobs/image_to_bits"
 require "id_generator"
 
 class Jobs::PreparePage
@@ -14,7 +14,7 @@ class Jobs::PreparePage
     FileUtils.mkdir_p("tmp/renders")
     output_filename = "tmp/renders/#{output_id}.png"
     save_url_to_path(url, output_filename)
-    Resque.enqueue(Jobs::ImageToBytes, output_filename, printer_id)
+    Resque.enqueue(Jobs::ImageToBits, output_filename, printer_id)
   end
 
   def self.save_url_to_path(url, path)
