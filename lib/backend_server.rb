@@ -67,7 +67,7 @@ class PrinterBackendServer < Sinatra::Base
 
   get "/printers" do
     @printer = RemotePrinter.find_by_ip(env["REMOTE_ADDR"])
-    @url = url("/printer/#{@printer.id}") if @printer
+    @print_url = url("/print/#{@printer.id}") if @printer
     erb :printers
   end
 
