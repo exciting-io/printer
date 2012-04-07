@@ -1,13 +1,13 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include <SD.h>
+#include <EEPROM.h>
 
 #include <SoftwareSerial.h>
 #include <Bounce.h>
 
 // ------- Settings ---------------------------------------------------
 
-const char *printerId = "abcdef123456"; // the unique ID for this printer.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; // physical mac address
 
 const char *printerType = "A2-raw"; // controls the format of the data sent from the server
@@ -34,6 +34,27 @@ const byte buttonPin = 3;      // the print button
 #define debug(a)
 #define debug2(a, b)
 #endif
+
+const byte idAddress = 0;
+char printerId[17]; // the unique ID for this printer.
+
+void initSettings() {
+  if (EEPROM.read(idAddress) == 255) {
+    randomSeed(analogRead(0) * analogRead(5));
+    for(int i = 0; i < 16; i += 2) {
+      printerId[i] = random(48, 57);
+      printerId[i+1] = random(97, 122);
+      EEPROM.write(idAddress + i, printerId[i]);
+      EEPROM.write(idAddress + i+1, printerId[i+1]);
+    }
+  } else {
+    for(int i = 0; i < 16; i++) {
+      printerId[i] = (char)EEPROM.read(idAddress + i);
+    }
+  }
+  printerId[16] = '\0';
+  debug2("Printer ID: ", printerId);
+}
 
 void initDiagnosticLEDs() {
   pinMode(errorLED, OUTPUT);
@@ -80,6 +101,7 @@ void setup(){
   Serial.begin(9600);
 #endif
 
+  initSettings();
   initSD();
   initNetwork();
   initPrinter();
