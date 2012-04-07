@@ -20,8 +20,9 @@ task :default => [:test, "test:javascript"]
 
 namespace :data do
   task :reset do
-    require "resque"
-    Resque.redis.keys.each { |k| Resque.redis.del k }
+    $LOAD_PATH.unshift "lib"
+    require "data_store"
+    DataStore.redis.keys.each { |k| DataStore.redis.del k }
   end
 end
 

@@ -1,6 +1,7 @@
 require "multi_json"
 require "print_processor"
 require "remote_printer"
+require "data_store"
 
 class PrintQueue
   def initialize(id)
@@ -32,14 +33,14 @@ class PrintQueue
   end
 
   def redis
-    Resque.redis
+    DataStore.redis
   end
 
   def print_queue_redis_key
-    "printer/#{@id}/queue"
+    "printers:#{@id}:queue"
   end
 
   def print_archive_redis_key
-    "printer/#{@id}/archive"
+    "printers:#{@id}:archive"
   end
 end

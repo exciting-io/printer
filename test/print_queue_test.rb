@@ -10,19 +10,19 @@ describe PrintQueue do
 
   describe "#add_print_data" do
     it "puts the json-encoded data into a redis list for that printer" do
-      Resque.redis.expects(:lpush).with("printer/123/queue", MultiJson.encode(data: "data"))
+      DataStore.redis.expects(:lpush).with("printers:123:queue", MultiJson.encode(data: "data"))
       subject.add_print_data(data: "data")
     end
   end
 
   describe "#data_waiting?" do
     it "returns true if data exists" do
-      Resque.redis.stubs(:llen).with("printer/123/queue").returns(1)
+      DataStore.redis.stubs(:llen).with("printers:123:queue").returns(1)
       subject.data_waiting?.must_equal true
     end
 
     it "returns false if data doesn't exist" do
-      Resque.redis.stubs(:llen).with("printer/123/queue").returns(0)
+      DataStore.redis.stubs(:llen).with("printers:123:queue").returns(0)
       subject.data_waiting?.must_equal false
     end
   end
@@ -30,7 +30,7 @@ describe PrintQueue do
   describe "#archive_and_return_print_data" do
     describe "when no data exists" do
       before do
-        Resque.redis.stubs(:lpop).with("printer/123/queue").returns(nil)
+        DataStore.redis.stubs(:lpop).with("printers:123:queue").returns(nil)
       end
 
       it "returns nil if no print data exists" do
@@ -38,7 +38,7 @@ describe PrintQueue do
       end
 
       it "doesn't put anything into the archive if no print data exists" do
-        Resque.redis.expects(:lpush).with("printer/123/archive", anything).never
+        DataStore.redis.expects(:lpush).with("printers:123:archive", anything).never
         subject.archive_and_return_print_data
       end
     end
@@ -48,7 +48,7 @@ describe PrintQueue do
 
       before do
         RemotePrinter.stubs(:find).with("123").returns(stub("printer", type: "A2-bitmap"))
-        Resque.redis.stubs(:lpop).with("printer/123/queue").returns(MultiJson.encode(data))
+        DataStore.redis.stubs(:lpop).with("printers:123:queue").returns(MultiJson.encode(data))
       end
 
       it "sends the json-decoded data through a print processor" do
@@ -58,7 +58,7 @@ describe PrintQueue do
       end
 
       it "adds the data to the archive list" do
-        Resque.redis.expects(:lpush).with("printer/123/archive", MultiJson.encode(data))
+        DataStore.redis.expects(:lpush).with("printers:123:archive", MultiJson.encode(data))
         subject.archive_and_return_print_data
       end
     end

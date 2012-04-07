@@ -1,12 +1,14 @@
+require "data_store"
+
 class RemotePrinter
   def self.key(id)
-    "printer/#{id}"
+    "printers:#{id}"
   end
 
   def self.update(params)
-    Resque.redis.hset(key(params[:id]), "type", params[:type])
-    Resque.redis.set("printer/ip/#{params[:ip]}", params[:id])
-    Resque.redis.expire("printer/ip/#{params[:ip]}", 60)
+    DataStore.redis.hset(key(params[:id]), "type", params[:type])
+    DataStore.redis.set("ip:#{params[:ip]}", params[:id])
+    DataStore.redis.expire("ip:#{params[:ip]}", 60)
   end
 
   def self.find(id)
@@ -14,7 +16,7 @@ class RemotePrinter
   end
 
   def self.find_by_ip(ip)
-    id = Resque.redis.get("printer/ip/#{ip}")
+    id = DataStore.redis.get("ip:#{ip}")
     find(id) if id
   end
 
@@ -25,6 +27,6 @@ class RemotePrinter
   end
 
   def type
-    Resque.redis.hget(self.class.key(@id), "type")
+    DataStore.redis.hget(self.class.key(@id), "type")
   end
 end
