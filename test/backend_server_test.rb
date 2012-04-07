@@ -34,7 +34,7 @@ describe PrinterBackendServer do
 
     it "updates our record of the remote printer" do
       RemotePrinter.expects(:update).with(has_entries(id: "1", type: "A2-bitmap"))
-      get "/printer/1", {}, {"Accept" => "application/vnd.freerange.printer.A2-bitmap"}
+      get "/printer/1", {}, {"HTTP_ACCEPT" => "application/vnd.freerange.printer.A2-bitmap"}
     end
   end
 

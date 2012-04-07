@@ -68,7 +68,7 @@ class PrinterBackendServer < Sinatra::Base
   private
 
   def remote_printer_params(params)
-    type = env["Accept"] ? env["Accept"].split("application/vnd.freerange.printer.").last : nil
+    type = env["HTTP_ACCEPT"] ? env["HTTP_ACCEPT"].split("application/vnd.freerange.printer.").last : nil
     {id: params['printer_id'], type: type}
   end
 
