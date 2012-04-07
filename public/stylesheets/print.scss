@@ -26,6 +26,10 @@ body.preview {
     margin: 30px auto;
     box-shadow: 10px 10px 5px #888;
   }
+
+  .content {
+    -webkit-font-smoothing: antialiased;
+  }
 }
 
 body {
