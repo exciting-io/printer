@@ -11,6 +11,8 @@ gem "yajl-ruby"
 gem "multi_json"
 gem "unicorn"
 
+gem "printer", git: "https://github.com/lazyatom/printer-gem.git"
+
 gem "recap", git: "https://github.com/freerange/recap.git"
 
 group :test do

@@ -6,6 +6,13 @@ GIT
       capistrano (~> 2.9.0)
       thor
 
+GIT
+  remote: https://github.com/lazyatom/printer-gem.git
+  revision: 3cef6a0fee47b7e2f825ef4a225a3f4b025f8138
+  specs:
+    printer (0.1.0)
+      serialport (~> 1.0.4)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -48,6 +55,7 @@ GEM
       vegas (~> 0.1.2)
     rmagick (2.12.2)
     sass (3.1.15)
+    serialport (1.0.4)
     sinatra (1.3.2)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
@@ -70,6 +78,7 @@ DEPENDENCIES
   foreman
   mocha
   multi_json
+  printer!
   rack-test
   rake
   recap!

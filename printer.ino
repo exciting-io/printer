@@ -3,7 +3,6 @@
 #include <SD.h>
 
 #include <SoftwareSerial.h>
-#include <Thermal.h>
 #include <Bounce.h>
 
 // ------- Settings ---------------------------------------------------
@@ -11,10 +10,11 @@
 const char *printerId = "abcdef123456"; // the unique ID for this printer.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; // physical mac address
 
-const char *printerType = "A2-bitmap"; // controls the format of the data sent from the server
+const char *printerType = "A2-raw"; // controls the format of the data sent from the server
 
 const char* host = "printer.gofreerange.com"; // the host of the backend server
 const unsigned int port = 80;
+
 const unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
 
 const byte printer_TX_Pin = 9; // this is the yellow wire
@@ -48,11 +48,12 @@ void initDiagnosticLEDs() {
   digitalWrite(readyLED, LOW);
 }
 
-Thermal printer(printer_RX_Pin, printer_TX_Pin);
-const byte postPrintFeed = 3;
+SoftwareSerial *printer;
+#define PRINTER_WRITE(b) printer->write(b)
 
 void initPrinter() {
-  printer.begin(150);
+  printer = new SoftwareSerial(printer_RX_Pin, printer_TX_Pin);
+  printer->begin(19200);
 }
 
 const byte SD_Pin = 4;
@@ -75,7 +76,9 @@ void initNetwork() {
 }
 
 void setup(){
+#ifdef DEBUG
   Serial.begin(9600);
+#endif
 
   initSD();
   initNetwork();
@@ -87,11 +90,11 @@ void setup(){
 
 boolean downloadWaiting = false;
 char* cacheFilename = "TMP";
+unsigned long content_length = 0;
 
 void checkForDownload() {
   unsigned long length = 0;
-  unsigned long content_length = 0;
-
+  content_length = 0;
   if (SD.exists(cacheFilename)) SD.remove(cacheFilename);
   File cache = SD.open(cacheFilename, FILE_WRITE);
 
@@ -165,8 +168,11 @@ void checkForDownload() {
 
 void printFromDownload() {
   File cache = SD.open(cacheFilename);
-  printer.printBitmap(&cache);
-  printer.feed(postPrintFeed);
+  byte b;
+  while (content_length--) {
+    b = (byte)cache.read();
+    PRINTER_WRITE(b);
+  }
   cache.close();
 }
 
