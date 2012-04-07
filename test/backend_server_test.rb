@@ -33,8 +33,9 @@ describe PrinterBackendServer do
     end
 
     it "updates our record of the remote printer" do
-      RemotePrinter.expects(:update).with(has_entries(id: "1", type: "A2-bitmap"))
-      get "/printer/1", {}, {"HTTP_ACCEPT" => "application/vnd.freerange.printer.A2-bitmap"}
+      RemotePrinter.expects(:update).with(has_entries(id: "1", type: "A2-bitmap", ip: "192.168.1.1"))
+      get "/printer/1", {}, {"HTTP_ACCEPT" => "application/vnd.freerange.printer.A2-bitmap",
+                             "REMOTE_ADDR" => "192.168.1.1"}
     end
   end
 
@@ -177,6 +178,15 @@ describe PrinterBackendServer do
         post "/print/1", {content: "<p>Some content</p>"}
         last_response.ok?.must_equal true
       end
+    end
+  end
+
+  describe "viewing printers" do
+    it "should show printers polling from the same remote IP" do
+      printer = stub("remote_printer", id: "printer-id", type: "printer-type")
+      RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns(printer)
+      get "/printers", {}, {"REMOTE_ADDR" => "192.168.1.1"}
+      last_response.ok?.must_equal true
     end
   end
 end

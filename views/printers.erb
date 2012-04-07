@@ -1,0 +1,7 @@
+<% if @printer %>
+  <h1>Your printer</h1>
+  <p>Type: <%= @printer.type %></p>
+  <p>URL: <%= @url %></p>
+<% else %>
+  <p>Sorry, I haven't seen any printers connect from near you</p>
+<% end %>
