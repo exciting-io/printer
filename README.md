@@ -7,6 +7,7 @@ Using a commonly-available small thermal printer, and some basic [Arduino][] har
 
 Find out more about [getting a printer on the wiki][getting-a-printer] on the [wiki][].
 
+You can also see some sample applications: [Printer Mail](https://github.com/freerange/printer-mail) and [Printer Paint](https://github.com/freerange/printer-paint).
 
 Server Setup
 -------------
