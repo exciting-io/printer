@@ -6,7 +6,6 @@ body {
 }
 
 .system_info {
-  z-index: -1;
   position: fixed;
   top: 30px;
   right: 30px;
@@ -20,6 +19,9 @@ body {
   img {
     width: 100%;
     margin-bottom: 10px;
+  }
+  a {
+    position: relative;
   }
 }
 
@@ -54,6 +56,7 @@ header {
 
 .content {
 /*  -webkit-font-smoothing: none;*/
+
   width: 384px;
   overflow: hidden;
   margin: 0 auto;
