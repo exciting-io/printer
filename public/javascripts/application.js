@@ -1,5 +1,5 @@
 $(function() {
-  if ($(".paper.scrollprinter")) {
+  if ($(".paper.scrollprinter")[0]) {
     $(".paper.scrollprinter").after('<div class="printerfront"><div class="drawing"><canvas></canvas></div></div>');
 
     var back = $(".printerfront canvas")[0]
