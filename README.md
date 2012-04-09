@@ -45,3 +45,4 @@ The Printer project is open source, and made available via an 'MIT License', whi
 [Arduino]: http://ardunio.cc
 [PhantomJS]: http://phantomjs.org
 [wiki]: https://github.com/freerange/printer/wiki
+[getting-a-printer]: https://github.com/freerange/printer/wiki/Making-your-own-printer
