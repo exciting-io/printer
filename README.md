@@ -7,7 +7,11 @@ Using a commonly-available small thermal printer, and some basic [Arduino][] har
 
 Find out more about [getting a printer on the wiki][getting-a-printer] on the [wiki][].
 
-You can also see some sample applications: [Printer Mail](https://github.com/freerange/printer-mail) and [Printer Paint](https://github.com/freerange/printer-paint).
+You can also see some sample applications: [Printer Mail](https://github.com/freerange/printer-mail) [Printer Paint](https://github.com/freerange/printer-paint) and [Printer Weather](https://github.com/freerange/printer-weather).
+
+If you're interested in the background, take a look at the [project page](http://gofreerange.com/printer), or the [introductory blog post](http://gofreerange.com/hello-printer).
+
+The rest of this README is about running the backend server software, and requires a lot of work.
 
 Server Setup
 -------------
