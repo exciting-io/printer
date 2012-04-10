@@ -11,7 +11,7 @@ Using a [commonly-available small thermal printer][getting-a-printer], and some 
 
 Find out more about [getting a printer on the wiki][getting-a-printer], or the [server API][api] on the [wiki][].
 
-You can also see some sample applications: [Printer Mail](https://github.com/freerange/printer-mail) [Printer Paint](https://github.com/freerange/printer-paint) and [Printer Weather](https://github.com/freerange/printer-weather).
+You can also see some sample applications: [Printer Mail](https://github.com/freerange/printer-mail), [Printer Paint](https://github.com/freerange/printer-paint) and [Printer Weather](https://github.com/freerange/printer-weather).
 
 If you're interested in the background, take a look at the [project page](http://gofreerange.com/printer), or the [introductory blog post](http://gofreerange.com/hello-printer).
 
