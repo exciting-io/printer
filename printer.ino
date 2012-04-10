@@ -40,10 +40,11 @@ char printerId[17]; // the unique ID for this printer.
 
 void initSettings() {
   if (EEPROM.read(idAddress) == 255) {
+    debug("Generating new printer ID.");
     randomSeed(analogRead(0) * analogRead(5));
     for(int i = 0; i < 16; i += 2) {
-      printerId[i] = random(48, 57);
-      printerId[i+1] = random(97, 122);
+      printerId[i] = random(48, 57); // 0-9
+      printerId[i+1] = random(97, 122); // a-z
       EEPROM.write(idAddress + i, printerId[i]);
       EEPROM.write(idAddress + i+1, printerId[i+1]);
     }
