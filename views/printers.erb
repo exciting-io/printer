@@ -4,7 +4,8 @@
       <h1>Your printer</h1>
       <p>Type: <%= @printer.type %></p>
       <p>ID: <%= @printer.id %></p>
-      <p>Print URL: <a href="<%= @print_url %>">here</a></p>
+      <p>Print URL: <pre><%= @print_url %></pre></p>
+      <p><a href="<%= @print_url %>?url=<%= URI.escape(url("/test-page/#{@printer.id}")) %>">Print test page</a></p>
     <% else %>
       <p>Sorry, I haven't seen any printers connect from near you</p>
     <% end %>
