@@ -84,7 +84,7 @@ Rasterisation of HTML designs isn't great at the moment; to some extent this is 
 LICENSE
 -------
 
-The Printer project is open source, and made available via an 'MIT License', which basically means you can do whatever you like with it as long as you retain the copyright notice and license description - see LICENSE.txt for more information.
+The Printer project is open source, and made available via an 'MIT License', which basically means you can do whatever you like with it as long as you retain the copyright notice and license description - see [LICENSE.txt] for more information.
 
 
 [timmy]: http://gofreerange.com/timmy
@@ -93,3 +93,4 @@ The Printer project is open source, and made available via an 'MIT License', whi
 [wiki]: https://github.com/freerange/printer/wiki
 [getting-a-printer]: https://github.com/freerange/printer/wiki/Making-your-own-printer
 [api]: https://github.com/freerange/printer/wiki/API
+[LICENSE.txt]: https://raw.github.com/freerange/printer/master/LICENSE.txt
