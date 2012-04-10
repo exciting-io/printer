@@ -69,6 +69,13 @@ Finally, deploy the application:
 The server should start running on port 5678; I suggest you set up Apache or Nginx to reverse proxy a domain to that port.
 
 
+## Compatible printers
+
+The server contains code to handle the A2 thermal printer [described here][getting-a-printer], but the architecture should make it easy to implement support for other printers.
+
+Each printer [reports its "type"][reporting-type] when it is checking with the server for content, and this corresponds to a [class mapping][type-mapping] in the `PrintProcessor` module. To support a new printer, it should be as simple as adding a new type to this mapping, along with the supporting class to emit the right printer byte sequences.
+
+
 TODO & CAVEATS
 ----
 
@@ -94,3 +101,5 @@ The Printer project is open source, and made available via an 'MIT License', whi
 [getting-a-printer]: https://github.com/freerange/printer/wiki/Making-your-own-printer
 [api]: https://github.com/freerange/printer/wiki/API
 [LICENSE.txt]: https://raw.github.com/freerange/printer/master/LICENSE.txt
+[reporting-type]: https://github.com/freerange/printer/blob/master/printer.ino#L13
+[type-mapping]: https://github.com/freerange/printer/blob/master/lib/print_processor.rb
