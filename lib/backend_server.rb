@@ -71,7 +71,7 @@ class PrinterBackendServer < Sinatra::Base
   get "/test-page/:printer_id" do
     @printer = RemotePrinter.find(params[:printer_id])
     @print_url = url("/print/#{@printer.id}")
-    erb :test_page
+    erb :test_page, layout: :print_layout
   end
 
   private
