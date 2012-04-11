@@ -118,8 +118,15 @@ unsigned long content_length = 0;
 void checkForDownload() {
   unsigned long length = 0;
   content_length = 0;
-  if (SD.exists(cacheFilename)) SD.remove(cacheFilename);
+  if (SD.exists(cacheFilename)) {
+    if (SD.remove(cacheFilename)) {
+      debug("Cleared cache");
+    } else {
+      debug("Failed to clear cache for some reason");
+    }
+  }
   File cache = SD.open(cacheFilename, FILE_WRITE);
+  debug2("starting request, cache size is ", cache.size());
 
   debug2("Attempting to connect to ", host);
   if (client.connect(host, port)) {
@@ -158,6 +165,17 @@ void checkForDownload() {
     client.stop();
     cache.seek(0);
     boolean success = (content_length == length) && (content_length == cache.size());
+#ifdef DEBUG
+    if (!success) {
+      debug2("Failure, content length was ", content_length);
+      if (content_length != length) {
+        debug2("but length was ", length);
+      }
+      if (content_length != cache.size()) {
+        debug2("but cache size was ", cache.size());
+      }
+    }
+#endif
     cache.close();
 
 #ifdef DEBUG
