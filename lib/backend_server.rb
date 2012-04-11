@@ -78,8 +78,7 @@ class PrinterBackendServer < Sinatra::Base
 
   def remote_printer_params(params)
     type = env["HTTP_ACCEPT"] ? env["HTTP_ACCEPT"].split("application/vnd.freerange.printer.").last : nil
-    ip = env['REMOTE_ADDR']
-    {id: params['printer_id'], type: type, ip: ip}
+    {id: params['printer_id'], type: type, ip: request.ip}
   end
 
   def url_to_process
