@@ -179,6 +179,7 @@ void checkForDownload() {
     }
   } else {
     debug("Couldn't connect");
+    cache.close();
     byte i = 5;
     while(i--) {
       digitalWrite(errorLED, HIGH);
