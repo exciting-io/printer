@@ -82,7 +82,7 @@ class PrinterBackendServer < Sinatra::Base
   end
 
   def url_to_process
-    params['url'] || env['HTTP_REFERER']
+    params['url']
   end
 
   def queue_print(printer_id, url)
