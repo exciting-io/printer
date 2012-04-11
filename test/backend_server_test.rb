@@ -40,6 +40,19 @@ describe PrinterBackendServer do
   end
 
   describe "print submissions" do
+    describe "when requested via GET without content or a URL" do
+      it "directs people to the API" do
+        get "/print/1"
+        last_response.ok?.must_equal true
+        last_response.body.must_match /API documentation/
+      end
+
+      it "doesn't enqueue any jobs" do
+        Resque.expects(:enqueue).never
+        get "/print/1"
+      end
+    end
+
     it "enqueues the url with the printer id" do
       Resque.expects(:enqueue).with(Jobs::PreparePage, "1", "submitted-url")
       get "/print/1?url=submitted-url"
@@ -96,6 +109,19 @@ describe PrinterBackendServer do
   describe "previewing" do
     before do
       IdGenerator.stubs(:random_id).returns("abc123")
+    end
+
+    describe "when requested via GET without content or a URL" do
+      it "directs people to the API" do
+        get "/preview"
+        last_response.ok?.must_equal true
+        last_response.body.must_match /API documentation/
+      end
+
+      it "doesn't enqueue any jobs" do
+        Resque.expects(:enqueue).never
+        get "/preview"
+      end
     end
 
     it "enqueues a job to generate a preview" do

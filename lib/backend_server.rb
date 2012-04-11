@@ -34,7 +34,11 @@ class PrinterBackendServer < Sinatra::Base
   end
 
   get "/preview" do
-    queue_preview(url_to_process)
+    if url_to_process
+      queue_preview(url_to_process)
+    else
+      erb :api_help
+    end
   end
 
   post "/preview" do
@@ -46,7 +50,11 @@ class PrinterBackendServer < Sinatra::Base
   end
 
   get "/print/:printer_id" do
-    queue_print(params['printer_id'], url_to_process)
+    if url_to_process
+      queue_print(params['printer_id'], url_to_process)
+    else
+      erb :api_help
+    end
   end
 
   post "/print/:printer_id" do
