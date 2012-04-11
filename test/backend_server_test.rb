@@ -196,7 +196,7 @@ describe PrinterBackendServer do
     it "should show printers polling from the same remote IP" do
       printer = stub("remote_printer", id: "printer-id", type: "printer-type")
       RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns(printer)
-      get "/printers", {}, {"REMOTE_ADDR" => "192.168.1.1"}
+      get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
       last_response.ok?.must_equal true
     end
   end

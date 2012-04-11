@@ -70,10 +70,10 @@ class PrinterBackendServer < Sinatra::Base
     PrintQueue.new(params['printer_id']).archive_and_return_print_data
   end
 
-  get "/printers" do
+  get "/my-printer" do
     @printer = RemotePrinter.find_by_ip(request.ip)
     @print_url = url("/print/#{@printer.id}") if @printer
-    erb :printers
+    erb :my_printer
   end
 
   get "/test-page/:printer_id" do
