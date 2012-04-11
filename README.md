@@ -1,11 +1,11 @@
 Printer
 ===========
 
-In a nutshell, Printer is a software system that makes it:
+In a nutshell, Printer is a software system that makes it easy for **YOU** to:
 
-* **easy to build your own small internet-connected printers**,
-* **very easy to produce customised content for them**, and
-* **very *very* easy to share that content** with other people who also have small internet-connected printers.
+* [build your own small internet-connected printers][getting-a-printer],
+* produce [customised content][] for them, and
+* [share that content][] with other people who also have small internet-connected printers.
 
 Using a [commonly-available small thermal printer][getting-a-printer], and some basic [Arduino][] hardware, we can send small, designed bits of content from the internet to be printed anywhere in the world.
 
@@ -13,7 +13,7 @@ Find out more about [getting a printer on the wiki][getting-a-printer], or the [
 
 You can also see some sample applications: [Printer Mail](https://github.com/freerange/printer-mail), [Printer Paint](https://github.com/freerange/printer-paint) and [Printer Weather](https://github.com/freerange/printer-weather).
 
-If you're interested in the background, take a look at the [project page](http://gofreerange.com/printer), or the [introductory blog post](http://gofreerange.com/hello-printer).
+If you're interested in the background, take a look at the [project page](http://gofreerange.com/printer) or the [introductory blog post](http://gofreerange.com/hello-printer).
 
 *This is the backend server software*. The rest of this README is about setting up and running a server.
 
@@ -99,6 +99,8 @@ The Printer project is open source, and made available via an 'MIT License', whi
 [PhantomJS]: http://phantomjs.org
 [wiki]: https://github.com/freerange/printer/wiki
 [getting-a-printer]: https://github.com/freerange/printer/wiki/Making-your-own-printer
+[customised content]: https://github.com/freerange/printer/wiki/Building-content-services
+[share that content]: https://github.com/freerange/printer/wiki/Architecture
 [api]: https://github.com/freerange/printer/wiki/API
 [LICENSE.txt]: https://raw.github.com/freerange/printer/master/LICENSE.txt
 [reporting-type]: https://github.com/freerange/printer/blob/master/printer.ino#L13
