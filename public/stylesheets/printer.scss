@@ -25,13 +25,22 @@ body {
   }
 }
 
-.info {
+.info, .controls {
   position: fixed;
   top: 30px;
   left: 20px;
   width: 200px;
-  background-color: #eee;
   padding: 1em;
+}
+
+.info {
+  background-color: #eee;
+}
+
+.controls {
+  a {
+    color: #999;
+  }
 }
 
 header {
