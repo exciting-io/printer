@@ -1,10 +1,10 @@
 <div class="paper">
-  <div class="content">
+  <div class="content my_printer">
     <% if @printer %>
       <h1>Your printer</h1>
       <p>Type: <%= @printer.type %></p>
       <p>ID: <%= @printer.id %></p>
-      <p>Print URL: <pre><%= @print_url %></pre></p>
+      <p>Print URL: <pre class="print_url"><%= @print_url %></pre></p>
       <p><a href="<%= @print_url %>?url=<%= URI.escape(url("/test-page/#{@printer.id}")) %>">Print test page</a></p>
     <% else %>
       <p>Sorry, I haven't seen any printers connect from near you</p>
