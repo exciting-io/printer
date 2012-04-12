@@ -88,7 +88,7 @@ class PrinterBackendServer < Sinatra::Base
         %{
 <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '#{ENV["ANALYTICS"]}']);
+  _gaq.push(['_setAccount', '#{ENV["ANALYTICS"].strip}']);
   _gaq.push(['_trackPageview']);
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
