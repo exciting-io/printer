@@ -17,7 +17,7 @@ class PrinterBackendServer < Sinatra::Base
 
   set :protection, :except => :json_csrf
 
-  get("/")                      { erb :index }
+  get("/") { erb :index }
 
   get "/preview/show/:preview_id" do
     @preview = Preview.find(params['preview_id'])
