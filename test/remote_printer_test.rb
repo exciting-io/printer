@@ -16,7 +16,7 @@ describe RemotePrinter do
   end
 
   describe "retrieving" do
-    it "returns the data for the stored printer" do
+    it "returns the type for the stored printer" do
       DataStore.redis.stubs(:hget).with("printers:1", "type").returns("printer-type")
       RemotePrinter.find("1").type.must_equal "printer-type"
     end
