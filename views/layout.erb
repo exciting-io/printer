@@ -6,7 +6,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="/javascripts/application.js"></script>
     <title>Printer Backend Server</title>
-    <%= analytics %>
+    <%= erb :analytics if ENV["ANALYTICS"] %>
   </head>
   <body>
     <div class="container">
