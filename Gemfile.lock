@@ -7,10 +7,10 @@ GIT
       thor
 
 GIT
-  remote: https://github.com/lazyatom/printer-gem.git
-  revision: 3cef6a0fee47b7e2f825ef4a225a3f4b025f8138
+  remote: https://github.com/lazyatom/a2_printer.git
+  revision: 62aa53ca1bbbf05bf4d8f3319dd5a5c12efe3627
   specs:
-    printer (0.1.0)
+    a2_printer (0.1.0)
       serialport (~> 1.0.4)
 
 GEM
@@ -75,10 +75,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  a2_printer!
   foreman
   mocha
   multi_json
-  printer!
   rack-test
   rake
   recap!

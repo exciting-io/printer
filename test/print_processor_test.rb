@@ -45,7 +45,7 @@ describe PrintProcessor do
 
     let(:initialisation_commands) do
       initialisation_commands = StringIO.new
-      Printer.new(initialisation_commands).begin
+      A2Printer.new(initialisation_commands).begin
       initialisation_commands.rewind
       initialisation_commands.read
     end

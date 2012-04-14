@@ -1,4 +1,4 @@
-require "printer"
+require "a2_printer"
 
 class PrintProcessor::A2Raw
   def process(data)
@@ -6,7 +6,7 @@ class PrintProcessor::A2Raw
     rotate_180(data["pixels"]).each_slice(8) { |s| bytes << ("0" + s.join).to_i(2) }
     
     printer_commands = StringIO.new
-    printer = Printer.new(printer_commands)
+    printer = A2Printer.new(printer_commands)
     printer.begin
     printer.print_bitmap(data["width"], data["height"], bytes)
     printer.feed(3)
