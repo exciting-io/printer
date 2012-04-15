@@ -19,6 +19,7 @@ end
 task :default => [:test, "test:javascript"]
 
 namespace :data do
+  desc "Clear out the data"
   task :reset do
     $LOAD_PATH.unshift "lib"
     require "data_store"
