@@ -12,7 +12,7 @@ class Jobs::Preview
   end
 
   def self.save_url_to_path(url, path)
-    cmd = "phantomjs rasterise.js #{url} #{path}"
+    cmd = "phantomjs rasterise.js #{url} 384 #{path}"
     `#{cmd}`
   end
 end
