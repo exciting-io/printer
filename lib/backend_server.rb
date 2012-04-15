@@ -35,7 +35,7 @@ class PrinterBackendServer < Sinatra::Base
 
   get "/preview" do
     if url_to_process
-      queue_preview(url_to_process)
+      queue_preview(url_to_process, width)
     else
       erb :api_help
     end
@@ -43,9 +43,9 @@ class PrinterBackendServer < Sinatra::Base
 
   post "/preview" do
     if params['content']
-      queue_preview_from_content(params['content'])
+      queue_preview_from_content(params['content'], width)
     else
-      queue_preview(url_to_process)
+      queue_preview(url_to_process, width)
     end
   end
 
@@ -93,14 +93,18 @@ class PrinterBackendServer < Sinatra::Base
     params['url']
   end
 
+  def width
+    params['width'] || '384'
+  end
+
   def queue_print(printer_id, url)
     Resque.enqueue(Jobs::PreparePage, printer_id, url)
     erb :queued
   end
 
-  def queue_preview(url)
+  def queue_preview(url, width)
     preview_id = IdGenerator.random_id
-    Resque.enqueue(Jobs::Preview, preview_id, url)
+    Resque.enqueue(Jobs::Preview, preview_id, url, width)
     redirect "/preview/pending/#{preview_id}"
   end
 
@@ -114,10 +118,10 @@ class PrinterBackendServer < Sinatra::Base
     end
   end
 
-  def queue_preview_from_content(content)
+  def queue_preview_from_content(content, width)
     preview_id = IdGenerator.random_id
     path = ContentStore.write_html_content(content, preview_id)
-    Resque.enqueue(Jobs::Preview, preview_id, absolute_url_for_path(path))
+    Resque.enqueue(Jobs::Preview, preview_id, absolute_url_for_path(path), width)
     preview_pending_path = absolute_url_for_path("/preview/pending/#{preview_id}")
     if request.accept?('application/json')
       respond_with_json(location: preview_pending_path)

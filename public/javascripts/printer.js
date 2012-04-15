@@ -26,9 +26,13 @@ var Printer = {
   backendURL: "http://printer.gofreerange.com",
 
   previewPage: function() {
-    Printer.serializePage(function(page_content) {
+    Printer.serializePage(function(page_content, width) {
+      if (width == undefined) {
+        width = $(".content").width();
+      }
+      console.log("posting width", width);
       $.post(Printer.backendURL + "/preview",
-             {content: page_content},
+             {content: page_content, width: width},
              function(data) { window.location = data.location },
              'json');
     })

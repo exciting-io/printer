@@ -125,7 +125,12 @@ describe PrinterBackendServer do
     end
 
     it "enqueues a job to generate a preview" do
-      Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "submitted-url")
+      Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "submitted-url", "123")
+      get "/preview?url=submitted-url&width=123"
+    end
+
+    it "enqueues using a default width of 384" do
+      Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "submitted-url", "384")
       get "/preview?url=submitted-url"
     end
 
@@ -160,7 +165,13 @@ describe PrinterBackendServer do
 
       it "enqueues a job to generate a preview from the content" do
         ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
-        Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "http://example.org/path/to/abc123.html")
+        Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "http://example.org/path/to/abc123.html", "123")
+        post "/preview", {content: "<p>Some content</p>", width: "123"}
+      end
+
+      it "uses a default width of 384" do
+        ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
+        Resque.expects(:enqueue).with(Jobs::Preview, anything, anything, "384")
         post "/preview", {content: "<p>Some content</p>"}
       end
 
