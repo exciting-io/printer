@@ -10,6 +10,10 @@ def fixture_path(filename)
   File.expand_path("../fixtures/#{filename}", __FILE__)
 end
 
+def url_regexp(path)
+  Regexp.new(Regexp.escape("http://#{last_request.host}#{path}"))
+end
+
 require "content_store"
 ContentStore.content_directory = File.expand_path("../../tmp", __FILE__)
 

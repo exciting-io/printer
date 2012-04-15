@@ -1,13 +1,17 @@
 <div class="paper">
   <div class="content my_printer">
-    <% if @printer %>
-      <h1>Your printer</h1>
-      <p>Type: <%= @printer.type %></p>
-      <p>ID: <%= @printer.id %></p>
-      <p>Print URL: <pre class="print_url"><%= @print_url %></pre></p>
-      <p><a href="<%= @print_url %>?url=<%= URI.escape(url("/#{@printer.id}/test-page")) %>">Print test page</a></p>
+    <% if @printers.any? %>
+      <h1>Your printers</h1>
+      <% @printers.each do |printer| %>
+        <section id="printer_<%= printer.id %>">
+          <p>ID: <%= printer.id %></p>
+          <p>Type: <%= printer.type %></p>
+          <p>Print URL: <pre class="print_url"><%= print_url(printer) %></pre></p>
+          <p><a href="<%= print_url(printer) %>?url=<%= URI.escape(url("/#{printer.id}/test-page")) %>">Print test page</a></p>
+        </section>
+      <% end %>
     <% else %>
-      <p>Sorry, I haven't seen any printers connect from near you</p>
+      <p class="no_printers">Sorry, I haven't seen any printers connect from near you.</p>
     <% end %>
   </div>
 </div>

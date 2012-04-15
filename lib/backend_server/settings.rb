@@ -3,8 +3,7 @@ require "remote_printer"
 
 class BackendServer::Settings < BackendServer::Base
   get "/" do
-    @printer = RemotePrinter.find_by_ip(request.ip)
-    @print_url = print_url(@printer) if @printer
+    @printers = RemotePrinter.find_by_ip(request.ip)
     erb :my_printer
   end
 

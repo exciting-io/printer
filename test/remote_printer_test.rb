@@ -10,8 +10,8 @@ describe RemotePrinter do
     end
 
     it "stores the remote IP for a short time" do
-      DataStore.redis.expects(:set).with("ip:192.168.1.1", "printer-id")
-      DataStore.redis.expects(:expire).with("ip:192.168.1.1", 60)
+      Time.stubs(:now).returns(stub('time', to_i: 1000))
+      DataStore.redis.expects(:zadd).with("ip:192.168.1.1", 1000, "printer-id")
       RemotePrinter.find("printer-id").update(ip: "192.168.1.1")
     end
   end
@@ -30,15 +30,23 @@ describe RemotePrinter do
   end
 
   describe "finding by ip" do
-    it "returns the printer instance which most recently checked in from that IP" do
-      DataStore.redis.expects(:get).with("ip:192.168.1.1").returns("printer-id")
-      RemotePrinter.expects(:find).with("printer-id")
+    it "clears out expired printer IDs for that IP" do
+      Time.stubs(:now).returns(stub('time', to_i: 2000))
+      DataStore.redis.expects(:zremrangebyscore).with("ip:192.168.1.1", 0, 2000-60)
       RemotePrinter.find_by_ip("192.168.1.1")
     end
 
-    it "returns nil if no matching IP was found" do
-      DataStore.redis.expects(:get).with("ip:192.168.1.1").returns(nil)
-      RemotePrinter.find_by_ip("192.168.1.1").must_equal nil
+    it "returns the printer instances which most recently checked in from that IP" do
+      Time.stubs(:now).returns(stub('time', to_i: 3000))
+      DataStore.redis.expects(:zrangebyscore).with("ip:192.168.1.1", 3000-60, 3000).returns(["printer-id", "printer-id-2"])
+      RemotePrinter.expects(:find).with("printer-id")
+      RemotePrinter.expects(:find).with("printer-id-2")
+      RemotePrinter.find_by_ip("192.168.1.1")
+    end
+
+    it "returns an empty array if no matching IP was found" do
+      DataStore.redis.expects(:zrangebyscore).with("ip:192.168.1.1", anything, anything).returns([])
+      RemotePrinter.find_by_ip("192.168.1.1").must_equal []
     end
   end
 

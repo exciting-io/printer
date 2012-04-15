@@ -238,16 +238,12 @@ describe BackendServer::App do
     describe "viewing printers" do
       before do
         printer = stub("remote_printer", id: "printer-id", type: "printer-type")
-        RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns(printer)
+        RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns([printer])
         get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
       end
 
       it "should show printers polling from the same remote IP" do
         last_response.body.must_match "ID: printer-id"
-      end
-
-      it "should link to a test page print url" do
-        last_response.body.must_match url_regexp("/my-printer/printer-id/test-page")
       end
     end
 
@@ -274,11 +270,5 @@ describe BackendServer::App do
         last_response.body.must_match url_regexp("/print/printer-id")
       end
     end
-  end
-
-  private
-
-  def url_regexp(path)
-    Regexp.new(Regexp.escape("http://#{last_request.host}#{path}"))
   end
 end
