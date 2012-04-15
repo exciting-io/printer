@@ -23,6 +23,10 @@ describe PrintProcessor do
       PrintProcessor.for("A2-bitmap").process({"width" => 8, "height" => 8, "pixels" => pixels})
     end
 
+    it "returns a width of 384" do
+      PrintProcessor.for("A2-bitmap").width.must_equal 384
+    end
+
     it "includes the size of the image" do
       subject[0,8].unpack("SS").must_equal [8,8]
     end
@@ -48,6 +52,10 @@ describe PrintProcessor do
       A2Printer.new(initialisation_commands).begin
       initialisation_commands.rewind
       initialisation_commands.read
+    end
+
+    it "returns a width of 384" do
+      PrintProcessor.for("A2-raw").width.must_equal 384
     end
 
     it "sends the initialisation commands to the printer" do

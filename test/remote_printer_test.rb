@@ -1,5 +1,6 @@
 require "test_helper"
 require "remote_printer"
+require "print_processor"
 
 describe RemotePrinter do
   describe "updating" do
@@ -19,6 +20,12 @@ describe RemotePrinter do
     it "returns the type for the stored printer" do
       DataStore.redis.stubs(:hget).with("printers:1", "type").returns("printer-type")
       RemotePrinter.find("1").type.must_equal "printer-type"
+    end
+
+    it "returns the width for the printer according to its type" do
+      DataStore.redis.stubs(:hget).with("printers:1", "type").returns("printer-type")
+      PrintProcessor.stubs(:for).with("printer-type").returns(stub('print_processor', width: 123))
+      RemotePrinter.find("1").width.must_equal 123
     end
   end
 

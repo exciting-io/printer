@@ -1,6 +1,10 @@
 require "a2_printer"
 
 class PrintProcessor::A2Raw
+  def width
+    384
+  end
+
   def process(data)
     bytes = []
     rotate_180(data["pixels"]).each_slice(8) { |s| bytes << ("0" + s.join).to_i(2) }

@@ -1,4 +1,5 @@
 require "data_store"
+require "print_processor"
 
 class RemotePrinter
   def self.key(id)
@@ -28,5 +29,9 @@ class RemotePrinter
 
   def type
     DataStore.redis.hget(self.class.key(@id), "type")
+  end
+
+  def width
+    PrintProcessor.for(type).width
   end
 end
