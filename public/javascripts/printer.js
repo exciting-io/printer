@@ -29,7 +29,7 @@ var Printer = {
     Printer.serializePage(function(page_content) {
       $.post(Printer.backendURL + "/preview",
              {content: page_content},
-             function(data) { console.log("HERE"); window.location = data.location },
+             function(data) { window.location = data.location },
              'json');
     })
     return false;
