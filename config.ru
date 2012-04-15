@@ -10,7 +10,7 @@ use Sass::Plugin::Rack
 
 if ENV["RESQUE_SERVER"]
   require 'resque/server'
-  run Rack::Cascade.new [PrinterBackendServer, Rack::URLMap.new("/resque" => Resque::Server)]
+  run Rack::Cascade.new [BackendServer::App, Rack::URLMap.new("/resque" => Resque::Server)]
 else
-  run PrinterBackendServer
+  run BackendServer::App
 end

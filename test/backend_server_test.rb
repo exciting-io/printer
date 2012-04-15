@@ -1,14 +1,16 @@
 require "test_helper"
 require "rack/test"
 require "backend_server"
+require "remote_printer"
+require "print_queue"
 
 ENV['RACK_ENV'] = 'test'
 
-describe PrinterBackendServer do
+describe BackendServer::App do
   include Rack::Test::Methods
 
   def app
-    PrinterBackendServer
+    BackendServer::App
   end
 
   before do
@@ -232,36 +234,51 @@ describe PrinterBackendServer do
     end
   end
 
-  describe "viewing printers" do
-    it "should show printers polling from the same remote IP" do
-      printer = stub("remote_printer", id: "printer-id", type: "printer-type")
-      RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns(printer)
-      get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
-      last_response.ok?.must_equal true
+  describe "settings" do
+    describe "viewing printers" do
+      before do
+        printer = stub("remote_printer", id: "printer-id", type: "printer-type")
+        RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns(printer)
+        get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
+      end
+
+      it "should show printers polling from the same remote IP" do
+        last_response.body.must_match "ID: printer-id"
+      end
+
+      it "should link to a test page print url" do
+        last_response.body.must_match url_regexp("/my-printer/printer-id/test-page")
+      end
+    end
+
+    describe "generating a test print" do
+      before do
+        printer = stub("remote_printer", id: "printer-id", type: "printer-type")
+        RemotePrinter.stubs(:find).with("printer-id").returns(printer)
+        get "/my-printer/printer-id/test-page"
+      end
+
+      it "should render a page" do
+        last_response.ok?.must_equal true
+      end
+
+      it "should show the printer ID" do
+        last_response.body.must_match /ID: printer\-id/
+      end
+
+      it "should show the printer type" do
+        last_response.body.must_match /Type: printer\-type/
+      end
+
+      it "should show the printer URL" do
+        last_response.body.must_match url_regexp("/print/printer-id")
+      end
     end
   end
 
-  describe "generating a test print" do
-    before do
-      printer = stub("remote_printer", id: "printer-id", type: "printer-type")
-      RemotePrinter.stubs(:find).with("printer-id").returns(printer)
-      get "/test-page/printer-id"
-    end
+  private
 
-    it "should render a page" do
-      last_response.ok?.must_equal true
-    end
-
-    it "should show the printer ID" do
-      last_response.body.must_match /ID: printer\-id/
-    end
-
-    it "should show the printer type" do
-      last_response.body.must_match /Type: printer\-type/
-    end
-
-    it "should show the printer URL" do
-      last_response.body.must_match Regexp.new(Regexp.escape("http://#{last_request.host}/print/printer-id"))
-    end
+  def url_regexp(path)
+    Regexp.new(Regexp.escape("http://#{last_request.host}#{path}"))
   end
 end
