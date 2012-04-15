@@ -9,7 +9,7 @@ describe Jobs::PreparePage do
 
     it "uses phantomjs to rasterise the url to a unique file" do
       Jobs::PreparePage.stubs(:output_id).returns("unique_id")
-      Jobs::PreparePage.expects(:"`").with("phantomjs rasterise.js url tmp/renders/unique_id.png")
+      Jobs::PreparePage.expects(:"`").with("phantomjs rasterise.js url 384 tmp/renders/unique_id.png")
       Jobs::PreparePage.perform("printer_id", "url")
     end
 

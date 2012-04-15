@@ -8,7 +8,7 @@ describe Jobs::Preview do
     end
 
     it "uses phantomjs to rasterise the url into a unique file" do
-      Jobs::Preview.expects(:"`").with("phantomjs rasterise.js url public/previews/id.png")
+      Jobs::Preview.expects(:"`").with("phantomjs rasterise.js url 384 public/previews/id.png")
       Jobs::Preview.perform("id", "url")
     end
 
