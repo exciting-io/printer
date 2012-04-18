@@ -3,18 +3,24 @@ require "data_store"
 class Preview
   def self.find(id)
     data = DataStore.redis.hget('previews', id)
-    new(data) if data
+    new(MultiJson.decode(data)) if data
   end
 
-  def self.store(id, url, path)
-    relative_url = path.gsub(/^public/, '')
-    data = [url, relative_url]
+  def self.store(id, url, data)
+    if data[:image_path]
+      relative_url = data[:image_path].gsub(/^public/, '')
+      data = {original_url: url, image_path: relative_url}
+    else
+      data = {original_url: url, error: data[:error]}
+    end
     DataStore.redis.hset('previews', id, MultiJson.encode(data))
   end
 
-  attr_reader :original_url, :image_path
+  attr_reader :original_url, :image_path, :error
 
-  def initialize(encoded_data)
-    @original_url, @image_path = MultiJson.decode(encoded_data)
+  def initialize(attributes)
+    @original_url = attributes["original_url"]
+    @image_path = attributes["image_path"]
+    @error = attributes["error"]
   end
 end

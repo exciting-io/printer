@@ -9,7 +9,7 @@ describe Preview do
     end
 
     it "returns the data if preview does exist" do
-      DataStore.redis.stubs(:hget).with("previews", "id").returns(MultiJson.encode(["url", "/previews/id.png"]))
+      DataStore.redis.stubs(:hget).with("previews", "id").returns(MultiJson.encode({original_url: "url", image_path: "/previews/id.png"}))
       data = Preview.find("id")
       data.original_url.must_equal "url"
       data.image_path.must_equal "/previews/id.png"
@@ -18,8 +18,8 @@ describe Preview do
 
   describe "storing a preview" do
     it "stores the original url and url of the file against the id" do
-      DataStore.redis.expects(:hset).with("previews", "id", MultiJson.encode(["url", "/previews/id.png"]))
-      Preview.store("id", "url", "public/previews/id.png")
+      DataStore.redis.expects(:hset).with("previews", "id", MultiJson.encode({original_url: "url", image_path: "/previews/id.png"}))
+      Preview.store("id", "url", {image_path: "public/previews/id.png"})
     end
   end
 end

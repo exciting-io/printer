@@ -7,12 +7,22 @@ class Jobs::Preview
 
   def self.perform(preview_id, url, width)
     output_filename = "public/previews/#{preview_id}.png"
-    save_url_to_path(url, width, output_filename)
-    ::Preview.store(preview_id, url, output_filename)
+    result = save_url_to_path(url, width, output_filename)
+    result_data = if result[:status] == 0
+      {image_path: output_filename}
+    else
+      {error: result[:error]}
+    end
+    ::Preview.store(preview_id, url, result_data)
   end
 
   def self.save_url_to_path(url, width, path)
     cmd = "phantomjs rasterise.js #{url} #{width} #{path}"
-    `#{cmd}`
+    run(cmd)
+  end
+
+  def self.run(cmd)
+    output = `#{cmd}`
+    {status: $?, error: output}
   end
 end

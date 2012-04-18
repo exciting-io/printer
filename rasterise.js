@@ -11,7 +11,8 @@ if (phantom.args.length < 2 || phantom.args.length > 3) {
   page.viewportSize = { width: width, height: 10 };
   page.open(address, function (status) {
     if (status !== 'success') {
-      console.log('Unable to load the address!');
+      console.log('Unable to load the address "' + address + '"');
+      phantom.exit(1);
     } else {
       page.evaluate(function() {
         document.getElementsByTagName("body")[0].className = ""

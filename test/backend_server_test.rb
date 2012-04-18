@@ -153,6 +153,32 @@ describe PrinterBackendServer do
       last_response.location.must_equal "http://example.org/preview/pending/abc123"
     end
 
+    describe "showing the preview" do
+      before do
+        Preview.stubs(:find).with("abc123").returns(Preview.new({"image_path" => "/path/to/image", "original_url" => "http://source.url"}))
+        get "/preview/show/abc123"
+      end
+
+      it "displays the preview image" do
+        last_response.body.must_match /img src="\/path\/to\/image"/
+      end
+
+      it "displays a link to the original url" do
+        last_response.body.must_match /a href="http:\/\/source\.url"/
+      end
+
+      describe "when there was an error previewing" do
+        before do
+          Preview.stubs(:find).with("abc123").returns(Preview.new({"error" => "some error", "original_url" => "http://source.url"}))
+          get "/preview/show/abc123"
+        end
+
+        it "shows the error message" do
+          last_response.body.must_match /some error/
+        end
+      end
+    end
+
     describe "with content" do
       before do
         IdGenerator.stubs(:random_id).returns("abc123")

@@ -5,6 +5,15 @@
 
 <div class="paper">
   <div class="content">
-    <img src="<%= @preview.image_path %>">
+    <% if @preview.error %>
+      <p>There was a problem generating your preview:</p>
+      <p class="error"><%= @preview.error %></p>
+      <p>Some common issues include:</p>
+      <ul>
+        <li>not including 'http://' at the start of the URL</li>
+      </ul>
+    <% else %>
+      <img src="<%= @preview.image_path %>">
+    <% end %>
   </div>
 </div>
