@@ -11,7 +11,7 @@ class PrintProcessor::A2Raw
     
     printer_commands = StringIO.new
     printer = A2Printer.new(printer_commands)
-    printer.begin
+    printer.begin(240)
     printer.print_bitmap(data["width"], data["height"], bytes)
     printer.feed(3)
     printer_commands.rewind
