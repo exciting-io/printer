@@ -39,7 +39,7 @@ const byte idAddress = 0;
 char printerId[17]; // the unique ID for this printer.
 
 void initSettings() {
-  if (EEPROM.read(idAddress) == 255) {
+  if ((EEPROM.read(idAddress) == 255) || (EEPROM.read(idAddress+1) == 255)) {
     debug("Generating new printer ID.");
     randomSeed(analogRead(0) * analogRead(5));
     for(int i = 0; i < 16; i += 2) {
