@@ -97,5 +97,15 @@ describe PrintProcessor do
       data = PrintProcessor.for("A2-raw").process({"width" => 8, "height" => 8, "pixels" => pixels})
       data[(initialisation_commands.length+4)..-4].unpack("C*").must_equal [0,0,0,0,0,0,0,6]
     end
+
+    it "doesn't rotate the image if a flipped parameter is given" do
+      commands = StringIO.new
+      A2Printer.new(commands).begin(150)
+      commands.rewind
+
+      pixels = [0,1,1,0,0,0,0,0] + [0]*(8*7)
+      data = PrintProcessor.for("A2-raw.240.flipped").process({"width" => 8, "height" => 8, "pixels" => pixels})
+      data[(initialisation_commands.length+4)..-4].unpack("C*").must_equal [96,0,0,0,0,0,0,0]
+    end
   end
 end
