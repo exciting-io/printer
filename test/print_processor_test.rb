@@ -18,6 +18,11 @@ describe PrintProcessor do
     PrintProcessor.for("A2-raw").must_be_instance_of PrintProcessor::A2Raw
   end
 
+  it "passes dotted arguments to the constructor of the print processor" do
+    PrintProcessor::A2Bitmap.expects(:new).with("this", "that")
+    PrintProcessor.for("A2-bitmap.this.that")
+  end
+
   describe "when processing for A2-bitmap" do
     subject do
       PrintProcessor.for("A2-bitmap").process({"width" => 8, "height" => 8, "pixels" => pixels})
@@ -60,6 +65,15 @@ describe PrintProcessor do
 
     it "sends the initialisation commands to the printer" do
       subject[0,initialisation_commands.length].must_equal initialisation_commands
+    end
+
+    it "sends the appropriate heat time based on the first argument" do
+      commands = StringIO.new
+      A2Printer.new(commands).begin(150)
+      commands.rewind
+
+      data = PrintProcessor.for("A2-raw.150").process({"width" => 8, "height" => 8, "pixels" => pixels})
+      data[0, commands.length].must_equal commands.read
     end
 
     it "sends the print bitmap command" do

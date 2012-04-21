@@ -1,4 +1,6 @@
-class PrintProcessor::A2Bitmap
+require "print_processor/base"
+
+class PrintProcessor::A2Bitmap < PrintProcessor::Base
   def width
     384
   end
