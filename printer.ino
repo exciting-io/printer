@@ -6,11 +6,21 @@
 #include <SoftwareSerial.h>
 #include <Bounce.h>
 
-// ------- Settings ---------------------------------------------------
+// ------- Settings for YOU to change if you want ---------------------
 
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; // physical mac address
 
-const char *printerType = "A2-raw"; // controls the format of the data sent from the server
+// The printerType controls the format of the data sent from the server
+// If you're using a completely different kind of printer, change this
+// to correspond to your printer's PrintProcessor implementation in the
+// server.
+//
+// If you want to control the darkness of your printouts, append a dot and
+// a number, e.g. A2-raw.240 (up to a maximum of 255).
+//
+// If you want to flip the vertical orientation of your printouts, append
+// a number and then .flipped, e.g. A2-raw.240.flipped
+const char *printerType = "A2-raw";
 
 const char* host = "printer.gofreerange.com"; // the host of the backend server
 const unsigned int port = 80;
