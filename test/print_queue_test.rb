@@ -1,45 +1,26 @@
 require "test_helper"
-require "print_queue"
-require "print_processor"
 require "remote_printer"
 
 describe PrintQueue do
   subject do
-    PrintQueue.new("123")
+    PrintQueue.new("printer-123")
   end
 
-  describe "#add_print_data" do
-    it "puts the json-encoded data into a redis list for that printer" do
-      DataStore.redis.expects(:lpush).with("printers:123:queue", MultiJson.encode(data: "data"))
-      subject.add_print_data(data: "data")
+  describe "#enqueue" do
+    it "puts the json-encoded data with a timestamp into a redis list for that printer" do
+      DataStore.redis.expects(:lpush).with("printers:printer-123:queue", MultiJson.encode(data: "data", queued_at: Time.now))
+      subject.enqueue(data: "data")
     end
   end
 
-  describe "#data_waiting?" do
-    it "returns true if data exists" do
-      DataStore.redis.stubs(:llen).with("printers:123:queue").returns(1)
-      subject.data_waiting?.must_equal true
-    end
-
-    it "returns false if data doesn't exist" do
-      DataStore.redis.stubs(:llen).with("printers:123:queue").returns(0)
-      subject.data_waiting?.must_equal false
-    end
-  end
-
-  describe "#archive_and_return_print_data" do
+  describe "#pop" do
     describe "when no data exists" do
       before do
-        DataStore.redis.stubs(:lpop).with("printers:123:queue").returns(nil)
+        DataStore.redis.stubs(:lpop).with("printers:printer-123:queue").returns(nil)
       end
 
       it "returns nil if no print data exists" do
-        subject.archive_and_return_print_data.must_equal nil
-      end
-
-      it "doesn't put anything into the archive if no print data exists" do
-        DataStore.redis.expects(:lpush).with("printers:123:archive", anything).never
-        subject.archive_and_return_print_data
+        subject.pop.must_equal nil
       end
     end
 
@@ -47,19 +28,17 @@ describe PrintQueue do
       let(:data) { {"width" => 8, "height" => 8, "pixels" => []}}
 
       before do
-        RemotePrinter.stubs(:find).with("123").returns(stub("printer", type: "A2-bitmap"))
-        DataStore.redis.stubs(:lpop).with("printers:123:queue").returns(MultiJson.encode(data))
+        RemotePrinter.stubs(:find).with("printer-123").returns(stub("printer", type: "A2-bitmap"))
       end
 
-      it "sends the json-decoded data through a print processor" do
-        PrintProcessor.expects(:for).with("A2-bitmap").returns(processor = stub("processor"))
-        processor.expects(:process).with(data).returns("data-for-printer")
-        subject.archive_and_return_print_data.must_equal "data-for-printer"
+      it "removes the print from the queue" do
+        DataStore.redis.expects(:lpop).with("printers:printer-123:queue")
+        subject.pop
       end
 
-      it "adds the data to the archive list" do
-        DataStore.redis.expects(:lpush).with("printers:123:archive", MultiJson.encode(data))
-        subject.archive_and_return_print_data
+      it "returns the json-decoded data" do
+        DataStore.redis.stubs(:lpop).with("printers:printer-123:queue").returns(MultiJson.encode(data))
+        subject.pop.must_equal data
       end
     end
   end

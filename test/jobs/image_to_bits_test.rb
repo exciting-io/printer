@@ -30,12 +30,17 @@ describe Jobs::ImageToBits do
   end
 
   describe "performing" do
-    it "puts the data into the printer" do
-      data = {width: 8, height: 8, pixels: []}
+    let(:data) { {width: 8, height: 8, pixels: []} }
+
+    before do
       Jobs::ImageToBits.stubs(:image_data).with("file_path").returns(data)
-      PrintQueue.stubs(:new).with("id").returns(queue = stub("print_queue"))
-      queue.expects(:add_print_data).with(data)
-      Jobs::ImageToBits.perform("file_path", "id")
+    end
+
+    it "sends the data for printing" do
+      printer = RemotePrinter.new("printer-id")
+      RemotePrinter.stubs(:find).with("printer-id").returns(printer)
+      printer.expects(:add_print).with(data)
+      Jobs::ImageToBits.perform("file_path", "printer-id")
     end
   end
 end

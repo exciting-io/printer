@@ -25,15 +25,18 @@ describe PrinterBackendServer do
 
     describe "where data exists" do
       it "returns the data as the message body" do
-        PrintQueue.stubs(:new).with("1").returns(printer = stub("printer"))
-        printer.stubs(:archive_and_return_print_data).returns("data")
+        printer = RemotePrinter.new("1")
+        RemotePrinter.stubs(:find).with("1").returns(printer)
+        printer.stubs(:data_to_print).returns("data")
         get "/printer/1"
         last_response.body.must_equal "data"
       end
     end
 
     it "updates our record of the remote printer" do
-      RemotePrinter.expects(:update).with(has_entries(id: "1", type: "A2-bitmap", ip: "192.168.1.1"))
+      printer = RemotePrinter.new("1")
+      RemotePrinter.stubs(:find).with("1").returns(printer)
+      printer.expects(:update).with(has_entries(type: "A2-bitmap", ip: "192.168.1.1"))
       get "/printer/1", {}, {"HTTP_ACCEPT" => "application/vnd.freerange.printer.A2-bitmap",
                              "REMOTE_ADDR" => "192.168.1.1"}
     end
