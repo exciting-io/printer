@@ -116,9 +116,7 @@ void setup(){
   initSD();
   initNetwork();
   initPrinter();
-#ifdef DEBUG
   initDiagnosticLEDs();
-#endif
 }
 
 boolean downloadWaiting = false;
