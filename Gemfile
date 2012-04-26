@@ -5,6 +5,7 @@ gem 'sinatra'
 gem 'sass'
 
 gem "rmagick"
+gem "resque"
 gem "resque-pool"
 gem "rake"
 gem "yajl-ruby"

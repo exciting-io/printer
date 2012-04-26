@@ -87,6 +87,7 @@ DEPENDENCIES
   rack-test
   rake
   recap!
+  resque
   resque-pool
   rmagick
   sass
