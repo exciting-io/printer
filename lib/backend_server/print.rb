@@ -27,13 +27,13 @@ class BackendServer::Print < BackendServer::Base
   end
 
   def queue_print(printer_id, url)
-    Resque.enqueue(Jobs::PreparePage, printer_id, url)
+    Resque.enqueue(Jobs::PreparePage, url, "384", printer_id)
     erb :queued
   end
 
   def queue_print_from_content(printer_id, content)
     path = ContentStore.write_html_content(content)
-    Resque.enqueue(Jobs::PreparePage, printer_id, absolute_url_for_path(path))
+    Resque.enqueue(Jobs::PreparePage, absolute_url_for_path(path), "384", printer_id)
     if request.accept?('application/json')
       respond_with_json(response: "ok")
     else

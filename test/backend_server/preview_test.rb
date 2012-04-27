@@ -32,12 +32,12 @@ describe BackendServer::Preview do
   end
 
   it "enqueues a job to generate a preview" do
-    Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "submitted-url", "123")
+    Resque.expects(:enqueue).with(Jobs::PreparePage, "submitted-url", "123", "abc123", "preview")
     get "/preview?url=submitted-url&width=123"
   end
 
   it "enqueues using a default width of 384" do
-    Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "submitted-url", "384")
+    Resque.expects(:enqueue).with(Jobs::PreparePage, anything, "384", anything, anything)
     get "/preview?url=submitted-url"
   end
 
@@ -98,13 +98,13 @@ describe BackendServer::Preview do
 
     it "enqueues a job to generate a preview from the content" do
       ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
-      Resque.expects(:enqueue).with(Jobs::Preview, "abc123", "http://example.org/path/to/abc123.html", "123")
+      Resque.expects(:enqueue).with(Jobs::PreparePage, "http://example.org/path/to/abc123.html", "123", "abc123", "preview")
       post "/preview", {content: "<p>Some content</p>", width: "123"}
     end
 
     it "uses a default width of 384" do
       ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
-      Resque.expects(:enqueue).with(Jobs::Preview, anything, anything, "384")
+      Resque.expects(:enqueue).with(Jobs::PreparePage, anything, "384", anything, anything)
       post "/preview", {content: "<p>Some content</p>"}
     end
 

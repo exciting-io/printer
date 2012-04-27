@@ -59,7 +59,12 @@ describe BackendServer::App do
     end
 
     it "enqueues the url with the printer id" do
-      Resque.expects(:enqueue).with(Jobs::PreparePage, "1", "submitted-url")
+      Resque.expects(:enqueue).with(Jobs::PreparePage, "submitted-url", anything, "1")
+      get "/print/1?url=submitted-url"
+    end
+
+    it "enqueues the job for rendering with a default width of 384 pixels" do
+      Resque.expects(:enqueue).with(Jobs::PreparePage, "submitted-url", "384", "1")
       get "/print/1?url=submitted-url"
     end
 
@@ -85,7 +90,7 @@ describe BackendServer::App do
 
       it "enqueues a job to generate a page from the content" do
         ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
-        Resque.expects(:enqueue).with(Jobs::PreparePage, "1", "http://example.org/path/to/abc123.html")
+        Resque.expects(:enqueue).with(Jobs::PreparePage, "http://example.org/path/to/abc123.html", anything, "1")
         post "/print/1", {content: "<p>Some content</p>"}
       end
 
