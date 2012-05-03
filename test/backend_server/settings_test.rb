@@ -33,7 +33,7 @@ describe BackendServer::Settings do
     end
 
     it "should show that printer" do
-      last_response.body.must_match "ID: printer-id"
+      last_response.body.must_match "http://example.org/print/printer-id"
     end
 
     it "should link to a test page print url" do
@@ -50,8 +50,8 @@ describe BackendServer::Settings do
     end
 
     it "should show all printers" do
-      last_response.body.must_match "ID: printer-id"
-      last_response.body.must_match "ID: printer-id-2"
+      last_response.body.must_match "http://example.org/print/printer-id"
+      last_response.body.must_match "http://example.org/print/printer-id-2"
     end
 
     it "should link to a test page print url for each printer" do

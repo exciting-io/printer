@@ -125,7 +125,7 @@ describe BackendServer::App do
       end
 
       it "should show printers polling from the same remote IP" do
-        last_response.body.must_match "ID: printer-id"
+        last_response.body.must_match "http://example.org/print/printer-id"
       end
     end
 
@@ -138,10 +138,6 @@ describe BackendServer::App do
 
       it "should render a page" do
         last_response.ok?.must_equal true
-      end
-
-      it "should show the printer ID" do
-        last_response.body.must_match /ID: printer\-id/
       end
 
       it "should show the printer type" do
