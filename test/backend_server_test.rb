@@ -115,38 +115,4 @@ describe BackendServer::App do
       end
     end
   end
-
-  describe "settings" do
-    describe "viewing printers" do
-      before do
-        printer = stub("remote_printer", id: "printer-id", type: "printer-type")
-        RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns([printer])
-        get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
-      end
-
-      it "should show printers polling from the same remote IP" do
-        last_response.body.must_match "http://example.org/print/printer-id"
-      end
-    end
-
-    describe "generating a test print" do
-      before do
-        printer = stub("remote_printer", id: "printer-id", type: "printer-type")
-        RemotePrinter.stubs(:find).with("printer-id").returns(printer)
-        get "/my-printer/printer-id/test-page"
-      end
-
-      it "should render a page" do
-        last_response.ok?.must_equal true
-      end
-
-      it "should show the printer type" do
-        last_response.body.must_match /Type: printer\-type/
-      end
-
-      it "should show the printer URL" do
-        last_response.body.must_match url_regexp("/print/printer-id")
-      end
-    end
-  end
 end
