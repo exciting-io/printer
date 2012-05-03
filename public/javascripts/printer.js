@@ -39,9 +39,9 @@ var Printer = {
     return false;
   },
 
-  printPage: function(printerId, callback) {
+  printPage: function(printerUrl, callback) {
     Printer.serializePage(function(page_content) {
-      $.post(Printer.backendURL + "/print/" + printerId,
+      $.post(printerUrl,
              {content: page_content},
              callback,
              'json');
