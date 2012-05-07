@@ -20,6 +20,7 @@ describe BackendServer::Preview do
 
   describe "when requested via GET without content or a URL" do
     it "directs people to the API" do
+      Resque.stubs(:enqueue)
       get "/preview"
       last_response.ok?.must_equal true
       last_response.body.must_match /API documentation/
@@ -42,12 +43,14 @@ describe BackendServer::Preview do
   end
 
   it "redirects to a holding page after requesting" do
+    Resque.stubs(:enqueue)
     get "/preview?url=submitted-url"
     last_response.redirect?.must_equal true
     last_response.location.must_equal "http://example.org/preview/pending/abc123"
   end
 
   it "redirects to the preview page once the preview data exists" do
+    Resque.stubs(:enqueue)
     Preview.stubs(:find).with("abc123def456abcd").returns("data")
     get "/preview/pending/abc123def456abcd"
     last_response.redirect?.must_equal true
@@ -55,6 +58,7 @@ describe BackendServer::Preview do
   end
 
   it "allows posting of a URL for preview" do
+    Resque.stubs(:enqueue)
     post "/preview", {url: "submitted-url"}
     last_response.redirect?.must_equal true
     last_response.location.must_equal "http://example.org/preview/pending/abc123"
@@ -92,6 +96,7 @@ describe BackendServer::Preview do
     end
 
     it "stores the content in a publicly-accessible file" do
+      Resque.stubs(:enqueue)
       ContentStore.expects(:write_html_content).with("<p>Some content</p>", "abc123")
       post "/preview", {content: "<p>Some content</p>"}
     end
@@ -109,12 +114,14 @@ describe BackendServer::Preview do
     end
 
     it "redirects to the holding page" do
+      Resque.stubs(:enqueue)
       post "/preview", {content: "<p>Some content</p>"}
       last_response.redirect?.must_equal true
       last_response.location.must_equal "http://example.org/preview/pending/abc123"
     end
 
     it "returns a JSON object pointing at the holding page if the request accepts JSON" do
+      Resque.stubs(:enqueue)
       header 'Accept', 'application/json'
       post "/preview", {content: "<p>Some content</p>"}
       last_response.ok?.must_equal true
@@ -122,12 +129,14 @@ describe BackendServer::Preview do
     end
 
     it "allows the returned JSON data to be loaded regardless of cross-domain" do
+      Resque.stubs(:enqueue)
       header 'Accept', 'application/json'
       post "/preview", {content: "<p>Some content</p>"}
       last_response.headers["Access-Control-Allow-Origin"].must_equal "*"
     end
 
     it "allows the JSON to be returned regardless of the Referer" do
+      Resque.stubs(:enqueue)
       header 'Accept', 'application/json'
       header 'Referer', 'http://some-external-app.example.com'
       post "/preview", {content: "<p>Some content</p>"}
