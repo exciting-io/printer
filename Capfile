@@ -14,6 +14,6 @@ end
 
 namespace :fonts do
   task :preview do
-    as_app "cd #{deploy_to} && phantomjs rasterise.js http://printer.gofreerange.com/font-test 384 #{deploy_to}/public/fonts.png"
+    as_app "cd #{deploy_to} && phantomjs rasterise.js http://printer.gofreerange.com/font-test 384 #{deploy_to}/public/font-test.png"
   end
 end
