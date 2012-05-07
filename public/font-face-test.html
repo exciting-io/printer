@@ -1,72 +1,95 @@
-<html>
-<head>
-<link rel="stylesheet" href="/stylesheets/print.css" type="text/css" media="screen" title="no title" charset="utf-8">
-<style>
-.font-sample {
-font-size: 26px;
-}
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://printer.gofreerange.com/stylesheets/print.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <script src="http://printer.gofreerange.com/javascripts/printer.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(function() {
+        $("#previewPage").click(Printer.previewPage);
+        $("#printPage").click(function() {
+          var printerID = prompt("Enter the URL of the printer to target");
+          Printer.printPage(printerID, function(result) {
+            if (result.response == "ok") {
+              alert("Page successfully sent for printing");
+            } else {
+              alert("There was a problem sending this content");
+              console.log("Error response", result);
+            }
+          });
+        });
+      })
+    </script>
+    <style>
+    .font-sample {
+    font-size: 26px;
+    }
 
-.font-name { 
-font-size: 16px;
-display: block;
-}
-</style>
-<!-- OpenFontLibrary -->
-<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/gnutypewriter" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/sabatica" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/banana-brick" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/flaggothic" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/pecita" rel="stylesheet" type="text/css"/>
-<!-- Google Fonts -->
-<link href='http://fonts.googleapis.com/css?family=Crafty+Girls|Marck+Script|Lobster|Geo|Bentham' rel='stylesheet' type='text/css'>
-</head>
-<body class="preview">
-  <div class="paper">
-    <div class="content">
-      <h1>OpenFontLibrary</h1>
-      <p>
-        <span class="font-sample" style="font-family: 'GNUTypewriter';">A wizard's job is to vex chumps quickly in fog.</span>
-        <span class="font-name">(GNU Typewriter; OpenFontLibrary.org; Opentype & Truetype)</span>
-      </p>
-      <p>
-        <span class="font-sample" style="font-family: 'Sabatica';">A wizard's job is to vex chumps quickly in fog.</span>
-        <span class="font-name">(Sabatic; OpenFontLibrary.org; Opentype & Truetype)</span>
-      </p>
-      <p>
-        <span class="font-sample" style="font-family: 'Banana Brick';">A wizard's job is to vex chumps quickly in fog.</span>
-        <span class="font-name">(Banana Brick; OpenFontLibrary.org; Opentype & Truetype)</span>
-      </p>
-      <p>
-        <span class="font-sample" style="font-family: 'Flag';">A wizard's job is to vex chumps quickly in fog.</span>
-        <span class="font-name">(Flag Gothic; OpenFontLibrary.org; Truetype)</span>
-      </p>
-      <p>
-        <span class="font-sample" style="font-family: 'Pecita';">A wizard's job is to vex chumps quickly in fog.</span>
-        <span class="font-name">(Pecita; OpenFontLibrary.org; Opentype)</span>
-      </p>
-      <h1>Google Fonts</h1>
-      <p>
-        <span class="font-sample" style="font-family: 'Crafty Girls';">A wizard's job is to vex chumps quickly in fog.</span>
-        <span class="font-name">(Crafty Girls; Google Fonts; Truetype)</span>
-      </p>
-      <p>
-        <span class="font-sample" style="font-family: 'Marck Script';">A wizard's job is to vex chumps quickly in fog.</span>
-        <span class="font-name">(Marck Script; Google Fonts; Truetype)</span>
-      </p>
-      <p>
-        <span class="font-sample" style="font-family: 'Lobster';">A wizard's job is to vex chumps quickly in fog.</span>
-        <span class="font-name">(Lobster; Google Fonts; Truetype)</span>
-      </p>
-      <p>
-        <span class="font-sample" style="font-family: 'Geo';">A wizard's job is to vex chumps quickly in fog.</span>
-        <span class="font-name">(Geo; Google Fonts; Truetype)</span>
-      </p>
-      <p>
-        <span class="font-sample" style="font-family: 'Bentham';">A wizard's job is to vex chumps quickly in fog.</span>
-        <span class="font-name">(Bentham; Google Fonts; Truetype)</span>
-      </p>
-
+    .font-name { 
+    font-size: 16px;
+    display: block;
+    }
+    </style>
+    <!-- OpenFontLibrary -->
+    <link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/gnutypewriter" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/sabatica" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/banana-brick" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/flaggothic" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/pecita" rel="stylesheet" type="text/css"/>
+    <!-- Google Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Crafty+Girls|Marck+Script|Lobster|Geo|Bentham' rel='stylesheet' type='text/css'>
+  </head>
+  <body class="preview">
+    <div class="controls">
+      <a id="previewPage" href="#">Preview</a>
+      <a id="printPage" href="#">Print</a>
     </div>
-  </div>
-</body>
+    <div class="paper">
+      <div class="content">
+        <h1>OpenFontLibrary</h1>
+        <p>
+          <span class="font-sample" style="font-family: 'GNUTypewriter';">A wizard's job is to vex chumps quickly in fog.</span>
+          <span class="font-name">(GNU Typewriter; OpenFontLibrary.org; Opentype & Truetype)</span>
+        </p>
+        <p>
+          <span class="font-sample" style="font-family: 'Sabatica';">A wizard's job is to vex chumps quickly in fog.</span>
+          <span class="font-name">(Sabatic; OpenFontLibrary.org; Opentype & Truetype)</span>
+        </p>
+        <p>
+          <span class="font-sample" style="font-family: 'Banana Brick';">A wizard's job is to vex chumps quickly in fog.</span>
+          <span class="font-name">(Banana Brick; OpenFontLibrary.org; Opentype & Truetype)</span>
+        </p>
+        <p>
+          <span class="font-sample" style="font-family: 'Flag';">A wizard's job is to vex chumps quickly in fog.</span>
+          <span class="font-name">(Flag Gothic; OpenFontLibrary.org; Truetype)</span>
+        </p>
+        <p>
+          <span class="font-sample" style="font-family: 'Pecita';">A wizard's job is to vex chumps quickly in fog.</span>
+          <span class="font-name">(Pecita; OpenFontLibrary.org; Opentype)</span>
+        </p>
+        <h1>Google Fonts</h1>
+        <p>
+          <span class="font-sample" style="font-family: 'Crafty Girls';">A wizard's job is to vex chumps quickly in fog.</span>
+          <span class="font-name">(Crafty Girls; Google Fonts; Truetype)</span>
+        </p>
+        <p>
+          <span class="font-sample" style="font-family: 'Marck Script';">A wizard's job is to vex chumps quickly in fog.</span>
+          <span class="font-name">(Marck Script; Google Fonts; Truetype)</span>
+        </p>
+        <p>
+          <span class="font-sample" style="font-family: 'Lobster';">A wizard's job is to vex chumps quickly in fog.</span>
+          <span class="font-name">(Lobster; Google Fonts; Truetype)</span>
+        </p>
+        <p>
+          <span class="font-sample" style="font-family: 'Geo';">A wizard's job is to vex chumps quickly in fog.</span>
+          <span class="font-name">(Geo; Google Fonts; Truetype)</span>
+        </p>
+        <p>
+          <span class="font-sample" style="font-family: 'Bentham';">A wizard's job is to vex chumps quickly in fog.</span>
+          <span class="font-name">(Bentham; Google Fonts; Truetype)</span>
+        </p>
+
+      </div>
+    </div>
+  </body>
 </html>
