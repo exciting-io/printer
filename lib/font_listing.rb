@@ -2,10 +2,9 @@
 
 class FontListing
   def fonts
-    fonts = system_font_listing.split("\n").map do |f|
-      next unless f =~ /^:fullname=/
+    fonts = self.class.system_font_list.strip.split("\n").map do |f|
       f.split("=")[1].split(",").first
-    end.compact.uniq.sort
+    end.uniq.sort
   end
 
   def each
@@ -26,7 +25,7 @@ class FontListing
 
   private
 
-  def system_font_listing
+  def self.system_font_list
     `fc-list : fullname`
   end
 end
