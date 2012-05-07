@@ -1,0 +1,17 @@
+<style>
+.font-sample {
+  font-size: 26px;
+}
+
+.font-name { 
+  font-size: 16px;
+  display: block;
+}
+</style>
+
+<% @fonts.each do |font| %>
+  <p>
+    <span class="font-sample" style="font-family: '<%= font %>';"><%= @fonts.pangram %></span>
+    <span class="font-name">(<%= font %>)</span>
+  </p>
+<% end %>
