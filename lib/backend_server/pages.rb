@@ -3,7 +3,7 @@ require "font_listing"
 
 class BackendServer::Pages < BackendServer::Base
   get("/") { erb :index }
-  get("/font_test") do
+  get("/font-test") do
     @fonts = FontListing.new
     erb :font_test, layout: :print_layout
   end
