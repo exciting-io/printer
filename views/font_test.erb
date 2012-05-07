@@ -10,8 +10,11 @@
 </style>
 
 <% @fonts.each do |font| %>
+  <% sample = @fonts.pangram %>
+  <% sample = "<i>#{sample}</i>" if font =~ /Italic/ %>
+  <% sample = "<b>#{sample}</b>" if font =~ /Bold/ %>
   <p>
-    <span class="font-sample" style="font-family: '<%= font %>';"><%= @fonts.pangram %></span>
+    <span class="font-sample" style="font-family: '<%= font %>';"><%= sample %></span>
     <span class="font-name">(<%= font %>)</span>
   </p>
 <% end %>

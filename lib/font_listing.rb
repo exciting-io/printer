@@ -3,8 +3,8 @@
 class FontListing
   def fonts
     fonts = system_font_listing.split("\n").map do |f|
-      f.split(":")[0]
-    end.uniq
+      f.split("=")[1].split(",").first
+    end.uniq.sort
   end
 
   def each
@@ -26,6 +26,6 @@ class FontListing
   private
 
   def system_font_listing
-    `fc-list`
+    `fc-list : fullname`
   end
 end
