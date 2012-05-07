@@ -39,6 +39,16 @@ describe BackendServer::Settings do
     it "should link to a test page print url" do
       last_response.body.must_match url_regexp("/my-printer/printer-id/test-page")
     end
+
+    it "should provide a form for posting a URL to print" do
+      last_response.body.must_match /form action="#{url_regexp("/print/printer-id")}"/
+      last_response.body.must_match /input name="url"/
+    end
+
+    it "should provide a form for posting HTML content to print" do
+      last_response.body.must_match /form action="#{url_regexp("/print/printer-id")}"/
+      last_response.body.must_match /textarea name="content"/
+    end
   end
 
   describe "with multiple nearby printers" do

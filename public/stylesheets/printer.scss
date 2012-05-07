@@ -150,4 +150,18 @@ header {
   .print_url {
     font-size: 12px;
   }
+
+  label, input, textarea {
+    display: block;
+    font-weight: normal;
+    font-size: 14px;
+  }
+
+  input[type=text], textarea {
+    width: 97%;
+  }
+
+  textarea {
+    height: 100px;
+  }
 }
