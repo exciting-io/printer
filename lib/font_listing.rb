@@ -26,6 +26,6 @@ class FontListing
   private
 
   def system_font_listing
-    `fc_list`
+    `fc-list`
   end
 end
