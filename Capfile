@@ -17,3 +17,5 @@ namespace :fonts do
     as_app "cd #{deploy_to} && phantomjs rasterise.js http://printer.gofreerange.com/font-test 384 #{deploy_to}/public/font-test.png"
   end
 end
+
+after "deploy:restart", "fonts:preview"
