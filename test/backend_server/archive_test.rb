@@ -40,7 +40,7 @@ describe BackendServer::Settings do
       RemotePrinter.stubs(:find).with("printer-id").returns(printer)
       printer.stubs(:find_print).with("abc123").returns(Print.new({"width" => 8, "height" => 8, "pixels" => [0]*64}))
 
-      get "/archive/printer-id/image/abc123"
+      get "/archive/printer-id/image/abc123.png"
     end
 
     it "should serve the image as a PNG" do
