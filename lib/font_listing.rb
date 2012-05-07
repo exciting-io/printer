@@ -3,6 +3,7 @@
 class FontListing
   def fonts
     fonts = system_font_listing.split("\n").map do |f|
+      next unless f =~ /^:fullname=/
       f.split("=")[1].split(",").first
     end.uniq.sort
   end
