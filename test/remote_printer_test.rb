@@ -107,5 +107,36 @@ describe RemotePrinter do
         subject.data_to_print.must_equal "data-for-printer"
       end
     end
+
+    describe "getting archived print ids" do
+      subject do
+        RemotePrinter.new("printer-id")
+      end
+
+      before do
+        archive_for_printer.stubs(:ids).returns(["abc123", "def456"])
+      end
+
+      it "returns the set of all archived print IDs" do
+        subject.archive_ids.must_equal ["abc123", "def456"]
+      end
+    end
+
+    describe "getting a single archived print by id" do
+      subject do
+        RemotePrinter.new("printer-id")
+      end
+
+      before do
+        archive_for_printer.stubs(:find).with("abc123").returns(stub("print", id: "print-id", width: 8, height: 8, pixels: []))
+      end
+
+      it "returns the print data for the given ID" do
+        print = subject.find_print("abc123")
+        print.width.must_equal 8
+        print.height.must_equal 8
+        print.pixels.must_equal []
+      end
+    end
   end
 end

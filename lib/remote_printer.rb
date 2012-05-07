@@ -53,6 +53,14 @@ class RemotePrinter
     queue.enqueue(print_id: print.id)
   end
 
+  def archive_ids
+    archive.ids
+  end
+
+  def find_print(print_id)
+    archive.find(print_id)
+  end
+
   private
 
   def queue

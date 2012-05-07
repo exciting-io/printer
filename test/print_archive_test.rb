@@ -46,6 +46,14 @@ describe PrintArchive do
     end
   end
 
+  describe "retrieving print ids" do
+    it "returns all print IDs" do
+      DataStore.redis.stubs(:hkeys).with("printers:printer-id:prints").returns(["abc123", "def456"])
+      ids = subject.ids
+      ids.must_equal ["abc123", "def456"]
+    end
+  end
+
   describe "retrieving all prints" do
     it "returns all Prints" do
       DataStore.redis.stubs(:hvals).with("printers:printer-id:prints").returns([MultiJson.encode(id: "1"), MultiJson.encode(id: "2")])

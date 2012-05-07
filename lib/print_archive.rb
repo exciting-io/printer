@@ -21,6 +21,10 @@ class PrintArchive
     Print.new(MultiJson.decode(data).merge("id" => print_id)) if data
   end
 
+  def ids
+    DataStore.redis.hkeys(key)
+  end
+
   def all
     DataStore.redis.hvals(key).map { |d| Print.new(MultiJson.decode(d)) }
   end

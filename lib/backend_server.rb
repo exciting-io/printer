@@ -6,4 +6,5 @@ module BackendServer
   autoload :Polling,  "backend_server/polling"
   autoload :Pages,    "backend_server/pages"
   autoload :Settings, "backend_server/settings"
+  autoload :Archive,  "backend_server/archive"
 end
