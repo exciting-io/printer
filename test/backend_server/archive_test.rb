@@ -18,8 +18,11 @@ describe BackendServer::Settings do
     before do
       printer = RemotePrinter.new("printer-id")
       RemotePrinter.stubs(:find).with("printer-id").returns(printer)
-      printer.stubs(:find_print).with(anything).returns(Print.new({"width" => 8, "height" => 8, "pixels" => [0]*64}))
-      printer.stubs(:archive_ids).returns(["a1", "b2", "c3"])
+      printer.stubs(:all_prints).returns([
+        Print.new({"id" => "a1", "width" => 8, "height" => 8, "pixels" => [0]*64}),
+        Print.new({"id" => "b2", "width" => 8, "height" => 8, "pixels" => [0]*64}),
+        Print.new({"id" => "c3", "width" => 8, "height" => 8, "pixels" => [0]*64}),
+      ])
 
       get "/archive/printer-id"
     end
@@ -38,7 +41,7 @@ describe BackendServer::Settings do
     before do
       printer = RemotePrinter.new("printer-id")
       RemotePrinter.stubs(:find).with("printer-id").returns(printer)
-      printer.stubs(:find_print).with("abc123").returns(Print.new({"width" => 8, "height" => 8, "pixels" => [0]*64}))
+      printer.stubs(:find_print).with("abc123").returns(Print.new({"id" => "abc123", "width" => 8, "height" => 8, "pixels" => [0]*64}))
 
       get "/archive/printer-id/image/abc123.png"
     end

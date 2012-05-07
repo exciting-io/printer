@@ -1,7 +1,10 @@
 <div class="paper">
   <div class="content">
-    <% @ids.each do |id| %>
-      <img src="/archive/<%= @printer.id %>/image/<%= id %>.png" />
+    <% @prints.each do |print| %>
+      <section class="print">
+        <p>Printed: <%= print.created_at %></p>
+        <img src="/archive/<%= @printer.id %>/image/<%= print.id %>.png" />
+      </section>
     <% end %>
   </div>
 </div>

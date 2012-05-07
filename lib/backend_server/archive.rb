@@ -12,7 +12,7 @@ class BackendServer::Archive < BackendServer::Base
 
   get "/:printer_id" do
     @printer = RemotePrinter.find(params[:printer_id])
-    @ids = @printer.archive_ids
+    @prints = @printer.all_prints
     erb :archive
   end
 end

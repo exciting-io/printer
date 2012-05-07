@@ -57,6 +57,10 @@ class RemotePrinter
     archive.ids
   end
 
+  def all_prints
+    archive.all.sort_by { |p| p.created_at }.reverse
+  end
+
   def find_print(print_id)
     archive.find(print_id)
   end
