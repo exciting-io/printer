@@ -1,4 +1,4 @@
-require "recap/ruby"
+require "recap/recipes/ruby"
 
 server "printer.gofreerange.com", :app
 set :application, "printer"

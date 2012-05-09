@@ -14,7 +14,7 @@ gem "unicorn"
 
 gem "a2_printer", git: "https://github.com/lazyatom/a2_printer.git"
 
-gem "recap", git: "https://github.com/freerange/recap.git"
+gem "recap", "~> 1.0.0"
 
 group :test do
   gem "mocha"
