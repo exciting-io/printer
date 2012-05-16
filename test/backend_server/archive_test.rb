@@ -49,7 +49,7 @@ describe BackendServer::Settings do
     it "should serve the image as a PNG" do
       last_response.ok?.must_equal true
       last_response.content_type.must_equal "image/png"
-      last_response.body.must_equal File.binread(fixture_path("8x8-blank.png"))
+      last_response.body.must_equal png_image(8, 8, [0]*(8*8)).to_blob
     end
   end
 end
