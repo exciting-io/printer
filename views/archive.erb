@@ -1,8 +1,10 @@
 <div class="paper">
-  <div class="content">
+  <div class="content archive">
     <% @prints.each do |print| %>
       <section class="print">
-        <p>Printed: <%= print.created_at %></p>
+        <div class="metadata">
+          <p>Printed: <%= print.created_at %></p>
+        </div>
         <img src="/archive/<%= @printer.id %>/image/<%= print.id %>.png" />
       </section>
     <% end %>

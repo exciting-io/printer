@@ -165,3 +165,30 @@ header {
     height: 100px;
   }
 }
+
+.archive {
+  .print {
+
+    margin-bottom: 3em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .metadata {
+      font-size: 14px;
+      font-family: sans-serif;
+      color: #ccc;
+      margin-bottom: 0.5em;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    img {
+      border-top: 1px dashed #ccc;
+      border-bottom: 1px dashed #ccc;
+    }
+  }
+}
