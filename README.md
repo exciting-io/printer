@@ -1,6 +1,8 @@
 Printer
 ===========
 
+[![Build Status](https://secure.travis-ci.org/freerange/printer.png?branch=master)](http://travis-ci.org/freerange/printer)
+
 In a nutshell, Printer is a software system that makes it easy for **YOU** to:
 
 * [build your own small internet-connected printers][getting-a-printer],
