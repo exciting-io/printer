@@ -16,8 +16,8 @@ describe PrintArchive do
     end
 
     it "stores the print data" do
-      data_with_timestamps = data.merge(created_at: Time.now)
-      DataStore.redis.expects(:hset).with("printers:printer-id:prints", "random-print-id", MultiJson.encode(data_with_timestamps))
+      data_with_id_and_timestamps = data.merge(created_at: Time.now, id: "random-print-id")
+      DataStore.redis.expects(:hset).with("printers:printer-id:prints", "random-print-id", MultiJson.encode(data_with_id_and_timestamps))
       subject.store(width: 8, height: 8, pixels: [])
     end
 
@@ -32,7 +32,7 @@ describe PrintArchive do
 
   describe "retrieving a print" do
     it "returns a Print" do
-      DataStore.redis.stubs(:hget).with("printers:printer-id:prints", "random-print-id").returns(MultiJson.encode(data))
+      DataStore.redis.stubs(:hget).with("printers:printer-id:prints", "random-print-id").returns(MultiJson.encode(data.merge(id: "random-print-id")))
       print = subject.find("random-print-id")
       print.width.must_equal 8
       print.height.must_equal 8
@@ -56,7 +56,7 @@ describe PrintArchive do
 
   describe "retrieving all prints" do
     it "returns all Prints" do
-      DataStore.redis.stubs(:hvals).with("printers:printer-id:prints").returns([MultiJson.encode(id: "1"), MultiJson.encode(id: "2")])
+      DataStore.redis.stubs(:hvals).with("printers:printer-id:prints").returns([MultiJson.encode(data.merge(id: "1")), MultiJson.encode(data.merge(id: "2"))])
       prints = subject.all
       prints.length.must_equal 2
       prints[0].id.must_equal "1"

@@ -12,7 +12,7 @@ class PrintArchive
 
   def store(data)
     print_id = IdGenerator.random_id
-    DataStore.redis.hset(key, print_id, MultiJson.encode(data.merge(created_at: Time.now)))
+    DataStore.redis.hset(key, print_id, MultiJson.encode(data.merge(created_at: Time.now, id: print_id)))
     Print.new(data.merge("id" => print_id))
   end
 
