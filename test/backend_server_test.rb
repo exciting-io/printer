@@ -84,7 +84,7 @@ describe BackendServer::App do
       end
 
       it "stores the content in a publicly-accessible file" do
-        ContentStore.expects(:write_html_content).with("<p>Some content</p>", "abc123")
+        ContentStore.expects(:write_html_content).with("<p>Some content</p>", "abc123").returns("/path/to/file.html")
         post "/preview", {content: "<p>Some content</p>"}
       end
 

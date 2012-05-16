@@ -97,7 +97,7 @@ describe BackendServer::Preview do
 
     it "stores the content in a publicly-accessible file" do
       Resque.stubs(:enqueue)
-      ContentStore.expects(:write_html_content).with("<p>Some content</p>", "abc123")
+      ContentStore.expects(:write_html_content).with("<p>Some content</p>", "abc123").returns("/path/to/file.html")
       post "/preview", {content: "<p>Some content</p>"}
     end
 

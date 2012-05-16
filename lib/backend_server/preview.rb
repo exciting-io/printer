@@ -55,7 +55,6 @@ class BackendServer::Preview < BackendServer::Base
   def queue_preview_from_content(content, width)
     preview_id = IdGenerator.random_id
     path = ContentStore.write_html_content(content, preview_id)
-    raise "wtf" if path.nil?
     Resque.enqueue(Jobs::PreparePage, absolute_url_for_path(path), width, preview_id, "preview")
     preview_pending_path = absolute_url_for_path("/preview/pending/#{preview_id}")
     if request.accept?('application/json')
