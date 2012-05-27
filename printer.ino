@@ -48,7 +48,7 @@ const byte buttonPin = 3;      // the print button
 const byte idAddress = 0;
 char printerId[17]; // the unique ID for this printer.
 
-void initSettings() {
+inline void initSettings() {
   if ((EEPROM.read(idAddress) == 255) || (EEPROM.read(idAddress+1) == 255)) {
     debug("Generating new printer ID.");
     randomSeed(analogRead(0) * analogRead(5));
@@ -67,7 +67,7 @@ void initSettings() {
   debug2("Printer ID: ", printerId);
 }
 
-void initDiagnosticLEDs() {
+inline void initDiagnosticLEDs() {
   pinMode(errorLED, OUTPUT);
   pinMode(downloadLED, OUTPUT);
   pinMode(readyLED, OUTPUT);
@@ -83,19 +83,19 @@ void initDiagnosticLEDs() {
 SoftwareSerial *printer;
 #define PRINTER_WRITE(b) printer->write(b)
 
-void initPrinter() {
+inline void initPrinter() {
   printer = new SoftwareSerial(printer_RX_Pin, printer_TX_Pin);
   printer->begin(19200);
 }
 
 const byte SD_Pin = 4;
-void initSD() {
+inline void initSD() {
   pinMode(SD_Pin, OUTPUT);
   SD.begin(SD_Pin);
 }
 
 EthernetClient client;
-void initNetwork() {
+inline void initNetwork() {
   // start the Ethernet connection:
   if (Ethernet.begin(mac) == 0) {
     debug("DHCP Failed");
@@ -222,7 +222,7 @@ void checkForDownload() {
   }
 }
 
-void printFromDownload() {
+inline void printFromDownload() {
   File cache = SD.open(cacheFilename);
   byte b;
   while (content_length--) {
