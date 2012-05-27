@@ -36,7 +36,7 @@ const byte buttonPin = 3;      // the print button
 
 // --------------------------------------------------------------------
 
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
 #define debug(a) Serial.print(millis()); Serial.print(": "); Serial.println(a);
 #define debug2(a, b) Serial.print(millis()); Serial.print(": "); Serial.print(a); Serial.println(b);
@@ -122,10 +122,12 @@ void setup(){
 boolean downloadWaiting = false;
 char* cacheFilename = "TMP";
 unsigned long content_length = 0;
+boolean statusOk = false;
 
 void checkForDownload() {
   unsigned long length = 0;
   content_length = 0;
+  statusOk = false;
   if (SD.exists(cacheFilename)) {
     if (SD.remove(cacheFilename)) {
       debug("Cleared cache");
@@ -151,6 +153,10 @@ void checkForDownload() {
       debug("Still connected");
       while(client.available()) {
         if (parsingHeader) {
+          client.find("HTTP/1.1 ");
+          char statusCode[4];
+          client.readBytes(statusCode, 3);
+          statusOk = (strcmp(statusCode, "200") == 0);
           client.find("Content-Length: ");
           char c;
           while (isdigit(c = client.read())) {
@@ -172,7 +178,7 @@ void checkForDownload() {
     // Close the connection, and flush any unwritten bytes to the cache.
     client.stop();
     cache.seek(0);
-    boolean success = (content_length == length) && (content_length == cache.size());
+    boolean success = statusOk && (content_length == length) && (content_length == cache.size());
 #ifdef DEBUG
     if (!success) {
       debug2("Failure, content length was ", content_length);
