@@ -38,10 +38,13 @@ const byte buttonPin = 3;      // the print button
 
 #define DEBUG
 #ifdef DEBUG
-void debug(char *a) {
-  Serial.print(millis()); Serial.print(": "); Serial.println(a);
+void debugTimeAndSeparator() {
+  Serial.print(millis()); Serial.print(": ");
 }
-#define debug2(a, b) Serial.print(millis()); Serial.print(": "); Serial.print(a); Serial.println(b);
+void debug(char *a) {
+  debugTimeAndSeparator(); Serial.println(a);
+}
+#define debug2(a, b) debugTimeAndSeparator(); Serial.print(a); Serial.println(b);
 #else
 #define debug(a)
 #define debug2(a, b)
