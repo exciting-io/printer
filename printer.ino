@@ -6,7 +6,7 @@
 #include <SoftwareSerial.h>
 #include <Bounce.h>
 
-// ------- Settings for YOU to change if you want ---------------------
+// -- Settings for YOU to change if you want
 
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; // physical mac address
 
@@ -33,10 +33,15 @@ const byte errorLED = 7;       // the red LED
 const byte downloadLED = 6;    // the amber LED
 const byte readyLED = 5;       // the green LED
 const byte buttonPin = 3;      // the print button
+const byte SD_Pin = 4;         // the SD Card SPI pin
 
-// --------------------------------------------------------------------
+#define DEBUG // When debug is enabled, log a bunch of stuff to the hardware Serial
 
-#define DEBUG
+// -- Everything below here can be left alone
+
+
+// -- Debugging
+
 #ifdef DEBUG
 void debugTimeAndSeparator() {
   Serial.print(millis()); Serial.print(": ");
@@ -49,6 +54,9 @@ void debug(char *a) {
 #define debug(a)
 #define debug2(a, b)
 #endif
+
+
+// -- Initialize the printer ID
 
 const byte idAddress = 0;
 char printerId[17]; // the unique ID for this printer.
@@ -72,6 +80,9 @@ inline void initSettings() {
   debug2("Printer ID: ", printerId);
 }
 
+
+// -- Initialize the LEDs
+
 inline void initDiagnosticLEDs() {
   pinMode(errorLED, OUTPUT);
   pinMode(downloadLED, OUTPUT);
@@ -85,6 +96,8 @@ inline void initDiagnosticLEDs() {
   digitalWrite(readyLED, LOW);
 }
 
+// -- Initialize the printer connection
+
 SoftwareSerial *printer;
 #define PRINTER_WRITE(b) printer->write(b)
 
@@ -93,11 +106,16 @@ inline void initPrinter() {
   printer->begin(19200);
 }
 
-const byte SD_Pin = 4;
+
+// -- Initialize the SD card
+
 inline void initSD() {
   pinMode(SD_Pin, OUTPUT);
   SD.begin(SD_Pin);
 }
+
+
+// -- Initialize the Ethernet connection & DHCP
 
 EthernetClient client;
 inline void initNetwork() {
@@ -112,6 +130,9 @@ inline void initNetwork() {
   debug2("IP address: ", Ethernet.localIP());
 }
 
+
+// -- Setup; runs once on boot.
+
 void setup(){
 #ifdef DEBUG
   Serial.begin(9600);
@@ -123,6 +144,9 @@ void setup(){
   initPrinter();
   initDiagnosticLEDs();
 }
+
+
+// -- Check for new data and download if found
 
 boolean downloadWaiting = false;
 char* cacheFilename = "TMP";
@@ -226,6 +250,9 @@ void checkForDownload() {
   }
 }
 
+
+// -- Print send any data from the cache to the printer
+
 inline void printFromDownload() {
   File cache = SD.open(cacheFilename);
   byte b;
@@ -234,7 +261,12 @@ inline void printFromDownload() {
     PRINTER_WRITE(b);
   }
   cache.close();
+  downloadWaiting = false;
+  digitalWrite(readyLED, LOW);
 }
+
+
+// -- Check for new data, print if the button is pressed.
 
 Bounce bouncer = Bounce(buttonPin, 5); // 5 millisecond debounce
 
@@ -243,8 +275,6 @@ void loop() {
     bouncer.update();
     if (bouncer.read() == HIGH) {
       printFromDownload();
-      downloadWaiting = false;
-      digitalWrite(readyLED, LOW);
     }
   } else {
     delay(pollingDelay);
