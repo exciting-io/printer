@@ -17,33 +17,6 @@ describe BackendServer::App do
     Resque.stubs(:enqueue)
   end
 
-  describe "polling printers" do
-    describe "with no data" do
-      it "returns an empty response" do
-        get "/printer/1"
-        last_response.body.must_be_empty
-      end
-    end
-
-    describe "where data exists" do
-      it "returns the data as the message body" do
-        printer = RemotePrinter.new("1")
-        RemotePrinter.stubs(:find).with("1").returns(printer)
-        printer.stubs(:data_to_print).returns("data")
-        get "/printer/1"
-        last_response.body.must_equal "data"
-      end
-    end
-
-    it "updates our record of the remote printer" do
-      printer = RemotePrinter.new("1")
-      RemotePrinter.stubs(:find).with("1").returns(printer)
-      printer.expects(:update).with(has_entries(type: "A2-bitmap", ip: "192.168.1.1"))
-      get "/printer/1", {}, {"HTTP_ACCEPT" => "application/vnd.freerange.printer.A2-bitmap",
-                             "REMOTE_ADDR" => "192.168.1.1"}
-    end
-  end
-
   describe "print submissions" do
     describe "when requested via GET without content or a URL" do
       it "directs people to the API" do
