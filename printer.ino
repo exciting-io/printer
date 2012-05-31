@@ -38,7 +38,9 @@ const byte buttonPin = 3;      // the print button
 
 #define DEBUG
 #ifdef DEBUG
-#define debug(a) Serial.print(millis()); Serial.print(": "); Serial.println(a);
+void debug(char *a) {
+  Serial.print(millis()); Serial.print(": "); Serial.println(a);
+}
 #define debug2(a, b) Serial.print(millis()); Serial.print(": "); Serial.print(a); Serial.println(b);
 #else
 #define debug(a)
@@ -196,7 +198,6 @@ void checkForDownload() {
     unsigned long duration = millis() - start;
     debug2("Total bytes: ", length);
     debug2("Duration: ", duration);
-    debug2("Speed: ", length/(duration/1000.0)); // NB - floating point math increases sketch size by ~2k
 #endif
 
     if (success) {
