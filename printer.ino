@@ -152,6 +152,9 @@ boolean downloadWaiting = false;
 char* cacheFilename = "TMP";
 unsigned long content_length = 0;
 boolean statusOk = false;
+#ifdef DEBUG
+    unsigned long start;
+#endif
 
 void checkForDownload() {
   unsigned long length = 0;
@@ -176,14 +179,14 @@ void checkForDownload() {
     client.println();
     boolean parsingHeader = true;
 #ifdef DEBUG
-    unsigned long start = millis();
+    start = millis();
 #endif
     while(client.connected()) {
       debug("Still connected");
       while(client.available()) {
         if (parsingHeader) {
           client.find("HTTP/1.1 ");
-          char statusCode[4];
+          char *statusCode = "xxx";
           client.readBytes(statusCode, 3);
           statusOk = (strcmp(statusCode, "200") == 0);
           client.find("Content-Length: ");
@@ -207,49 +210,53 @@ void checkForDownload() {
     // Close the connection, and flush any unwritten bytes to the cache.
     client.stop();
     cache.seek(0);
-    boolean success = statusOk && (content_length == length) && (content_length == cache.size());
-#ifdef DEBUG
-    if (!success) {
-      debug2("Failure, content length was ", content_length);
-      if (content_length != length) {
-        debug2("but length was ", length);
+
+    if (statusOk) {
+      if ((content_length == length) && (content_length == cache.size())) {
+        if (content_length > 0) {
+          downloadWaiting = true;
+          digitalWrite(readyLED, HIGH);
+        }
+      } else {
+        debug2("Failure, content length was ", content_length);
+        if (content_length != length)
+          debug2("but length was ", length);
+        if (content_length != cache.size())
+          debug2("but cache size was ", cache.size());
+        systemError(); // you should probably reboot
       }
-      if (content_length != cache.size()) {
-        debug2("but cache size was ", cache.size());
-      }
+    } else {
+      debug("Response code wasn't 200");
+      recoverableError();
     }
-#endif
-    cache.close();
+  } else {
+    debug("Couldn't connect");
+    recoverableError();
+  }
+
+  cache.close();
 
 #ifdef DEBUG
     unsigned long duration = millis() - start;
     debug2("Total bytes: ", length);
     debug2("Duration: ", duration);
 #endif
+}
 
-    if (success) {
-      if (content_length > 0) {
-        downloadWaiting = true;
-        digitalWrite(readyLED, HIGH);
-      }
-    } else {
-      debug("Oh no, a failure.");
-      digitalWrite(errorLED, HIGH);
-      digitalWrite(downloadLED, HIGH);
-    }
-  } else {
-    debug("Couldn't connect");
-    cache.close();
-    byte i = 5;
-    while(i--) {
-      digitalWrite(errorLED, HIGH);
-      delay(100);
-      digitalWrite(errorLED, LOW);
-      delay(100);
-    }
+inline void recoverableError() {
+  byte i = 5;
+  while(i--) {
+    digitalWrite(errorLED, HIGH);
+    delay(100);
+    digitalWrite(errorLED, LOW);
+    delay(100);
   }
 }
 
+inline void systemError() {
+  digitalWrite(errorLED, HIGH);
+  // ... and stay on.
+}
 
 // -- Print send any data from the cache to the printer
 
@@ -277,7 +284,9 @@ void loop() {
       printFromDownload();
     }
   } else {
-    delay(pollingDelay);
     checkForDownload();
+    if (!downloadWaiting) {
+      delay(pollingDelay);
+    }
   }
 }
