@@ -23,7 +23,8 @@ class RemotePrinter
   end
 
   def update(params)
-    DataStore.redis.hset(key, "type", params[:type])
+    attributes_to_store = params.reject { |k,_| k == :ip }.inject([]) { |a, (k,v)| a + [k.to_s,v] }
+    DataStore.redis.hmset(key, *attributes_to_store) if attributes_to_store.any?
     now = Time.now.to_i
     ip_key = "ip:#{params[:ip]}"
     DataStore.redis.zadd(ip_key, now, id)

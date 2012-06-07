@@ -12,7 +12,7 @@ class BackendServer::Polling < BackendServer::Base
 
   def remote_printer_params(params)
     type = env["HTTP_ACCEPT"] ? env["HTTP_ACCEPT"].split("application/vnd.freerange.printer.").last : nil
-    version = env["X-Printer-Version"] || "Unknown"
+    version = env["HTTP_X_PRINTER_VERSION"] || "Unknown"
     {type: type, ip: request.ip, version: version}
   end
 end

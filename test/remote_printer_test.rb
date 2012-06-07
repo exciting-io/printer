@@ -4,9 +4,9 @@ require "print_processor"
 
 describe RemotePrinter do
   describe "updating" do
-    it "stores the printer data" do
-      DataStore.redis.expects(:hset).with("printers:123abc", "type", "printer-type")
-      RemotePrinter.find("123abc").update(type: "printer-type")
+    it "stores any printer attributes except IP" do
+      DataStore.redis.expects(:hmset).with("printers:123abc", "type", "printer-type", "version", "1.0.1")
+      RemotePrinter.find("123abc").update(type: "printer-type", version: "1.0.1", ip: "do-not-store")
     end
 
     it "stores the remote IP for a short time" do

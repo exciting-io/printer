@@ -37,7 +37,7 @@ describe BackendServer::Polling do
     let(:cgi_env) do
       {"HTTP_ACCEPT" => "application/vnd.freerange.printer.A2-bitmap",
        "REMOTE_ADDR" => "192.168.1.1",
-       "X-Printer-Version" => "1.0.1"}
+       "HTTP_X_PRINTER_VERSION" => "1.0.1"}
     end
 
     before do
@@ -54,7 +54,7 @@ describe BackendServer::Polling do
       get "/printer/1", {}, cgi_env
     end
 
-    it "extracts the version from the X-Printer-Version header" do
+    it "extracts the version from the HTTP_X_PRINTER_VERSION header" do
       printer.expects(:update).with(has_entry(version: "1.0.1"))
       get "/printer/1", {}, cgi_env
     end
