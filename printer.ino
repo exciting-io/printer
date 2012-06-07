@@ -8,7 +8,7 @@
 
 // -- Settings for YOU to change if you want
 
-byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x86, 0x67 }; // physical mac address
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // physical mac address
 
 // The printerType controls the format of the data sent from the server
 // If you're using a completely different kind of printer, change this
