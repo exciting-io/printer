@@ -22,6 +22,11 @@ describe RemotePrinter do
       RemotePrinter.find("123abc").type.must_equal "printer-type"
     end
 
+    it "returns the software version for the stored printer" do
+      DataStore.redis.stubs(:hget).with("printers:123abc", "version").returns("printer-version")
+      RemotePrinter.find("123abc").version.must_equal "printer-version"
+    end
+
     it "returns the width for the printer according to its type" do
       DataStore.redis.stubs(:hget).with("printers:123abc", "type").returns("printer-type")
       PrintProcessor.stubs(:for).with("printer-type").returns(stub('print_processor', width: 123))

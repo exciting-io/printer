@@ -27,7 +27,7 @@ describe BackendServer::Settings do
 
   describe "with a single nearby printer" do
     before do
-      printer = stub("remote_printer", id: "printer-id", type: "printer-type")
+      printer = stub("remote_printer", id: "printer-id", type: "printer-type", version: "printer-version")
       RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns([printer])
       get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
     end
@@ -53,8 +53,8 @@ describe BackendServer::Settings do
 
   describe "with multiple nearby printers" do
     before do
-      printer = stub("remote_printer", id: "printer-id", type: "printer-type")
-      printer2 = stub("remote_printer", id: "printer-id-2", type: "printer-type")
+      printer = stub("remote_printer", id: "printer-id", type: "printer-type", version: "printer-version")
+      printer2 = stub("remote_printer", id: "printer-id-2", type: "printer-type", version: "printer-version")
       RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns([printer, printer2])
       get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
     end
@@ -72,7 +72,7 @@ describe BackendServer::Settings do
 
   describe "generating a test print" do
     before do
-      printer = stub("remote_printer", id: "printer-id", type: "printer-type")
+      printer = stub("remote_printer", id: "printer-id", type: "printer-type", version: "printer-version")
       RemotePrinter.stubs(:find).with("printer-id").returns(printer)
       get "/my-printer/printer-id/test-page"
     end

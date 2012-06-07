@@ -34,6 +34,10 @@ class RemotePrinter
     DataStore.redis.hget(key, "type")
   end
 
+  def version
+    DataStore.redis.hget(key, "version")
+  end
+
   def width
     PrintProcessor.for(type).width
   end

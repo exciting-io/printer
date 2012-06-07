@@ -5,6 +5,7 @@
       <% @printers.each do |printer| %>
         <section id="printer_<%= printer.id %>">
           <p>Type: <%= printer.type %></p>
+          <p>Software version: <%= printer.version %></p>
           <p>Print URL: <pre class="print_url"><%= print_url(printer) %></pre></p>
           <p><a href="<%= print_url(printer) %>?url=<%= URI.escape(url("/#{printer.id}/test-page")) %>">Print test page</a></p>
           <p><form action="<%= print_url(printer) %>" method="POST">
