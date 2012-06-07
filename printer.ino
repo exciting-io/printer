@@ -63,7 +63,7 @@ char printerId[17]; // the unique ID for this printer.
 
 inline void initSettings() {
   if ((EEPROM.read(idAddress) == 255) || (EEPROM.read(idAddress+1) == 255)) {
-    debug("Generating new printer ID.");
+    debug("Generating new ID");
     randomSeed(analogRead(0) * analogRead(5));
     for(int i = 0; i < 16; i += 2) {
       printerId[i] = random(48, 57); // 0-9
@@ -77,7 +77,7 @@ inline void initSettings() {
     }
   }
   printerId[16] = '\0';
-  debug2("Printer ID: ", printerId);
+  debug2("ID: ", printerId);
 }
 
 
@@ -121,13 +121,13 @@ EthernetClient client;
 inline void initNetwork() {
   // start the Ethernet connection:
   if (Ethernet.begin(mac) == 0) {
-    debug("DHCP Failed");
+    debug("DHCP Fail!");
     // no point in carrying on, so do nothing forevermore:
     while(true);
   }
   delay(1000);
   // print your local IP address:
-  debug2("IP address: ", Ethernet.localIP());
+  debug2("IP: ", Ethernet.localIP());
 }
 
 
@@ -166,7 +166,7 @@ void checkForDownload() {
     if (SD.remove(cacheFilename)) {
       debug("Cleared cache");
     } else {
-      debug("Failed to clear cache for some reason");
+      debug("Failed to clear cache");
     }
   }
   File cache = SD.open(cacheFilename, FILE_WRITE);
@@ -198,7 +198,7 @@ void checkForDownload() {
           while (isdigit(c = client.read())) {
             content_length = content_length*10 + (c - '0');
           }
-          debug2("Content length was: ", content_length);
+          debug2("Content length: ", content_length);
           client.find("\n\r\n"); // the first \r may already have been read above
           parsingHeader = false;
         } else {
@@ -206,10 +206,10 @@ void checkForDownload() {
           length++;
         }
       }
-      debug("No more data to read at the moment...");
+      debug("Waiting for data");
     }
 
-    debug("Server has disconnected");
+    debug("Server disconnected");
     digitalWrite(downloadLED, LOW);
     // Close the connection, and flush any unwritten bytes to the cache.
     client.stop();
@@ -224,9 +224,9 @@ void checkForDownload() {
       }
 #ifdef DEBUG
       else {
-        debug2("Failure, content length was ", content_length);
-        if (content_length != length) debug2("but length was ", length);
-        if (content_length != cache.size()) debug2("but cache size was ", cache.size());
+        debug2("Failure, content length: ", content_length);
+        if (content_length != length) debug2("length: ", length);
+        if (content_length != cache.size()) debug2("cache: ", cache.size());
         systemError();
       }
 #endif
@@ -243,7 +243,7 @@ void checkForDownload() {
 
 #ifdef DEBUG
   unsigned long duration = millis() - start;
-  debug2("Total bytes: ", length);
+  debug2("Bytes: ", length);
   debug2("Duration: ", duration);
 #endif
 }
