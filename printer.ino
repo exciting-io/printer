@@ -39,6 +39,7 @@ const byte SD_Pin = 4;         // the SD Card SPI pin
 
 // -- Everything below here can be left alone
 
+const char* sketchVersion = "1.0.1";
 
 // -- Debugging
 
@@ -177,7 +178,9 @@ void checkForDownload() {
     digitalWrite(downloadLED, HIGH);
     client.print("GET "); client.print("/printer/"); client.print(printerId); client.println(" HTTP/1.0");
     client.print("Host: "); client.print(host); client.print(":"); client.println(port);
+    client.flush();
     client.print("Accept: application/vnd.freerange.printer."); client.println(printerType);
+    client.print("X-Printer-Version: "); client.println(sketchVersion);
     client.println();
     boolean parsingHeader = true;
 
