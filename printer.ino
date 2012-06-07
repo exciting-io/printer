@@ -39,7 +39,7 @@ const byte SD_Pin = 4;         // the SD Card SPI pin
 
 // -- Everything below here can be left alone
 
-const char* sketchVersion = "1.0.1";
+const char* sketchVersion = "1.0.2";
 
 // -- Debugging
 
