@@ -8,6 +8,9 @@ class BackendServer::Base < Sinatra::Base
 
   set :protection, :except => :json_csrf
 
+  set :show_exceptions, ENV["RACK_ENV"] != "test"
+  set :raise_errors, ENV["RACK_ENV"] == "test"
+
   private
 
   def absolute_url_for_path(path)
