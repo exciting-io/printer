@@ -9,11 +9,20 @@ class RemotePrinter
   end
 
   def self.find_by_ip(ip)
-    ip_key = "ip:#{ip}"
+    if ip == "127.0.0.1"
+      ip_key = "ip:#{find_local_printer_ip}"
+    else
+      ip_key = "ip:#{ip}"
+    end
     now = Time.now.to_i
     DataStore.redis.zremrangebyscore(ip_key, 0, now-60)
     ids = DataStore.redis.zrangebyscore(ip_key, now-60, now)
     ids.map { |id| find(id) }
+  end
+
+  def self.find_local_printer_ip
+    possible_keys = DataStore.redis.keys("ip:192.168.1*")
+    possible_keys.first.split(":").last
   end
 
   attr_reader :id
