@@ -9,10 +9,20 @@ describe RemotePrinter do
       RemotePrinter.find("123abc").update(type: "printer-type", version: "1.0.1", ip: "do-not-store")
     end
 
+    it "stores any other attributes" do
+      DataStore.redis.expects(:hmset).with("printers:123abc", "darkness", "123", "flipped", "false")
+      RemotePrinter.find("123abc").update(darkness: "123", flipped: "false")
+    end
+
     it "stores the remote IP for a short time" do
       Time.stubs(:now).returns(stub('time', to_i: 1000))
       DataStore.redis.expects(:zadd).with("ip:192.168.1.1", 1000, "printer-id")
       RemotePrinter.find("printer-id").update(ip: "192.168.1.1")
+    end
+
+    it "does not overwrite IP if it wasn't present" do
+      DataStore.redis.expects(:zadd).never
+      RemotePrinter.find("printer-id").update(attribute: "value")
     end
   end
 
@@ -70,6 +80,42 @@ describe RemotePrinter do
 
     let(:data) { {"width" => 8, "height" => 8, "pixels" => []} }
 
+    it "defaults the darkness to 240" do
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "darkness").returns(nil)
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "type").returns("A2-raw")
+      RemotePrinter.new("printer-id").darkness.must_equal 240
+    end
+
+    it "uses darkness from the type if none is stored" do
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "darkness").returns(nil)
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "type").returns("A2-raw.145")
+      RemotePrinter.new("printer-id").darkness.must_equal 145
+    end
+
+    it "returns the stored darkness attribute" do
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "darkness").returns("120")
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "type").returns("A2-raw")
+      RemotePrinter.new("printer-id").darkness.must_equal 120
+    end
+
+    it "defaults flipped to false" do
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "flipped").returns(nil)
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "type").returns("A2-raw")
+      RemotePrinter.new("printer-id").flipped.must_equal false
+    end
+
+    it "uses flipped from the type if none is stored" do
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "flipped").returns(nil)
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "type").returns("A2-raw.123.flipped")
+      RemotePrinter.new("printer-id").flipped.must_equal true
+    end
+
+    it "returns the stored flipped attribute" do
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "flipped").returns("true")
+      DataStore.redis.stubs(:hget).with("printers:printer-id", "type").returns("A2-raw")
+      RemotePrinter.new("printer-id").flipped.must_equal true
+    end
+
     describe "adding a print" do
       subject do
         printer = RemotePrinter.new("printer-id")
@@ -107,7 +153,7 @@ describe RemotePrinter do
 
       it "sends the data through a print processor" do
         queue_for_printer.stubs(:pop).returns("print_id" => "print-id")
-        PrintProcessor.expects(:for).with("A2-bitmap").returns(processor = stub("processor"))
+        PrintProcessor.expects(:for).with(subject).returns(processor = stub("processor"))
         processor.expects(:process).with(data).returns("data-for-printer")
         subject.data_to_print.must_equal "data-for-printer"
       end

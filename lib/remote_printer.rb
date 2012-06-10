@@ -35,12 +35,36 @@ class RemotePrinter
     attributes_to_store = params.reject { |k,_| k == :ip }.inject([]) { |a, (k,v)| a + [k.to_s,v] }
     DataStore.redis.hmset(key, *attributes_to_store) if attributes_to_store.any?
     now = Time.now.to_i
-    ip_key = "ip:#{params[:ip]}"
-    DataStore.redis.zadd(ip_key, now, id)
+    if params[:ip]
+      ip_key = "ip:#{params[:ip]}"
+      DataStore.redis.zadd(ip_key, now, id)
+    end
   end
 
   def type
     DataStore.redis.hget(key, "type")
+  end
+
+  def darkness
+    stored_value = DataStore.redis.hget(key, "darkness")
+    if stored_value
+      stored_value.to_i
+    elsif type.split(".").length >= 2
+      type.split(".")[1].to_i
+    else
+      240
+    end
+  end
+
+  def flipped
+    stored_value = DataStore.redis.hget(key, "flipped")
+    if stored_value
+      stored_value == "true"
+    elsif type.split(".").length == 3
+      true
+    else
+      false
+    end
   end
 
   def version
@@ -57,7 +81,7 @@ class RemotePrinter
       print = archive.find(print_info["print_id"])
       if print
         data = {"width" => print.width, "height" => print.height, "pixels" => print.pixels}
-        PrintProcessor.for(type).process(data)
+        PrintProcessor.for(self).process(data)
       end
     end
   end

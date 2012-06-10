@@ -8,6 +8,10 @@ ENV['RACK_ENV'] = 'test'
 describe BackendServer::Settings do
   include Rack::Test::Methods
 
+  def stub_printer(id="printer-id")
+    stub("remote_printer", id: id, type: "printer-type", version: "printer-version", darkness: 123, flipped: false)
+  end
+
   def app
     Rack::Builder.new do
       map("/my-printer") { run BackendServer::Settings }
@@ -27,7 +31,7 @@ describe BackendServer::Settings do
 
   describe "with a single nearby printer" do
     before do
-      printer = stub("remote_printer", id: "printer-id", type: "printer-type", version: "printer-version")
+      printer = stub_printer
       RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns([printer])
       get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
     end
@@ -53,8 +57,8 @@ describe BackendServer::Settings do
 
   describe "with multiple nearby printers" do
     before do
-      printer = stub("remote_printer", id: "printer-id", type: "printer-type", version: "printer-version")
-      printer2 = stub("remote_printer", id: "printer-id-2", type: "printer-type", version: "printer-version")
+      printer = stub_printer("printer-id")
+      printer2 = stub_printer("printer-id-2")
       RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns([printer, printer2])
       get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
     end
@@ -72,7 +76,7 @@ describe BackendServer::Settings do
 
   describe "generating a test print" do
     before do
-      printer = stub("remote_printer", id: "printer-id", type: "printer-type", version: "printer-version")
+      printer = stub_printer
       RemotePrinter.stubs(:find).with("printer-id").returns(printer)
       get "/my-printer/printer-id/test-page"
     end
@@ -87,6 +91,31 @@ describe BackendServer::Settings do
 
     it "should show the printer URL" do
       last_response.body.must_match url_regexp("/print/printer-id")
+    end
+  end
+
+  describe "updating a printer" do
+    let(:printer) { stub_printer }
+
+    before do
+      RemotePrinter.stubs(:find).with("printer-id").returns(printer)
+    end
+
+    it "should store darkness if it was present" do
+      printer.expects(:update).with("darkness" => "234")
+      put "/my-printer/printer-id", printer: {darkness: "234"}
+    end
+
+    it "should store flipped if it was present" do
+      printer.expects(:update).with("flipped" => "true")
+      put "/my-printer/printer-id", printer: {flipped: "true"}
+    end
+
+    it "should redirect back to the main settings page" do
+      printer.stubs(:update)
+      put "/my-printer/printer-id", printer: {darkness: "234"}
+      last_response.redirect?.must_equal true
+      last_response.location.must_equal "http://example.org/my-printer"
     end
   end
 end

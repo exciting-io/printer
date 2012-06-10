@@ -6,6 +6,13 @@
         <section id="printer_<%= printer.id %>">
           <p>Type: <%= printer.type %></p>
           <p>Software version: <%= printer.version %></p>
+          <p><form action="/my-printer/<%= printer.id %>" method="POST">
+            <input type="hidden" name="_method" value="put" />
+            <label for="printer[darkness]">Darkness: <input name="printer[darkness]" value="<%= printer.darkness %>"></label>
+            <input type="hidden" name="printer[flipped]" value="false" />
+            <label for="printer[flipped]">Flipped?: <input type="checkbox" name="printer[flipped]" value="true" <%= printer.flipped ? "checked=checked" : "" %>/></label>
+            <input type="submit" value="Update printer" />
+            </form></p>
           <p>Print URL: <pre class="print_url"><%= print_url(printer) %></pre></p>
           <p><a href="<%= print_url(printer) %>?url=<%= URI.escape(url("/#{printer.id}/test-page")) %>">Print test page</a></p>
           <p><form action="<%= print_url(printer) %>" method="POST">

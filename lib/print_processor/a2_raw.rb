@@ -4,8 +4,8 @@ require "print_processor/base"
 class PrintProcessor::A2Raw < PrintProcessor::Base
   attr_reader :heat_time, :flipped
 
-  def initialize(heat_time="240", flipped=false)
-    @heat_time = heat_time.to_i
+  def initialize(heat_time=240, flipped=false)
+    @heat_time = heat_time
     @flipped = flipped
   end
 

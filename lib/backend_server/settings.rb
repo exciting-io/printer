@@ -7,6 +7,12 @@ class BackendServer::Settings < BackendServer::Base
     erb :my_printer
   end
 
+  put "/:printer_id" do
+    @printer = RemotePrinter.find(params[:printer_id])
+    @printer.update(params[:printer])
+    redirect "/my-printer"
+  end
+
   get "/:printer_id/test-page" do
     @printer = RemotePrinter.find(params[:printer_id])
     @print_url = print_url(@printer)
