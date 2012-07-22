@@ -148,7 +148,7 @@ void setup(){
 
 // -- Flag to indicate whether we've encountered an irrecoverable error
 
-boolean systemError = false;
+boolean systemOK = true;
 
 // -- Check for new data and download if found
 
@@ -159,7 +159,7 @@ boolean statusOk = false;
 
 void abortDueToCacheFailure() {
   flashErrorLEDs(3, 500);
-  systemError = true;
+  systemOK = false;
   digitalWrite(errorLED, HIGH);
 }
 
@@ -294,7 +294,7 @@ inline void printFromDownload() {
 Bounce bouncer = Bounce(buttonPin, 5); // 5 millisecond debounce
 
 void loop() {
-  if (!systemError) {
+  if (systemOK) {
     if (downloadWaiting) {
       bouncer.update();
       if (bouncer.read() == HIGH) {
