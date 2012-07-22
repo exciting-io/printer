@@ -158,11 +158,7 @@ unsigned long content_length = 0;
 boolean statusOk = false;
 
 void abortDueToCacheFailure() {
-  delay(1000);
-  for(int i = 1; i <= 3; i++) {
-    digitalWrite(errorLED, HIGH); delay(500);
-    digitalWrite(errorLED, LOW); delay(500);
-  }
+  flashErrorLEDs(3, 500);
   systemError = true;
   digitalWrite(errorLED, HIGH);
 }
@@ -266,14 +262,16 @@ void checkForDownload() {
 #endif
 }
 
-inline void recoverableError() {
-  byte i = 5;
-  while(i--) {
-    digitalWrite(errorLED, HIGH);
-    delay(100);
-    digitalWrite(errorLED, LOW);
-    delay(100);
+void flashErrorLEDs(unsigned int times, unsigned int pause) {
+  delay(pause);
+  for(int i = 1; i <= times; i++) {
+    digitalWrite(errorLED, HIGH); delay(pause);
+    digitalWrite(errorLED, LOW); delay(pause);
   }
+}
+
+inline void recoverableError() {
+  flashErrorLEDs(5, 100);
 }
 
 // -- Print send any data from the cache to the printer
