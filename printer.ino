@@ -95,6 +95,7 @@ inline void initDiagnosticLEDs() {
   digitalWrite(errorLED, LOW);
   digitalWrite(downloadLED, LOW);
   digitalWrite(readyLED, LOW);
+  delay(500);
 }
 
 // -- Initialize the printer connection
@@ -146,6 +147,9 @@ void setup(){
   initDiagnosticLEDs();
 }
 
+// -- Flag to indicate whether we've encountered an irrecoverable error
+
+boolean systemOK = true;
 
 // -- Check for new data and download if found
 
@@ -167,7 +171,9 @@ void checkForDownload() {
     if (SD.remove(cacheFilename)) {
       debug("Cleared cache");
     } else {
-      debug("Failed to clear cache");
+      debug("Failed to clear cache. Aborting.");
+      terminalError();
+      return;
     }
   }
   File cache = SD.open(cacheFilename, FILE_WRITE);
@@ -230,7 +236,7 @@ void checkForDownload() {
         debug2("Failure, content length: ", content_length);
         if (content_length != length) debug2("length: ", length);
         if (content_length != cache.size()) debug2("cache: ", cache.size());
-        systemError();
+        digitalWrite(errorLED, HIGH);
       }
 #endif
     } else {
@@ -251,19 +257,21 @@ void checkForDownload() {
 #endif
 }
 
-inline void recoverableError() {
-  byte i = 5;
-  while(i--) {
-    digitalWrite(errorLED, HIGH);
-    delay(100);
-    digitalWrite(errorLED, LOW);
-    delay(100);
+void flashErrorLEDs(unsigned int times, unsigned int pause) {
+  while (times--) {
+    digitalWrite(errorLED, HIGH); delay(pause);
+    digitalWrite(errorLED, LOW); delay(pause);
   }
 }
 
-inline void systemError() {
+inline void recoverableError() {
+  flashErrorLEDs(5, 100);
+}
+
+inline void terminalError() {
+  flashErrorLEDs(3, 500);
+  systemOK = false;
   digitalWrite(errorLED, HIGH);
-  // ... and stay on.
 }
 
 // -- Print send any data from the cache to the printer
@@ -286,15 +294,17 @@ inline void printFromDownload() {
 Bounce bouncer = Bounce(buttonPin, 5); // 5 millisecond debounce
 
 void loop() {
-  if (downloadWaiting) {
-    bouncer.update();
-    if (bouncer.read() == HIGH) {
-      printFromDownload();
-    }
-  } else {
-    checkForDownload();
-    if (!downloadWaiting) {
-      delay(pollingDelay);
+  if (systemOK) {
+    if (downloadWaiting) {
+      bouncer.update();
+      if (bouncer.read() == HIGH) {
+        printFromDownload();
+      }
+    } else {
+      checkForDownload();
+      if (!downloadWaiting) {
+        delay(pollingDelay);
+      }
     }
   }
 }
