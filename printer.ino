@@ -157,12 +157,6 @@ char* cacheFilename = "TMP";
 unsigned long content_length = 0;
 boolean statusOk = false;
 
-inline void abortDueToCacheFailure() {
-  flashErrorLEDs(3, 500);
-  systemOK = false;
-  digitalWrite(errorLED, HIGH);
-}
-
 void checkForDownload() {
   unsigned long length = 0;
   content_length = 0;
@@ -177,7 +171,7 @@ void checkForDownload() {
       debug("Cleared cache");
     } else {
       debug("Failed to clear cache. Aborting.");
-      abortDueToCacheFailure();
+      terminalError();
       return;
     }
   }
@@ -272,6 +266,12 @@ void flashErrorLEDs(unsigned int times, unsigned int pause) {
 
 inline void recoverableError() {
   flashErrorLEDs(5, 100);
+}
+
+inline void terminalError() {
+  flashErrorLEDs(3, 500);
+  systemOK = false;
+  digitalWrite(errorLED, HIGH);
 }
 
 // -- Print send any data from the cache to the printer
