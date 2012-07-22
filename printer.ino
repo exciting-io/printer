@@ -95,6 +95,7 @@ inline void initDiagnosticLEDs() {
   digitalWrite(errorLED, LOW);
   digitalWrite(downloadLED, LOW);
   digitalWrite(readyLED, LOW);
+  delay(500);
 }
 
 // -- Initialize the printer connection
@@ -257,7 +258,6 @@ void checkForDownload() {
 }
 
 void flashErrorLEDs(unsigned int times, unsigned int pause) {
-  delay(pause);
   while (times--) {
     digitalWrite(errorLED, HIGH); delay(pause);
     digitalWrite(errorLED, LOW); delay(pause);
