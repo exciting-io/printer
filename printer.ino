@@ -157,7 +157,7 @@ char* cacheFilename = "TMP";
 unsigned long content_length = 0;
 boolean statusOk = false;
 
-void abortDueToCacheFailure() {
+inline void abortDueToCacheFailure() {
   flashErrorLEDs(3, 500);
   systemOK = false;
   digitalWrite(errorLED, HIGH);
