@@ -146,10 +146,6 @@ void setup(){
   initPrinter();
 }
 
-// -- Flag to indicate whether we've encountered an irrecoverable error
-
-boolean systemOK = true;
-
 // -- Check for new data and download if found
 
 boolean downloadWaiting = false;
@@ -269,8 +265,8 @@ inline void recoverableError() {
 
 inline void terminalError(unsigned int times) {
   flashErrorLEDs(times, 500);
-  systemOK = false;
   digitalWrite(errorLED, HIGH);
+  while(true);
 }
 
 // -- Print send any data from the cache to the printer
@@ -293,17 +289,15 @@ inline void printFromDownload() {
 Bounce bouncer = Bounce(buttonPin, 5); // 5 millisecond debounce
 
 void loop() {
-  if (systemOK) {
-    if (downloadWaiting) {
-      bouncer.update();
-      if (bouncer.read() == HIGH) {
-        printFromDownload();
-      }
-    } else {
-      checkForDownload();
-      if (!downloadWaiting) {
-        delay(pollingDelay);
-      }
+  if (downloadWaiting) {
+    bouncer.update();
+    if (bouncer.read() == HIGH) {
+      printFromDownload();
+    }
+  } else {
+    checkForDownload();
+    if (!downloadWaiting) {
+      delay(pollingDelay);
     }
   }
 }
