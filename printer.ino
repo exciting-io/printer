@@ -39,7 +39,7 @@ const byte SD_Pin = 4;         // the SD Card SPI pin
 
 // -- Everything below here can be left alone
 
-const char* sketchVersion = "1.0.3";
+const char* sketchVersion = "1.0.4";
 
 // -- Debugging
 
@@ -113,7 +113,10 @@ inline void initPrinter() {
 
 inline void initSD() {
   pinMode(SD_Pin, OUTPUT);
-  SD.begin(SD_Pin);
+  if (!SD.begin(SD_Pin)) {
+    debug("SD Card failure. Aborting.");
+    terminalError(2);
+  }
 }
 
 
@@ -124,7 +127,7 @@ inline void initNetwork() {
   // start the Ethernet connection:
   if (Ethernet.begin(mac) == 0) {
     debug("DHCP Fail!");
-    terminalError(2);
+    terminalError(3);
   }
   delay(1000);
   // print your local IP address:
@@ -166,7 +169,7 @@ void checkForDownload() {
       debug("Cleared cache");
     } else {
       debug("Failed to clear cache. Aborting.");
-      terminalError(3);
+      terminalError(4);
       return;
     }
   }
