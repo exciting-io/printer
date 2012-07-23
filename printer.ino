@@ -62,7 +62,7 @@ void debug(char *a) {
 const byte idAddress = 0;
 char printerId[17]; // the unique ID for this printer.
 
-inline void initSettings() {
+inline void initPrinterID() {
   if ((EEPROM.read(idAddress) == 255) || (EEPROM.read(idAddress+1) == 255)) {
     debug("Generating new ID");
     randomSeed(analogRead(0) * analogRead(5));
@@ -139,8 +139,7 @@ void setup(){
 #ifdef DEBUG
   Serial.begin(9600);
 #endif
-
-  initSettings();
+  initPrinterID();
   initSD();
   initNetwork();
   initPrinter();
