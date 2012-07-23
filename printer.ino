@@ -266,6 +266,7 @@ inline void recoverableError() {
 inline void terminalError(unsigned int times) {
   flashErrorLEDs(times, 500);
   digitalWrite(errorLED, HIGH);
+  // no point in carrying on, so do nothing forevermore:
   while(true);
 }
 
