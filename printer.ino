@@ -139,11 +139,11 @@ void setup(){
 #ifdef DEBUG
   Serial.begin(9600);
 #endif
+  initDiagnosticLEDs();
   initPrinterID();
   initSD();
   initNetwork();
   initPrinter();
-  initDiagnosticLEDs();
 }
 
 // -- Flag to indicate whether we've encountered an irrecoverable error
