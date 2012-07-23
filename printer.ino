@@ -171,7 +171,7 @@ void checkForDownload() {
       debug("Cleared cache");
     } else {
       debug("Failed to clear cache. Aborting.");
-      terminalError();
+      terminalError(3);
       return;
     }
   }
@@ -267,8 +267,8 @@ inline void recoverableError() {
   flashErrorLEDs(5, 100);
 }
 
-inline void terminalError() {
-  flashErrorLEDs(3, 500);
+inline void terminalError(unsigned int times) {
+  flashErrorLEDs(times, 500);
   systemOK = false;
   digitalWrite(errorLED, HIGH);
 }
