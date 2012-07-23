@@ -124,8 +124,7 @@ inline void initNetwork() {
   // start the Ethernet connection:
   if (Ethernet.begin(mac) == 0) {
     debug("DHCP Fail!");
-    // no point in carrying on, so do nothing forevermore:
-    while(true);
+    terminalError(2);
   }
   delay(1000);
   // print your local IP address:
