@@ -47,7 +47,7 @@ const char sketchVersion[] = "1.0.4";
 void debugTimeAndSeparator() {
   Serial.print(millis()); Serial.print(": ");
 }
-void debug(char *a) {
+void debug(const char *a) {
   debugTimeAndSeparator(); Serial.println(a);
 }
 #define debug2(a, b) debugTimeAndSeparator(); Serial.print(a); Serial.println(b);
