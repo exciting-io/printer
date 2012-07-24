@@ -187,7 +187,7 @@ void checkForDownload() {
       while(client.available()) {
         if (parsingHeader) {
           client.find("HTTP/1.1 ");
-          char *statusCode = "xxx";
+          char statusCode[] = "xxx";
           client.readBytes(statusCode, 3);
           statusOk = (strcmp(statusCode, "200") == 0);
           client.find("Content-Length: ");
