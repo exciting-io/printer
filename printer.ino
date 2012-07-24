@@ -151,7 +151,7 @@ void setup(){
 // -- Check for new data and download if found
 
 boolean downloadWaiting = false;
-char* cacheFilename = "TMP";
+char cacheFilename[] = "TMP";
 unsigned long content_length = 0;
 boolean statusOk = false;
 
