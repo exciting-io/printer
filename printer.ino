@@ -158,7 +158,7 @@ void checkForDownload() {
   statusOk = false;
 
 #ifdef DEBUG
-    unsigned long start;
+  unsigned long start = millis();
 #endif
 
   if (SD.exists(cacheFilename)) {
@@ -183,10 +183,6 @@ void checkForDownload() {
     client.print("X-Printer-Version: "); client.println(sketchVersion);
     client.println();
     boolean parsingHeader = true;
-
-#ifdef DEBUG
-    start = millis();
-#endif
 
     while(client.connected()) {
       debug("Still connected");
