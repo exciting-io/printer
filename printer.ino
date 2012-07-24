@@ -186,17 +186,17 @@ void checkForDownload() {
     while(client.connected()) {
       while(client.available()) {
         if (parsingHeader) {
-          client.find("HTTP/1.1 ");
+          client.find((char*)"HTTP/1.1 ");
           char statusCode[] = "xxx";
           client.readBytes(statusCode, 3);
           statusOk = (strcmp(statusCode, "200") == 0);
-          client.find("Content-Length: ");
+          client.find((char*)"Content-Length: ");
           char c;
           while (isdigit(c = client.read())) {
             content_length = content_length*10 + (c - '0');
           }
           debug2("Content length: ", content_length);
-          client.find("\n\r\n"); // the first \r may already have been read above
+          client.find((char*)"\n\r\n"); // the first \r may already have been read above
           parsingHeader = false;
         } else {
           cache.write(client.read());
