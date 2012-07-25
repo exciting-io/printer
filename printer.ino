@@ -47,7 +47,7 @@ const char sketchVersion[] = "1.0.4";
 void debugTimeAndSeparator() {
   Serial.print(millis()); Serial.print(": ");
 }
-void debug(char *a) {
+void debug(const char *a) {
   debugTimeAndSeparator(); Serial.println(a);
 }
 #define debug2(a, b) debugTimeAndSeparator(); Serial.print(a); Serial.println(b);
@@ -151,7 +151,7 @@ void setup(){
 // -- Check for new data and download if found
 
 boolean downloadWaiting = false;
-char* cacheFilename = "TMP";
+char cacheFilename[] = "TMP";
 unsigned long content_length = 0;
 boolean statusOk = false;
 
@@ -186,17 +186,17 @@ void checkForDownload() {
     while(client.connected()) {
       while(client.available()) {
         if (parsingHeader) {
-          client.find("HTTP/1.1 ");
-          char *statusCode = "xxx";
+          client.find((char*)"HTTP/1.1 ");
+          char statusCode[] = "xxx";
           client.readBytes(statusCode, 3);
           statusOk = (strcmp(statusCode, "200") == 0);
-          client.find("Content-Length: ");
+          client.find((char*)"Content-Length: ");
           char c;
           while (isdigit(c = client.read())) {
             content_length = content_length*10 + (c - '0');
           }
           debug2("Content length: ", content_length);
-          client.find("\n\r\n"); // the first \r may already have been read above
+          client.find((char*)"\n\r\n"); // the first \r may already have been read above
           parsingHeader = false;
         } else {
           cache.write(client.read());
