@@ -20,9 +20,9 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // physical mac address
 //
 // If you want to flip the vertical orientation of your printouts, append
 // a number and then .flipped, e.g. A2-raw.240.flipped
-const char *printerType = "A2-raw";
+const char printerType[] = "A2-raw";
 
-const char* host = "printer.gofreerange.com"; // the host of the backend server
+const char host[] = "printer.gofreerange.com"; // the host of the backend server
 const unsigned int port = 80;
 
 const unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
@@ -39,7 +39,7 @@ const byte SD_Pin = 4;         // the SD Card SPI pin
 
 // -- Everything below here can be left alone
 
-const char* sketchVersion = "1.0.4";
+const char sketchVersion[] = "1.0.4";
 
 // -- Debugging
 
