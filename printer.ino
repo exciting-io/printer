@@ -123,7 +123,7 @@ EthernetClient client;
 inline void initNetwork() {
   // start the Ethernet connection:
   if (Ethernet.begin(mac) == 0) {
-    debug("DHCP Fail!");
+    // DHCP Failure
     terminalError(2);
   }
   delay(1000);
@@ -162,16 +162,13 @@ void checkForDownload() {
 #endif
 
   if (SD.exists(cacheFilename)) {
-    if (SD.remove(cacheFilename)) {
-      debug("Cleared cache");
-    } else {
-      debug("Failed to clear cache. Aborting.");
+    if (!SD.remove(cacheFilename)) {
+      // Failed to clear cache.
       terminalError(3);
       return;
     }
   }
   File cache = SD.open(cacheFilename, FILE_WRITE);
-  debug2("starting request, cache size is ", cache.size());
 
   debug2("Attempting to connect to ", host);
   if (client.connect(host, port)) {
@@ -185,7 +182,6 @@ void checkForDownload() {
     boolean parsingHeader = true;
 
     while(client.connected()) {
-      debug("Still connected");
       while(client.available()) {
         if (parsingHeader) {
           client.find("HTTP/1.1 ");
