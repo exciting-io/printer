@@ -114,7 +114,7 @@ inline void initPrinter() {
 inline void initSD() {
   pinMode(SD_Pin, OUTPUT);
   if (!SD.begin(SD_Pin)) {
-    debug("SD Card failure. Aborting.");
+    // SD Card failure.
     terminalError(2);
   }
 }
