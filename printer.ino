@@ -165,7 +165,6 @@ void checkForDownload() {
     if (!SD.remove(cacheFilename)) {
       // Failed to clear cache.
       terminalError(3);
-      return;
     }
   }
   File cache = SD.open(cacheFilename, FILE_WRITE);
