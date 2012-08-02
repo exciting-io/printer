@@ -35,7 +35,7 @@ const byte readyLED = 5;       // the green LED
 const byte buttonPin = 3;      // the print button
 const byte SD_Pin = 4;         // the SD Card SPI pin
 
-#define DEBUG // When debug is enabled, log a bunch of stuff to the hardware Serial
+// #define DEBUG // When debug is enabled, log a bunch of stuff to the hardware Serial
 
 // -- Everything below here can be left alone
 
