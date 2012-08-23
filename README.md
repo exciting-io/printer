@@ -48,6 +48,21 @@ You may need to add multiverse sources to apt - see http://askubuntu.com/questio
 You can build PhantomJS by following the instructions they provide at  http://code.google.com/p/phantomjs/wiki/BuildInstructions
 
 
+## Running the server locally
+
+To run the printer server locally, you should simply need to install the bundle
+
+    bundle install
+
+... and then run all the processes using Foreman
+
+    foreman start
+
+This will start the web application and the queue processors.
+
+**Note** that if you're running the local server, you'll also need to update the Ardunio sketch to point at the right port and IP or hostname for the machine you're running the server on.
+
+
 ## Deployment
 
 Deployment is managed by `recap` (https://github.com/freerange/recap), a small, fast, git-based deployment strategy for capistrano.
