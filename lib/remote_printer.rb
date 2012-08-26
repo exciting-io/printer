@@ -16,7 +16,7 @@ class RemotePrinter
     end
     now = Time.now.to_i
     DataStore.redis.zremrangebyscore(ip_key, 0, now-60)
-    ids = DataStore.redis.zrangebyscore(ip_key, now-60, now)
+    ids = DataStore.redis.zrangebyscore(ip_key, now-60, now) || []
     ids.map { |id| find(id) }
   end
 

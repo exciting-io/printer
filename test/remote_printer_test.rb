@@ -63,6 +63,11 @@ describe RemotePrinter do
       DataStore.redis.expects(:zrangebyscore).with("ip:192.168.1.1", anything, anything).returns([])
       RemotePrinter.find_by_ip("192.168.1.1").must_equal []
     end
+
+    it "returns an empty array if no printers have ever connected" do
+      DataStore.redis.stubs(:zrangebyscore).returns(nil)
+      RemotePrinter.find_by_ip("192.168.1.1").must_equal []
+    end
   end
 
   describe "instance" do
