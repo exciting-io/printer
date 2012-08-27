@@ -29,9 +29,9 @@ Dependencies:
 
 * Ruby 1.9.2 or greater
 * Bundler
-* Redis
+* Redis 2.0.0 or greater
 * ImageMagick
-* PhantomJS
+* PhantomJS (1.6.0 or greater recommended for better webfont-handling)
 * Common fonts
 
 Here's the `apt-get` command I ran:
