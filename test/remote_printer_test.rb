@@ -68,6 +68,18 @@ describe Printer::RemotePrinter do
       Printer::DataStore.redis.stubs(:zrangebyscore).returns(nil)
       Printer::RemotePrinter.find_by_ip("192.168.1.1").must_equal []
     end
+
+    describe "on the local network" do
+      it "searches for printers connected from a local subnet IP" do
+        Printer::DataStore.redis.expects(:keys).with("ip:192.168.*").returns(["printer:ip:192.168.2.123"])
+        Printer::RemotePrinter.find_by_ip("127.0.0.1")
+      end
+
+      it "returns nil if no printers have ever connected" do
+        Printer::DataStore.redis.stubs(:keys).with("ip:192.168.*").returns([])
+        Printer::RemotePrinter.find_by_ip("127.0.0.1").must_equal []
+      end
+    end
   end
 
   describe "instance" do
