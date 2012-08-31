@@ -6,6 +6,8 @@ describe Printer::PrintArchive do
     Printer::PrintArchive.new("printer-id")
   end
 
+  let(:redis) { Printer::DataStore.redis }
+
   let(:data) do
     {width: 8, height: 8, pixels: []}
   end
@@ -17,7 +19,7 @@ describe Printer::PrintArchive do
 
     it "stores the print data" do
       data_with_id_and_timestamps = data.merge(created_at: Time.now, id: "random-print-id")
-      Printer::DataStore.redis.expects(:hset).with("printers:printer-id:prints", "random-print-id", MultiJson.encode(data_with_id_and_timestamps))
+      redis.expects(:hset).with("printers:printer-id:prints", "random-print-id", MultiJson.encode(data_with_id_and_timestamps))
       subject.store(width: 8, height: 8, pixels: [])
     end
 
@@ -32,7 +34,7 @@ describe Printer::PrintArchive do
 
   describe "retrieving a print" do
     it "returns a Print" do
-      Printer::DataStore.redis.stubs(:hget).with("printers:printer-id:prints", "random-print-id").returns(MultiJson.encode(data.merge(id: "random-print-id")))
+      redis.stubs(:hget).with("printers:printer-id:prints", "random-print-id").returns(MultiJson.encode(data.merge(id: "random-print-id")))
       print = subject.find("random-print-id")
       print.width.must_equal 8
       print.height.must_equal 8
@@ -41,14 +43,14 @@ describe Printer::PrintArchive do
     end
 
     it "returns nil if the print didn't exist" do
-      Printer::DataStore.redis.stubs(:hget).returns(nil)
+      redis.stubs(:hget).returns(nil)
       subject.find("random-print-id").must_be_nil
     end
   end
 
   describe "retrieving print ids" do
     it "returns all print IDs" do
-      Printer::DataStore.redis.stubs(:hkeys).with("printers:printer-id:prints").returns(["abc123", "def456"])
+      redis.stubs(:hkeys).with("printers:printer-id:prints").returns(["abc123", "def456"])
       ids = subject.ids
       ids.must_equal ["abc123", "def456"]
     end
@@ -56,7 +58,7 @@ describe Printer::PrintArchive do
 
   describe "retrieving all prints" do
     it "returns all Prints" do
-      Printer::DataStore.redis.stubs(:hvals).with("printers:printer-id:prints").returns([MultiJson.encode(data.merge(id: "1")), MultiJson.encode(data.merge(id: "2"))])
+      redis.stubs(:hvals).with("printers:printer-id:prints").returns([MultiJson.encode(data.merge(id: "1")), MultiJson.encode(data.merge(id: "2"))])
       prints = subject.all
       prints.length.must_equal 2
       prints[0].id.must_equal "1"

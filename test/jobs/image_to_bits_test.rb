@@ -2,9 +2,11 @@ require "test_helper"
 require "printer/jobs"
 
 describe Printer::Jobs::ImageToBits do
+  let(:job) { Printer::Jobs::ImageToBits }
+
   describe "converting to bits" do
     subject do
-      Printer::Jobs::ImageToBits.image_data(fixture_path("8x8.png"))
+      job.image_data(fixture_path("8x8.png"))
     end
 
     it "includes the dimensions of the image" do
@@ -24,7 +26,7 @@ describe Printer::Jobs::ImageToBits do
     end
 
     it "doesn't print transparent pixels" do
-      data = Printer::Jobs::ImageToBits.image_data(fixture_path("8x8-transparent.png"))
+      data = job.image_data(fixture_path("8x8-transparent.png"))
       data[:pixels].must_equal [1,0,0,0,0,0,0,1] + [0]*(8*7)
     end
   end
@@ -33,14 +35,14 @@ describe Printer::Jobs::ImageToBits do
     let(:data) { {width: 8, height: 8, pixels: []} }
 
     before do
-      Printer::Jobs::ImageToBits.stubs(:image_data).with("file_path").returns(data)
+      job.stubs(:image_data).with("file_path").returns(data)
     end
 
     it "sends the data for printing" do
       printer = Printer::RemotePrinter.new("printer-id")
       Printer::RemotePrinter.stubs(:find).with("printer-id").returns(printer)
       printer.expects(:add_print).with(data)
-      Printer::Jobs::ImageToBits.perform("file_path", "printer-id")
+      job.perform("file_path", "printer-id")
     end
   end
 end

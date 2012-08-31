@@ -37,20 +37,20 @@ class Printer::RemotePrinter
 
   def update(params)
     attributes_to_store = params.reject { |k,_| k == :ip }.inject([]) { |a, (k,v)| a + [k.to_s,v] }
-    Printer::DataStore.redis.hmset(key, *attributes_to_store) if attributes_to_store.any?
+    redis.hmset(key, *attributes_to_store) if attributes_to_store.any?
     now = Time.now.to_i
     if params[:ip]
       ip_key = "ip:#{params[:ip]}"
-      Printer::DataStore.redis.zadd(ip_key, now, id)
+      redis.zadd(ip_key, now, id)
     end
   end
 
   def type
-    Printer::DataStore.redis.hget(key, "type")
+    redis.hget(key, "type")
   end
 
   def darkness
-    stored_value = Printer::DataStore.redis.hget(key, "darkness")
+    stored_value = redis.hget(key, "darkness")
     if stored_value
       stored_value.to_i
     elsif type.split(".").length >= 2
@@ -61,7 +61,7 @@ class Printer::RemotePrinter
   end
 
   def flipped
-    stored_value = Printer::DataStore.redis.hget(key, "flipped")
+    stored_value = redis.hget(key, "flipped")
     if stored_value
       stored_value == "true"
     elsif type.split(".").length == 3
@@ -72,7 +72,7 @@ class Printer::RemotePrinter
   end
 
   def version
-    Printer::DataStore.redis.hget(key, "version")
+    redis.hget(key, "version")
   end
 
   def width
@@ -108,6 +108,10 @@ class Printer::RemotePrinter
   end
 
   private
+
+  def redis
+    Printer::DataStore.redis
+  end
 
   def queue
     Printer::PrintQueue.new(id)

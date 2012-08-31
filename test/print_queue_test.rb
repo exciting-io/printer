@@ -6,9 +6,11 @@ describe Printer::PrintQueue do
     Printer::PrintQueue.new("printer-123")
   end
 
+  let(:redis) { Printer::DataStore.redis }
+
   describe "#enqueue" do
     it "puts the json-encoded data with a timestamp into a redis list for that printer" do
-      Printer::DataStore.redis.expects(:lpush).with("printers:printer-123:queue", MultiJson.encode(data: "data", queued_at: Time.now))
+      redis.expects(:lpush).with("printers:printer-123:queue", MultiJson.encode(data: "data", queued_at: Time.now))
       subject.enqueue(data: "data")
     end
   end
@@ -16,7 +18,7 @@ describe Printer::PrintQueue do
   describe "#pop" do
     describe "when no data exists" do
       before do
-        Printer::DataStore.redis.stubs(:lpop).with("printers:printer-123:queue").returns(nil)
+        redis.stubs(:lpop).with("printers:printer-123:queue").returns(nil)
       end
 
       it "returns nil if no print data exists" do
@@ -32,12 +34,12 @@ describe Printer::PrintQueue do
       end
 
       it "removes the print from the queue" do
-        Printer::DataStore.redis.expects(:lpop).with("printers:printer-123:queue")
+        redis.expects(:lpop).with("printers:printer-123:queue")
         subject.pop
       end
 
       it "returns the json-decoded data" do
-        Printer::DataStore.redis.stubs(:lpop).with("printers:printer-123:queue").returns(MultiJson.encode(data))
+        redis.stubs(:lpop).with("printers:printer-123:queue").returns(MultiJson.encode(data))
         subject.pop.must_equal data
       end
     end
