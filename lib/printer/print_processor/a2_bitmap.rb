@@ -1,6 +1,6 @@
-require "print_processor/base"
+require "printer/print_processor/base"
 
-class PrintProcessor::A2Bitmap < PrintProcessor::Base
+class Printer::PrintProcessor::A2Bitmap < Printer::PrintProcessor::Base
   def width
     384
   end

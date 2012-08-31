@@ -1,7 +1,7 @@
 require "test_helper"
-require "print_processor"
+require "printer/print_processor"
 
-describe PrintProcessor do
+describe Printer::PrintProcessor do
   let(:pixels) do
     [1,0,0,0,0,0,0,0,
      0,1,0,0,0,0,0,0,
@@ -18,22 +18,22 @@ describe PrintProcessor do
   end
 
   it "can different print processing by type" do
-    PrintProcessor.for(stub_printer("A2-bitmap")).must_be_instance_of PrintProcessor::A2Bitmap
-    PrintProcessor.for(stub_printer("A2-raw")).must_be_instance_of PrintProcessor::A2Raw
+    Printer::PrintProcessor.for(stub_printer("A2-bitmap")).must_be_instance_of Printer::PrintProcessor::A2Bitmap
+    Printer::PrintProcessor.for(stub_printer("A2-raw")).must_be_instance_of Printer::PrintProcessor::A2Raw
   end
 
   it "passes printer darkness and flipped to the constructor of the print processor" do
-    PrintProcessor::A2Bitmap.expects(:new).with(123, true)
-    PrintProcessor.for(stub_printer("A2-bitmap", 123, true))
+    Printer::PrintProcessor::A2Bitmap.expects(:new).with(123, true)
+    Printer::PrintProcessor.for(stub_printer("A2-bitmap", 123, true))
   end
 
   describe "when processing for A2-bitmap" do
     subject do
-      PrintProcessor.for(stub_printer("A2-bitmap")).process({"width" => 8, "height" => 8, "pixels" => pixels})
+      Printer::PrintProcessor.for(stub_printer("A2-bitmap")).process({"width" => 8, "height" => 8, "pixels" => pixels})
     end
 
     it "returns a width of 384" do
-      PrintProcessor.for(stub_printer("A2-bitmap")).width.must_equal 384
+      Printer::PrintProcessor.for(stub_printer("A2-bitmap")).width.must_equal 384
     end
 
     it "includes the size of the image" do
@@ -46,14 +46,14 @@ describe PrintProcessor do
 
     it "rotates the image so the bottom is printed first" do
       pixels = [0,1,1,0,0,0,0,0] + [0]*(8*7)
-      data = PrintProcessor.for(stub_printer("A2-bitmap")).process({"width" => 8, "height" => 8, "pixels" => pixels})
+      data = Printer::PrintProcessor.for(stub_printer("A2-bitmap")).process({"width" => 8, "height" => 8, "pixels" => pixels})
       data[4..-1].unpack("C*").must_equal [0,0,0,0,0,0,0,6]
     end
   end
 
   describe "when processing for A2-raw" do
     subject do
-      PrintProcessor.for(stub_printer("A2-raw")).process({"width" => 8, "height" => 8, "pixels" => pixels})
+      Printer::PrintProcessor.for(stub_printer("A2-raw")).process({"width" => 8, "height" => 8, "pixels" => pixels})
     end
 
     let(:initialisation_commands) do
@@ -64,7 +64,7 @@ describe PrintProcessor do
     end
 
     it "returns a width of 384" do
-      PrintProcessor.for(stub_printer("A2-raw")).width.must_equal 384
+      Printer::PrintProcessor.for(stub_printer("A2-raw")).width.must_equal 384
     end
 
     it "sends the initialisation commands to the printer" do
@@ -76,7 +76,7 @@ describe PrintProcessor do
       A2Printer.new(commands).begin(150)
       commands.rewind
 
-      data = PrintProcessor.for(stub_printer("A2-raw", 150)).process({"width" => 8, "height" => 8, "pixels" => pixels})
+      data = Printer::PrintProcessor.for(stub_printer("A2-raw", 150)).process({"width" => 8, "height" => 8, "pixels" => pixels})
       data[0, commands.length].must_equal commands.read
     end
 
@@ -91,14 +91,14 @@ describe PrintProcessor do
     it "encodes the body of the image" do
       subject[(initialisation_commands.length+4)..-4].unpack("C*").must_equal [128,64,32,16,8,4,2,1]
     end
-    
+
     it "feeds three lines after the print" do
       subject[-3..-1].unpack("C*").must_equal [10, 10, 10]
     end
-    
+
     it "rotates the image so the bottom is printed first" do
       pixels = [0,1,1,0,0,0,0,0] + [0]*(8*7)
-      data = PrintProcessor.for(stub_printer("A2-raw")).process({"width" => 8, "height" => 8, "pixels" => pixels})
+      data = Printer::PrintProcessor.for(stub_printer("A2-raw")).process({"width" => 8, "height" => 8, "pixels" => pixels})
       data[(initialisation_commands.length+4)..-4].unpack("C*").must_equal [0,0,0,0,0,0,0,6]
     end
 
@@ -108,7 +108,7 @@ describe PrintProcessor do
       commands.rewind
 
       pixels = [0,1,1,0,0,0,0,0] + [0]*(8*7)
-      data = PrintProcessor.for(stub_printer("A2-raw", 240, true)).process({"width" => 8, "height" => 8, "pixels" => pixels})
+      data = Printer::PrintProcessor.for(stub_printer("A2-raw", 240, true)).process({"width" => 8, "height" => 8, "pixels" => pixels})
       data[(initialisation_commands.length+4)..-4].unpack("C*").must_equal [96,0,0,0,0,0,0,0]
     end
   end

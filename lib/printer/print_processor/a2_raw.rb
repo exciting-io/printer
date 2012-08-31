@@ -1,7 +1,7 @@
 require "a2_printer"
-require "print_processor/base"
+require "printer/print_processor/base"
 
-class PrintProcessor::A2Raw < PrintProcessor::Base
+class Printer::PrintProcessor::A2Raw < Printer::PrintProcessor::Base
   attr_reader :heat_time, :flipped
 
   def initialize(heat_time=240, flipped=false)
@@ -21,7 +21,7 @@ class PrintProcessor::A2Raw < PrintProcessor::Base
       rotate_180(data["pixels"])
     end
     pixels.each_slice(8) { |s| bytes << ("0" + s.join).to_i(2) }
-    
+
     printer_commands = StringIO.new
     printer = A2Printer.new(printer_commands)
     printer.begin(heat_time)

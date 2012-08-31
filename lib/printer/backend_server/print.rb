@@ -1,9 +1,9 @@
-require "backend_server/base"
+require "printer/backend_server/base"
 require "resque"
-require "jobs"
-require "content_store"
+require "printer/jobs"
+require "printer/content_store"
 
-class BackendServer::Print < BackendServer::Base
+class Printer::BackendServer::Print < Printer::BackendServer::Base
   get "/:printer_id" do
     if url_to_process
       queue_print(params['printer_id'], url_to_process)
@@ -27,13 +27,13 @@ class BackendServer::Print < BackendServer::Base
   end
 
   def queue_print(printer_id, url)
-    Resque.enqueue(Jobs::PreparePage, url, "384", printer_id)
+    Resque.enqueue(Printer::Jobs::PreparePage, url, "384", printer_id)
     erb :queued
   end
 
   def queue_print_from_content(printer_id, content)
-    path = ContentStore.write_html_content(content)
-    Resque.enqueue(Jobs::PreparePage, absolute_url_for_path(path), "384", printer_id)
+    path = Printer::ContentStore.write_html_content(content)
+    Resque.enqueue(Printer::Jobs::PreparePage, absolute_url_for_path(path), "384", printer_id)
     if request.accept?('application/json')
       respond_with_json(response: "ok")
     else

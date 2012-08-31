@@ -1,27 +1,27 @@
 require "test_helper"
 require "rack/test"
-require "backend_server"
-require "remote_printer"
+require "printer/backend_server"
+require "printer/remote_printer"
 
 ENV['RACK_ENV'] = 'test'
 
-describe BackendServer::Settings do
+describe Printer::BackendServer::Settings do
   include Rack::Test::Methods
 
   def app
     Rack::Builder.new do
-      map("/archive") { run BackendServer::Archive }
+      map("/archive") { run Printer::BackendServer::Archive }
     end
   end
 
   describe "showing the archive" do
     before do
-      printer = RemotePrinter.new("printer-id")
-      RemotePrinter.stubs(:find).with("printer-id").returns(printer)
+      printer = Printer::RemotePrinter.new("printer-id")
+      Printer::RemotePrinter.stubs(:find).with("printer-id").returns(printer)
       printer.stubs(:all_prints).returns([
-        Print.new({"id" => "a1", "width" => 8, "height" => 8, "pixels" => [0]*64}),
-        Print.new({"id" => "b2", "width" => 8, "height" => 8, "pixels" => [0]*64}),
-        Print.new({"id" => "c3", "width" => 8, "height" => 8, "pixels" => [0]*64}),
+        Printer::Print.new({"id" => "a1", "width" => 8, "height" => 8, "pixels" => [0]*64}),
+        Printer::Print.new({"id" => "b2", "width" => 8, "height" => 8, "pixels" => [0]*64}),
+        Printer::Print.new({"id" => "c3", "width" => 8, "height" => 8, "pixels" => [0]*64}),
       ])
 
       get "/archive/printer-id"
@@ -39,9 +39,9 @@ describe BackendServer::Settings do
 
   describe "serving the image" do
     before do
-      printer = RemotePrinter.new("printer-id")
-      RemotePrinter.stubs(:find).with("printer-id").returns(printer)
-      printer.stubs(:find_print).with("abc123").returns(Print.new({"id" => "abc123", "width" => 8, "height" => 8, "pixels" => [0]*64}))
+      printer = Printer::RemotePrinter.new("printer-id")
+      Printer::RemotePrinter.stubs(:find).with("printer-id").returns(printer)
+      printer.stubs(:find_print).with("abc123").returns(Printer::Print.new({"id" => "abc123", "width" => 8, "height" => 8, "pixels" => [0]*64}))
 
       get "/archive/printer-id/image/abc123.png"
     end

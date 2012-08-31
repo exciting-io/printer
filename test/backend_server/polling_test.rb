@@ -1,16 +1,16 @@
 require "test_helper"
 require "rack/test"
-require "backend_server"
-require "remote_printer"
+require "printer/backend_server"
+require "printer/remote_printer"
 
 ENV['RACK_ENV'] = 'test'
 
-describe BackendServer::Polling do
+describe Printer::BackendServer::Polling do
   include Rack::Test::Methods
 
   def app
     Rack::Builder.new do
-      map("/printer") { run BackendServer::Polling }
+      map("/printer") { run Printer::BackendServer::Polling }
     end
   end
 
@@ -23,8 +23,8 @@ describe BackendServer::Polling do
 
   describe "where data exists" do
     it "returns the data as the message body" do
-      printer = RemotePrinter.new("1")
-      RemotePrinter.stubs(:find).with("1").returns(printer)
+      printer = Printer::RemotePrinter.new("1")
+      Printer::RemotePrinter.stubs(:find).with("1").returns(printer)
       printer.stubs(:data_to_print).returns("data")
       get "/printer/1"
       last_response.body.must_equal "data"
@@ -32,7 +32,7 @@ describe BackendServer::Polling do
   end
 
   describe "updating printer information" do
-    let(:printer) { RemotePrinter.new("1") }
+    let(:printer) { Printer::RemotePrinter.new("1") }
 
     let(:cgi_env) do
       {"HTTP_ACCEPT" => "application/vnd.freerange.printer.A2-bitmap",
@@ -41,7 +41,7 @@ describe BackendServer::Polling do
     end
 
     before do
-      RemotePrinter.stubs(:find).with("1").returns(printer)
+      Printer::RemotePrinter.stubs(:find).with("1").returns(printer)
     end
 
     it "parses the type from the HTTP_ACCEPT header" do

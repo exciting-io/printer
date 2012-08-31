@@ -1,13 +1,13 @@
-require "remote_printer"
+require "printer/remote_printer"
 
-class Jobs::ImageToBits
+class Printer::Jobs::ImageToBits
   class << self
     def queue
       :printer_images
     end
 
     def perform(image_path, printer_id)
-      RemotePrinter.find(printer_id).add_print(image_data(image_path))
+      Printer::RemotePrinter.find(printer_id).add_print(image_data(image_path))
     end
 
     def image_data(image_path)

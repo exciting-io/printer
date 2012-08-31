@@ -1,6 +1,6 @@
 #:encoding: utf-8
 
-class FontListing
+class Printer::FontListing
   def fonts
     fonts = self.class.system_font_list.strip.split("\n").map do |f|
       f.split("=")[1].split(",").first

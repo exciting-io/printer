@@ -6,7 +6,7 @@ load "tasks/resque.rake"
 task "resque:setup" => :environment
 task :environment do
   $LOAD_PATH.unshift "lib"
-  require "jobs"
+  require "printer/jobs"
 end
 
 require 'rake/testtask'
@@ -22,8 +22,8 @@ namespace :data do
   desc "Clear out the data"
   task :reset do
     $LOAD_PATH.unshift "lib"
-    require "data_store"
-    DataStore.redis.keys.each { |k| DataStore.redis.del k }
+    require "printer/data_store"
+    Printer::DataStore.redis.keys.each { |k| Printer::DataStore.redis.del k }
   end
 end
 

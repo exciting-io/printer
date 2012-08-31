@@ -1,4 +1,4 @@
-class Print
+class Printer::Print
   attr_reader :id, :width, :height, :pixels, :created_at
 
   def initialize(attributes)

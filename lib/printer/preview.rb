@@ -1,8 +1,8 @@
-require "data_store"
+require "printer/data_store"
 
-class Preview
+class Printer::Preview
   def self.find(id)
-    data = DataStore.redis.hget('previews', id)
+    data = Printer::DataStore.redis.hget('previews', id)
     new(MultiJson.decode(data)) if data
   end
 
@@ -13,7 +13,7 @@ class Preview
     else
       data = {original_url: url, error: data[:error]}
     end
-    DataStore.redis.hset('previews', id, MultiJson.encode(data))
+    Printer::DataStore.redis.hset('previews', id, MultiJson.encode(data))
   end
 
   attr_reader :original_url, :image_path, :error

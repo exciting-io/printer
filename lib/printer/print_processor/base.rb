@@ -1,4 +1,4 @@
-class PrintProcessor::Base
+class Printer::PrintProcessor::Base
   def initialize(*args)
     # noop
   end

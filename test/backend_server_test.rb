@@ -1,16 +1,16 @@
 require "test_helper"
 require "rack/test"
-require "backend_server"
-require "remote_printer"
-require "print_queue"
+require "printer/backend_server"
+require "printer/remote_printer"
+require "printer/print_queue"
 
 ENV['RACK_ENV'] = 'test'
 
-describe BackendServer::App do
+describe Printer::BackendServer::App do
   include Rack::Test::Methods
 
   def app
-    BackendServer::App
+    Printer::BackendServer::App
   end
 
   before do
@@ -32,12 +32,12 @@ describe BackendServer::App do
     end
 
     it "enqueues the url with the printer id" do
-      Resque.expects(:enqueue).with(Jobs::PreparePage, "submitted-url", anything, "1")
+      Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "submitted-url", anything, "1")
       get "/print/1?url=submitted-url"
     end
 
     it "enqueues the job for rendering with a default width of 384 pixels" do
-      Resque.expects(:enqueue).with(Jobs::PreparePage, "submitted-url", "384", "1")
+      Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "submitted-url", "384", "1")
       get "/print/1?url=submitted-url"
     end
 
@@ -53,17 +53,17 @@ describe BackendServer::App do
 
     describe "with content" do
       before do
-        IdGenerator.stubs(:random_id).returns("abc123")
+        Printer::IdGenerator.stubs(:random_id).returns("abc123")
       end
 
       it "stores the content in a publicly-accessible file" do
-        ContentStore.expects(:write_html_content).with("<p>Some content</p>", "abc123").returns("/path/to/file.html")
+        Printer::ContentStore.expects(:write_html_content).with("<p>Some content</p>", "abc123").returns("/path/to/file.html")
         post "/preview", {content: "<p>Some content</p>"}
       end
 
       it "enqueues a job to generate a page from the content" do
-        ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
-        Resque.expects(:enqueue).with(Jobs::PreparePage, "http://example.org/path/to/abc123.html", anything, "1")
+        Printer::ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
+        Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "http://example.org/path/to/abc123.html", anything, "1")
         post "/print/1", {content: "<p>Some content</p>"}
       end
 

@@ -1,12 +1,13 @@
-require "id_generator"
+require "printer"
+require "printer/id_generator"
 require "fileutils"
 
-module ContentStore
+module Printer::ContentStore
   class << self
     attr_accessor :content_directory
 
-    def write_html_content(content, unique_id=IdGenerator.random_id)
-      FileUtils.mkdir_p(File.join(ContentStore.content_directory, "temp_content"))
+    def write_html_content(content, unique_id=Printer::IdGenerator.random_id)
+      FileUtils.mkdir_p(File.join(Printer::ContentStore.content_directory, "temp_content"))
       public_path = File.join("/temp_content", "#{unique_id}.html")
       unless content.match(/<html>/)
         content = %{<!doctype html><html class="no-js" lang="en">#{content}</html>}

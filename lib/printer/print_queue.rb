@@ -1,7 +1,7 @@
 require "multi_json"
-require "data_store"
+require "printer/data_store"
 
-class PrintQueue
+class Printer::PrintQueue
   attr_reader :id
 
   def initialize(id)
@@ -21,7 +21,7 @@ class PrintQueue
   private
 
   def redis
-    DataStore.redis
+    Printer::DataStore.redis
   end
 
   def key

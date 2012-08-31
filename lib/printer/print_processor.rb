@@ -1,6 +1,6 @@
-module PrintProcessor
-  autoload :A2Bitmap, "print_processor/a2_bitmap"
-  autoload :A2Raw, "print_processor/a2_raw"
+module Printer::PrintProcessor
+  autoload :A2Bitmap, "printer/print_processor/a2_bitmap"
+  autoload :A2Raw, "printer/print_processor/a2_raw"
 
   def self.for(printer)
     klass = case printer.type

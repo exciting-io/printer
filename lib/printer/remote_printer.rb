@@ -1,9 +1,9 @@
-require "data_store"
-require "print_queue"
-require "print_processor"
-require "print_archive"
+require "printer/data_store"
+require "printer/print_queue"
+require "printer/print_processor"
+require "printer/print_archive"
 
-class RemotePrinter
+class Printer::RemotePrinter
   def self.find(id)
     new(id)
   end
@@ -15,13 +15,13 @@ class RemotePrinter
       ip_key = "ip:#{ip}"
     end
     now = Time.now.to_i
-    DataStore.redis.zremrangebyscore(ip_key, 0, now-60)
-    ids = DataStore.redis.zrangebyscore(ip_key, now-60, now) || []
+    Printer::DataStore.redis.zremrangebyscore(ip_key, 0, now-60)
+    ids = Printer::DataStore.redis.zrangebyscore(ip_key, now-60, now) || []
     ids.map { |id| find(id) }
   end
 
   def self.find_local_printer_ip
-    possible_keys = DataStore.redis.keys("ip:192.168.1*")
+    possible_keys = Printer::DataStore.redis.keys("ip:192.168.1*")
     possible_keys.first.split(":").last
   end
 
@@ -33,20 +33,20 @@ class RemotePrinter
 
   def update(params)
     attributes_to_store = params.reject { |k,_| k == :ip }.inject([]) { |a, (k,v)| a + [k.to_s,v] }
-    DataStore.redis.hmset(key, *attributes_to_store) if attributes_to_store.any?
+    Printer::DataStore.redis.hmset(key, *attributes_to_store) if attributes_to_store.any?
     now = Time.now.to_i
     if params[:ip]
       ip_key = "ip:#{params[:ip]}"
-      DataStore.redis.zadd(ip_key, now, id)
+      Printer::DataStore.redis.zadd(ip_key, now, id)
     end
   end
 
   def type
-    DataStore.redis.hget(key, "type")
+    Printer::DataStore.redis.hget(key, "type")
   end
 
   def darkness
-    stored_value = DataStore.redis.hget(key, "darkness")
+    stored_value = Printer::DataStore.redis.hget(key, "darkness")
     if stored_value
       stored_value.to_i
     elsif type.split(".").length >= 2
@@ -57,7 +57,7 @@ class RemotePrinter
   end
 
   def flipped
-    stored_value = DataStore.redis.hget(key, "flipped")
+    stored_value = Printer::DataStore.redis.hget(key, "flipped")
     if stored_value
       stored_value == "true"
     elsif type.split(".").length == 3
@@ -68,11 +68,11 @@ class RemotePrinter
   end
 
   def version
-    DataStore.redis.hget(key, "version")
+    Printer::DataStore.redis.hget(key, "version")
   end
 
   def width
-    PrintProcessor.for(type).width
+    Printer::PrintProcessor.for(type).width
   end
 
   def data_to_print
@@ -81,7 +81,7 @@ class RemotePrinter
       print = archive.find(print_info["print_id"])
       if print
         data = {"width" => print.width, "height" => print.height, "pixels" => print.pixels}
-        PrintProcessor.for(self).process(data)
+        Printer::PrintProcessor.for(self).process(data)
       end
     end
   end
@@ -106,11 +106,11 @@ class RemotePrinter
   private
 
   def queue
-    PrintQueue.new(id)
+    Printer::PrintQueue.new(id)
   end
 
   def archive
-    PrintArchive.new(id)
+    Printer::PrintArchive.new(id)
   end
 
   def key

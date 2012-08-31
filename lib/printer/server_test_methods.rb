@@ -1,4 +1,4 @@
-module ServerTestMethods
+module Printer::ServerTestMethods
   def self.included(base)
     base.get "/test/fixed/:length" do
       "#" * params['length'].to_i

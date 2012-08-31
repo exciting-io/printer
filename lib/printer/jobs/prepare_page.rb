@@ -1,14 +1,14 @@
-require "jobs/image_to_bits"
-require "id_generator"
-require "preview"
+require "printer/jobs/image_to_bits"
+require "printer/id_generator"
+require "printer/preview"
 
-class Jobs::PreparePage
+class Printer::Jobs::PreparePage
   def self.queue
     :printer_prepare_page
   end
 
   def self.output_id
-    IdGenerator.random_id
+    Printer::IdGenerator.random_id
   end
 
   def self.perform(url, width, id, kind="print")
@@ -27,9 +27,9 @@ class Jobs::PreparePage
     end
     case kind
     when "print"
-      Resque.enqueue(Jobs::ImageToBits, output_filename, id)
+      Resque.enqueue(Printer::Jobs::ImageToBits, output_filename, id)
     when "preview"
-      ::Preview.store(id, url, result_data)
+      Printer::Preview.store(id, url, result_data)
     end
   end
 
@@ -43,4 +43,4 @@ class Jobs::PreparePage
     {status: $?.exitstatus, error: output.strip}
   end
 end
-    
+

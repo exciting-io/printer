@@ -1,12 +1,12 @@
 # encoding: utf-8
 
 require "test_helper"
-require "font_listing"
+require "printer/font_listing"
 
-describe FontListing do
+describe Printer::FontListing do
   it "calls gets the full system font names" do
-    FontListing.expects(:`).with("fc-list : fullname")
-    FontListing.system_font_list
+    Printer::FontListing.expects(:`).with("fc-list : fullname")
+    Printer::FontListing.system_font_list
   end
 
   describe "instances" do
@@ -20,13 +20,13 @@ describe FontListing do
   :fullname=DejaVu Serif Bold
   :fullname=Trebuchet MS Bold Italic,Trebuchet MS Negreta cursiva,Trebuchet MS tučné kurzíva
   EOS
-      FontListing.stubs(:system_font_list).returns(font_listing)
+      Printer::FontListing.stubs(:system_font_list).returns(font_listing)
     end
 
     it "returns all font styles" do
       fonts = []
-      FontListing.new.each { |f| fonts << f }
-      fonts.must_equal ["Arial", 
+      Printer::FontListing.new.each { |f| fonts << f }
+      fonts.must_equal ["Arial",
                         "Courier New",
                         "DejaVu Sans Bold",
                         "DejaVu Serif Bold",

@@ -2,9 +2,9 @@ require "sinatra"
 require "sinatra/base"
 require "multi_json"
 
-class BackendServer::Base < Sinatra::Base
-  set :views, settings.root + '/../../views'
-  set :public_folder, settings.root + '/../../public'
+class Printer::BackendServer::Base < Sinatra::Base
+  set :views, settings.root + '/../../../views'
+  set :public_folder, settings.root + '/../../../public'
 
   set :protection, :except => :json_csrf
 
