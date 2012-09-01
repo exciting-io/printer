@@ -8,7 +8,7 @@ set :branch, "master"
 
 namespace :foreman do
   task :restart do
-    puts "Restart the server manually for now."
+    puts "\n\n\n\nIMPORTANT!\n\nRestart the server manually for now.\n\n\n\n"
   end
 end
 
