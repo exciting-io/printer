@@ -3,8 +3,8 @@ require "sinatra/base"
 require "multi_json"
 
 class Printer::BackendServer::Base < Sinatra::Base
-  set :views, settings.root + '/../../../views'
-  set :public_folder, settings.root + '/../../../public'
+  set :views, File.expand_path(settings.root + '/../../../views')
+  set :public_folder, File.expand_path(settings.root + '/../../../public')
 
   set :protection, :except => :json_csrf
 
