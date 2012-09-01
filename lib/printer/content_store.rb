@@ -19,5 +19,5 @@ module Printer::ContentStore
     end
   end
 
-  self.content_directory ||= File.expand_path("../../public", __FILE__)
+  self.content_directory ||= File.expand_path("../../../public", __FILE__)
 end
