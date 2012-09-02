@@ -1,2 +1,4 @@
-rvm: 
+rvm:
   - 1.9.3
+before_script:
+  - psql -c 'create database printer-test;' -U postgres
