@@ -20,7 +20,7 @@ describe Printer::BackendServer::Settings do
 
   describe "with no nearby printers" do
     before do
-      Printer::RemotePrinter.stubs(:find_by_ip).returns([])
+      Printer::PrinterIPLookup.stubs(:find_printer).returns([])
       get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
     end
 
@@ -32,7 +32,7 @@ describe Printer::BackendServer::Settings do
   describe "with a single nearby printer" do
     before do
       printer = stub_printer
-      Printer::RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns([printer])
+      Printer::PrinterIPLookup.stubs(:find_printer).with("192.168.1.1").returns([printer])
       get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
     end
 
@@ -59,7 +59,7 @@ describe Printer::BackendServer::Settings do
     before do
       printer = stub_printer("printer-id")
       printer2 = stub_printer("printer-id-2")
-      Printer::RemotePrinter.stubs(:find_by_ip).with("192.168.1.1").returns([printer, printer2])
+      Printer::PrinterIPLookup.stubs(:find_printer).with("192.168.1.1").returns([printer, printer2])
       get "/my-printer", {}, {"REMOTE_ADDR" => "192.168.1.1"}
     end
 

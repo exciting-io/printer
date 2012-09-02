@@ -50,7 +50,7 @@ describe Printer::BackendServer::Polling do
     end
 
     it "extracts the remote IP" do
-      printer.expects(:update).with(has_entry(ip: "192.168.1.1"))
+      Printer::PrinterIPLookup.expects(:update).with(printer, "192.168.1.1")
       get "/printer/1", {}, cgi_env
     end
 

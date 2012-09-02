@@ -1,9 +1,10 @@
 require "printer/backend_server/base"
 require "printer/remote_printer"
+require "printer/printer_ip_lookup"
 
 class Printer::BackendServer::Settings < Printer::BackendServer::Base
   get "/" do
-    @printers = Printer::RemotePrinter.find_by_ip(request.ip)
+    @printers = Printer::PrinterIPLookup.find_printer(request.ip)
     erb :my_printer
   end
 

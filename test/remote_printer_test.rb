@@ -6,25 +6,14 @@ describe Printer::RemotePrinter do
   let(:redis) { Printer::DataStore.redis }
 
   describe "updating" do
-    it "stores any printer attributes except IP" do
+    it "stores printer attributes" do
       redis.expects(:hmset).with("printers:123abc", "type", "printer-type", "version", "1.0.1")
-      Printer::RemotePrinter.find("123abc").update(type: "printer-type", version: "1.0.1", ip: "do-not-store")
+      Printer::RemotePrinter.find("123abc").update(type: "printer-type", version: "1.0.1")
     end
 
     it "stores any other attributes" do
       redis.expects(:hmset).with("printers:123abc", "darkness", "123", "flipped", "false")
       Printer::RemotePrinter.find("123abc").update(darkness: "123", flipped: "false")
-    end
-
-    it "stores the remote IP for a short time" do
-      Time.stubs(:now).returns(stub('time', to_i: 1000))
-      redis.expects(:zadd).with("ip:192.168.1.1", 1000, "printer-id")
-      Printer::RemotePrinter.find("printer-id").update(ip: "192.168.1.1")
-    end
-
-    it "does not overwrite IP if it wasn't present" do
-      redis.expects(:zadd).never
-      Printer::RemotePrinter.find("printer-id").update(attribute: "value")
     end
   end
 
@@ -43,46 +32,6 @@ describe Printer::RemotePrinter do
       redis.stubs(:hget).with("printers:123abc", "type").returns("printer-type")
       Printer::PrintProcessor.stubs(:for).with("printer-type").returns(stub('print_processor', width: 123))
       Printer::RemotePrinter.find("123abc").width.must_equal 123
-    end
-  end
-
-  describe "finding by ip" do
-    it "clears out expired printer IDs for that IP" do
-      Time.stubs(:now).returns(stub('time', to_i: 2000))
-      redis.expects(:zremrangebyscore).with("ip:192.168.1.1", 0, 2000-60)
-      Printer::RemotePrinter.find_by_ip("192.168.1.1")
-    end
-
-    it "returns the printer instances which most recently checked in from that IP" do
-      Time.stubs(:now).returns(stub('time', to_i: 3000))
-      redis.expects(:zrangebyscore).with("ip:192.168.1.1", 3000-60, 3000).returns(["printer-id", "printer-id-2"])
-      Printer::RemotePrinter.expects(:find).with("printer-id")
-      Printer::RemotePrinter.expects(:find).with("printer-id-2")
-      Printer::RemotePrinter.find_by_ip("192.168.1.1")
-    end
-
-    it "returns an empty array if no matching IP was found" do
-      redis.expects(:zrangebyscore).with("ip:192.168.1.1", anything, anything).returns([])
-      Printer::RemotePrinter.find_by_ip("192.168.1.1").must_equal []
-    end
-
-    it "returns an empty array if no printers have ever connected" do
-      redis.stubs(:zrangebyscore).returns(nil)
-      Printer::RemotePrinter.find_by_ip("192.168.1.1").must_equal []
-    end
-
-    describe "on the local network" do
-      it "searches for printers connected from a local subnet IP" do
-        redis.expects(:keys).with("ip:192.168.*").returns(["printer:ip:192.168.2.123"])
-        redis.expects(:keys).with("ip:10.*").returns([])
-        Printer::RemotePrinter.find_by_ip("127.0.0.1")
-      end
-
-      it "returns nil if no printers have ever connected" do
-        redis.stubs(:keys).with("ip:192.168.*").returns([])
-        redis.stubs(:keys).with("ip:10.*").returns([])
-        Printer::RemotePrinter.find_by_ip("127.0.0.1").must_equal []
-      end
     end
   end
 
