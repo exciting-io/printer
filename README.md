@@ -58,8 +58,9 @@ To run the printer server locally, you should simply need to install the bundle
 You may need to create the PostgreSQL database
 
     createdb printer
+    createdb printer-test # if you want to run the tests
 
-If your database requires credentials, or you choose a different database name, you can specify this by setting the `DATABASE_URL` environment variable
+If your database requires credentials, or you choose a different database name, you can specify this by setting the `DATABASE_URL` environment variable. It will be something like `DATABASE_URL="postgres://username:password@localhost/printer"`
 
 Finally, run all the processes using Foreman
 
