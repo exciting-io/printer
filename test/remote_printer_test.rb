@@ -129,20 +129,6 @@ describe Printer::RemotePrinter do
       end
     end
 
-    describe "getting archived print ids" do
-      subject do
-        Printer::RemotePrinter.new("printer-id")
-      end
-
-      before do
-        archive_for_printer.stubs(:ids).returns(["abc123", "def456"])
-      end
-
-      it "returns the set of all archived print IDs" do
-        subject.archive_ids.must_equal ["abc123", "def456"]
-      end
-    end
-
     describe "getting a single archived print by id" do
       subject do
         Printer::RemotePrinter.new("printer-id")

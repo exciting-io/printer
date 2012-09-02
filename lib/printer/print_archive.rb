@@ -22,10 +22,6 @@ class Printer::PrintArchive
     Printer::Print.new(MultiJson.decode(data)) if data
   end
 
-  def ids
-    Printer::DataStore.redis.hkeys(key)
-  end
-
   def all
     Printer::DataStore.redis.hvals(key).map { |d| Printer::Print.new(MultiJson.decode(d)) }
   end
