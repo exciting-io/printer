@@ -25,7 +25,8 @@ class Printer::RemotePrinter
   end
 
   def self.find_local_printer_ip
-    possible_keys = Printer::DataStore.redis.keys("ip:192.168.*")
+    possible_keys = Printer::DataStore.redis.keys("ip:192.168.*") +
+                    Printer::DataStore.redis.keys("ip:10.*")
     possible_keys.any? ? possible_keys.first.split(":").last : nil
   end
 

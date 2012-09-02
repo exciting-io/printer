@@ -74,11 +74,13 @@ describe Printer::RemotePrinter do
     describe "on the local network" do
       it "searches for printers connected from a local subnet IP" do
         redis.expects(:keys).with("ip:192.168.*").returns(["printer:ip:192.168.2.123"])
+        redis.expects(:keys).with("ip:10.*").returns([])
         Printer::RemotePrinter.find_by_ip("127.0.0.1")
       end
 
       it "returns nil if no printers have ever connected" do
         redis.stubs(:keys).with("ip:192.168.*").returns([])
+        redis.stubs(:keys).with("ip:10.*").returns([])
         Printer::RemotePrinter.find_by_ip("127.0.0.1").must_equal []
       end
     end
