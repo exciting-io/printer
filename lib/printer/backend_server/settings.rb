@@ -7,6 +7,11 @@ class Printer::BackendServer::Settings < Printer::BackendServer::Base
     erb :my_printer
   end
 
+  get "/:printer_id" do
+    @printers = [Printer::RemotePrinter.find(params[:printer_id])]
+    erb :my_printer
+  end
+
   put "/:printer_id" do
     @printer = Printer::RemotePrinter.find(params[:printer_id])
     @printer.update(params[:printer])

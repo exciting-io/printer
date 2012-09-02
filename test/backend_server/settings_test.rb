@@ -74,6 +74,22 @@ describe Printer::BackendServer::Settings do
     end
   end
 
+  describe "requesting a specific printer" do
+    before do
+      printer = stub_printer
+      Printer::RemotePrinter.stubs(:find).with("printer-id").returns(printer)
+      get "/my-printer/printer-id"
+    end
+
+    it "should show that printer" do
+      last_response.body.must_match "http://example.org/print/printer-id"
+    end
+
+    it "should link to a test page print url" do
+      last_response.body.must_match url_regexp("/my-printer/printer-id/test-page")
+    end
+  end
+
   describe "generating a test print" do
     before do
       printer = stub_printer
