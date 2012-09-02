@@ -2,6 +2,12 @@ require "test_helper"
 require "printer/print"
 
 describe Printer::Print do
+  describe "storing" do
+    before do
+      Printer::IdGenerator.stubs(:random_id).returns("random-print-id")
+    end
+  end
+
   describe "converting back to image" do
     it "should return an image matching the given pixels" do
       print = Printer::Print.new({"width" => 8, "height" => 8, "pixels" => [0]*64})

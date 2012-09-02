@@ -4,31 +4,18 @@ require "printer/id_generator"
 require "printer/print"
 
 class Printer::PrintArchive
-  attr_reader :id
+  attr_reader :id, :prints
 
   def initialize(id)
     @id = id
+    @prints = Printer::Print.all(printer_guid: id)
   end
 
   def store(data)
-    print_id = Printer::IdGenerator.random_id
-    attributes = data.merge("created_at" => Time.now, "id" => print_id)
-    Printer::DataStore.redis.hset(key, print_id, MultiJson.encode(attributes))
-    Printer::Print.new(attributes)
+    Printer::Print.create(data.merge(printer_guid: id))
   end
 
-  def find(print_id)
-    data = Printer::DataStore.redis.hget(key, print_id)
-    Printer::Print.new(MultiJson.decode(data)) if data
-  end
-
-  def all
-    Printer::DataStore.redis.hvals(key).map { |d| Printer::Print.new(MultiJson.decode(d)) }
-  end
-
-  private
-
-  def key
-    "printers:#{id}:prints"
+  def find(print_guid)
+    prints.first(guid: print_guid)
   end
 end

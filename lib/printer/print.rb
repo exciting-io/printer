@@ -1,13 +1,20 @@
-class Printer::Print
-  attr_reader :id, :width, :height, :pixels, :created_at
+require "printer"
+require "data_mapper"
+require "printer/id_generator"
 
-  def initialize(attributes)
-    @id = attributes["id"]
-    @width = attributes["width"]
-    @height = attributes["height"]
-    @pixels = attributes["pixels"]
-    @created_at = attributes["created_at"]
-  end
+class Printer::Print
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :printer_guid, String
+  property :guid, String
+  property :created_at, DateTime
+  property :width, Integer
+  property :height, Integer
+  property :pixels, Object
+  property :created_at, DateTime
+
+  before(:create) { |p| p.guid ||= Printer::IdGenerator.random_id }
 
   def to_image
     require "RMagick" unless Object.const_defined?(:Magick)

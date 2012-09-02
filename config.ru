@@ -3,6 +3,7 @@ require "bundler/setup"
 
 $LOAD_PATH.unshift("lib")
 require "printer"
+require "printer/configuration"
 require 'sass/plugin/rack'
 
 Sass::Plugin.options[:template_location] = 'public/stylesheets'

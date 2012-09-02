@@ -4,6 +4,9 @@ require "bundler"
 Bundler.require(:default, :test)
 
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+
+ENV["DATABASE_URL"] ||= "postgres://localhost/printer-test"
+require "printer/configuration"
 require "printer/jobs"
 
 def fixture_path(filename)

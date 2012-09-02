@@ -70,7 +70,7 @@ class Printer::RemotePrinter
   end
 
   def all_prints
-    archive.all.sort_by { |p| p.created_at }.reverse
+    archive.prints.sort_by { |p| p.created_at }.reverse
   end
 
   def find_print(print_id)

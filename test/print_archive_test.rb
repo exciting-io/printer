@@ -6,8 +6,6 @@ describe Printer::PrintArchive do
     Printer::PrintArchive.new("printer-id")
   end
 
-  let(:redis) { Printer::DataStore.redis }
-
   let(:data) do
     {width: 8, height: 8, pixels: []}
   end
@@ -18,8 +16,9 @@ describe Printer::PrintArchive do
     end
 
     it "stores the print data" do
-      data_with_id_and_timestamps = data.merge(created_at: Time.now, id: "random-print-id")
-      redis.expects(:hset).with("printers:printer-id:prints", "random-print-id", MultiJson.encode(data_with_id_and_timestamps))
+      now = Time.now
+      Time.stubs(:now).returns(now)
+      Printer::Print.expects(:create).with(data.merge(printer_guid: "printer-id"))
       subject.store(width: 8, height: 8, pixels: [])
     end
 
@@ -28,33 +27,32 @@ describe Printer::PrintArchive do
       print.width.must_equal 8
       print.height.must_equal 8
       print.pixels.must_equal []
-      print.id.must_equal "random-print-id"
+      print.guid.must_equal "random-print-id"
     end
   end
 
   describe "retrieving a print" do
     it "returns a Print" do
-      redis.stubs(:hget).with("printers:printer-id:prints", "random-print-id").returns(MultiJson.encode(data.merge(id: "random-print-id")))
-      print = subject.find("random-print-id")
-      print.width.must_equal 8
-      print.height.must_equal 8
-      print.pixels.must_equal []
-      print.id.must_equal "random-print-id"
+      print = stub('print')
+      scope = stub('scope')
+      Printer::Print.stubs(:all).with(printer_guid: "printer-id").returns(scope)
+      scope.expects(:first).with(guid: "random-print-id").returns(print)
+      subject.find("random-print-id").must_equal print
     end
 
     it "returns nil if the print didn't exist" do
-      redis.stubs(:hget).returns(nil)
+      scope = stub('scope')
+      Printer::Print.stubs(:all).with(printer_guid: "printer-id").returns(scope)
+      scope.expects(:first).with(guid: "random-print-id").returns(nil)
       subject.find("random-print-id").must_be_nil
     end
   end
 
   describe "retrieving all prints" do
     it "returns all Prints" do
-      redis.stubs(:hvals).with("printers:printer-id:prints").returns([MultiJson.encode(data.merge(id: "1")), MultiJson.encode(data.merge(id: "2"))])
-      prints = subject.all
-      prints.length.must_equal 2
-      prints[0].id.must_equal "1"
-      prints[1].id.must_equal "2"
+      prints = stub('prints')
+      Printer::Print.stubs(:all).with(printer_guid: "printer-id").returns(prints)
+      subject.prints.must_equal prints
     end
   end
 end

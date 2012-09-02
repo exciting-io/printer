@@ -11,6 +11,8 @@ gem "rake"
 gem "yajl-ruby"
 gem "multi_json"
 gem "unicorn"
+gem "data_mapper"
+gem "dm-postgres-adapter"
 
 gem "a2_printer", git: "https://github.com/lazyatom/a2_printer.git"
 

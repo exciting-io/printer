@@ -29,6 +29,7 @@ Dependencies:
 
 * Ruby 1.9.2 or greater
 * Bundler
+* PostgreSQL
 * Redis 2.0.0 or greater
 * ImageMagick
 * PhantomJS (1.6.0 or greater recommended for better webfont-handling)
@@ -54,7 +55,13 @@ To run the printer server locally, you should simply need to install the bundle
 
     bundle install
 
-... and then run all the processes using Foreman
+You may need to create the PostgreSQL database
+
+    createdb printer
+
+If your database requires credentials, or you choose a different database name, you can specify this by setting the `DATABASE_URL` environment variable
+
+Finally, run all the processes using Foreman
 
     foreman start
 
