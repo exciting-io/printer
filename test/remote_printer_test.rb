@@ -94,12 +94,12 @@ describe Printer::RemotePrinter do
       end
 
       it "adds the print data" do
-        archive_for_printer.expects(:store).with(data).returns(stub("print", id: "print-id"))
+        archive_for_printer.expects(:store).with(data).returns(stub("print", guid: "print-id"))
         subject.add_print(data)
       end
 
       it "queues the print data" do
-        archive_for_printer.stubs(:store).with(data).returns(stub("print", id: "print-id"))
+        archive_for_printer.stubs(:store).with(data).returns(stub("print", guid: "print-id"))
         queue_for_printer.expects(:enqueue).with(print_id: "print-id")
         subject.add_print(data)
       end
@@ -113,7 +113,7 @@ describe Printer::RemotePrinter do
       end
 
       before do
-        archive_for_printer.stubs(:find).with("print-id").returns(stub("print", id: "print-id", width: 8, height: 8, pixels: []))
+        archive_for_printer.stubs(:find).with("print-id").returns(stub("print", guid: "print-id", width: 8, height: 8, pixels: []))
       end
 
       it "returns the next data for printing from the queue" do
@@ -135,7 +135,7 @@ describe Printer::RemotePrinter do
       end
 
       before do
-        archive_for_printer.stubs(:find).with("abc123").returns(stub("print", id: "print-id", width: 8, height: 8, pixels: []))
+        archive_for_printer.stubs(:find).with("abc123").returns(stub("print", guid: "print-id", width: 8, height: 8, pixels: []))
       end
 
       it "returns the print data for the given ID" do

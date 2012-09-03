@@ -66,7 +66,7 @@ class Printer::RemotePrinter
 
   def add_print(data)
     print = archive.store(data)
-    queue.enqueue(print_id: print.id)
+    queue.enqueue(print_id: print.guid)
   end
 
   def all_prints
