@@ -1,3 +1,4 @@
+require "printer/configuration"
 require "printer/remote_printer"
 
 class Printer::Jobs::ImageToBits

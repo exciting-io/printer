@@ -1,3 +1,4 @@
+require "printer/configuration"
 require "printer/jobs/image_to_bits"
 require "printer/id_generator"
 require "printer/preview"
