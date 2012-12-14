@@ -5,7 +5,7 @@
         <div class="metadata">
           <p>Printed: <%= print.created_at %></p>
         </div>
-        <img src="/archive/<%= @printer.id %>/image/<%= print.guid %>.png" />
+        <a href="/archive/<%= @printer.id %>/image/<%= print.guid %>.png" />Image</a>
       </section>
     <% end %>
   </div>
