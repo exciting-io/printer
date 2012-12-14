@@ -30,7 +30,7 @@ describe Printer::BackendServer::Settings do
     it "should present a list of images" do
       last_response.ok?.must_equal true
       ["a1", "b2", "c3"].each do |id|
-        img_tag = %{<img src="/archive/printer-id/image/#{id}.png"}
+        img_tag = %{<a href="/archive/printer-id/image/#{id}.png"}
         regexp = /#{Regexp.escape(img_tag)}/
         last_response.body.must_match regexp
       end
