@@ -29,6 +29,14 @@ describe Printer::BackendServer::Polling do
       get "/printer/1"
       last_response.body.must_equal "data"
     end
+
+    it "responds with a content type that matches the printer type" do
+      printer = Printer::RemotePrinter.new("1")
+      Printer::RemotePrinter.stubs(:find).with("1").returns(printer)
+      printer.stubs(:data_to_print).returns("data")
+      get "/printer/1", {}, {"HTTP_ACCEPT" => "application/vnd.freerange.printer.printer-type"}
+      last_response.headers["Content-Type"].must_equal "application/vnd.freerange.printer.printer-type"
+    end
   end
 
   describe "updating printer information" do
