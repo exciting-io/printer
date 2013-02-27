@@ -16,6 +16,7 @@ if (phantom.args.length < 2 || phantom.args.length > 3) {
     } else {
       page.evaluate(function() {
         document.getElementsByTagName("body")[0].className = ""
+        document.body.bgColor = 'white';
       });
       window.setTimeout(function () {
         page.render(output);
