@@ -4,7 +4,6 @@
 #include <EEPROM.h>
 
 #include <SoftwareSerial.h>
-#include <Bounce.h>
 
 // -- Settings for YOU to change if you want
 
@@ -278,14 +277,35 @@ inline void printFromDownload() {
 }
 
 
-// -- Check for new data, print if the button is pressed.
+byte counter = 0;       // how many times we have seen new value
+byte reading;           // the current value read from the input pin
+byte current_state = LOW;    // the debounced input value
+long timeOfLastSample = 0;
 
-Bounce bouncer = Bounce(buttonPin, 5); // 5 millisecond debounce
+bool buttonPressed() {
+  if (millis() != timeOfLastSample) {
+    reading = digitalRead(buttonPin);
+    if (reading == current_state && counter > 0) {
+      counter--;
+    }
+    if (reading != current_state) {
+      counter++;
+    }
+    if (counter >= 5) {
+      counter = 0;
+      current_state = reading;
+      return true;
+    }
+    timeOfLastSample = millis();
+  }
+  return false;
+}
+
+// -- Check for new data, print if the button is pressed.
 
 void loop() {
   if (downloadWaiting) {
-    bouncer.update();
-    if (bouncer.read() == HIGH) {
+    if (buttonPressed()) {
       printFromDownload();
     }
   } else {
