@@ -10,6 +10,8 @@ Sass::Plugin.options[:template_location] = 'public/stylesheets'
 use Sass::Plugin::Rack
 
 use Rack::MethodOverride
+use Printer::BackendServer::EncodedStatusHeaderMiddleare
+use Rack::ContentLength
 
 if ENV["RESQUE_SERVER"]
   require 'resque/server'

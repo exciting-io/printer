@@ -154,6 +154,7 @@ boolean downloadWaiting = false;
 char cacheFilename[] = "TMP";
 unsigned long content_length = 0;
 boolean statusOk = false;
+boolean printImmediately = false;
 
 void checkForDownload() {
   unsigned long length = 0;
@@ -183,19 +184,25 @@ void checkForDownload() {
     client.println();
     boolean parsingHeader = true;
 
+    char header[2000];
+
     while(client.connected()) {
       while(client.available()) {
         if (parsingHeader) {
-          client.find((char*)"HTTP/1.1 ");
-          char statusCode[] = "xxx";
-          client.readBytes(statusCode, 3);
-          statusOk = (strcmp(statusCode, "200") == 0);
-          client.find((char*)"Content-Length: ");
+          client.find((char*)"X-Printer-Encoded-Status: ");
+          char *buffer = "xxxxxxxxxx";
+          client.readBytesUntil('|', buffer, 100);
+          statusOk = (strcmp(buffer, "200") == 0);
+          client.readBytesUntil('|', buffer, 100);
           char c;
           while (isdigit(c = client.read())) {
             content_length = content_length*10 + (c - '0');
           }
-          debug2("Content length: ", content_length);
+          debug2("Content-length: ", content_length);
+          if (client.readBytesUntil('\n', buffer, 5)) {
+            printImmediately = (buffer[0] == '1');
+          }
+          debug2("Print immediately: ", printImmediately);
           client.find((char*)"\n\r\n"); // the first \r may already have been read above
           parsingHeader = false;
         } else {
@@ -285,7 +292,7 @@ Bounce bouncer = Bounce(buttonPin, 5); // 5 millisecond debounce
 void loop() {
   if (downloadWaiting) {
     bouncer.update();
-    if (bouncer.read() == HIGH) {
+    if (bouncer.read() == HIGH || printImmediately) {
       printFromDownload();
     }
   } else {
