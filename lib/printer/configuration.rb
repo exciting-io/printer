@@ -1,6 +1,5 @@
 require "data_mapper"
 require 'dm-timestamps'
-require "printer/data_store"
 require "resque"
 
 # DataMapper::Logger.new(STDOUT, :debug)
@@ -13,4 +12,6 @@ require "printer/print"
 DataMapper.finalize
 DataMapper.auto_upgrade!
 
-Resque.redis = "#{Printer::DataStore.redis_host}:#{Printer::DataStore.redis_port}"
+if ENV["REDIS_HOST"] && ENV["REDIS_PORT"]
+  Resque.redis = "#{ENV["REDIS_HOST"]}:#{ENV["REDIS_PORT"]}"
+end
