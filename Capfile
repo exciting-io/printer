@@ -1,9 +1,9 @@
 require "recap/recipes/ruby"
 
-server "printer.gofreerange.com", :app
+server "bastrop.lazyatom.com", :app
 set :application, "printer"
 
-set :repository,  "git@github.com:freerange/printer.git"
+set :repository,  "git@github.com:lazyatom/printer.git"
 set :branch, "master"
 
 namespace :foreman do
