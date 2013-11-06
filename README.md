@@ -1,7 +1,7 @@
 Printer
 ===========
 
-[![Build Status](https://secure.travis-ci.org/freerange/printer.png?branch=master)](http://travis-ci.org/freerange/printer)
+[![Build Status](https://secure.travis-ci.org/exciting-io/printer.png?branch=master)](http://travis-ci.org/exciting-io/printer)
 
 In a nutshell, Printer is a software system that makes it easy for **YOU** to:
 
@@ -13,9 +13,9 @@ Using a [commonly-available small thermal printer][getting-a-printer], and some 
 
 Find out more about [getting a printer on the wiki][getting-a-printer], or the [server API][api] on the [wiki][].
 
-You can also see some sample applications: [Printer Mail](https://github.com/freerange/printer-mail), [Printer Paint](https://github.com/freerange/printer-paint) and [Printer Weather](https://github.com/freerange/printer-weather).
+You can also see some sample applications: [Printer Mail](https://github.com/exciting-io/printer-mail), [Printer Paint](https://github.com/exciting-io/printer-paint) and [Printer Weather](https://github.com/exciting-io/printer-weather).
 
-If you're interested in the background, take a look at the [project page](http://gofreerange.com/printer) or the [introductory blog post](http://gofreerange.com/hello-printer).
+If you're interested in the background, take a look at the [project page](http://exciting.io/printer) or the [introductory blog post](http://exciting.io/2012/04/12/hello-printer/).
 
 *This is the backend server software*. The rest of this README is about setting up and running a server.
 
@@ -73,7 +73,7 @@ This will start the web application and the queue processors.
 
 ## Deployment
 
-Deployment is managed by `recap` (https://github.com/freerange/recap), a small, fast, git-based deployment strategy for capistrano.
+Deployment is managed by `recap` (https://github.com/exciting-io/recap), a small, fast, git-based deployment strategy for capistrano.
 
 Use bundler to install the dependencies
 
@@ -119,14 +119,13 @@ LICENSE
 The Printer project is open source, and made available via an 'MIT License', which basically means you can do whatever you like with it as long as you retain the copyright notice and license description - see [LICENSE.txt] for more information.
 
 
-[timmy]: http://gofreerange.com/timmy
 [Arduino]: http://ardunio.cc
 [PhantomJS]: http://phantomjs.org
-[wiki]: https://github.com/freerange/printer/wiki
-[getting-a-printer]: https://github.com/freerange/printer/wiki/Making-your-own-printer
-[customised content]: https://github.com/freerange/printer/wiki/Building-content-services
-[share that content]: https://github.com/freerange/printer/wiki/Architecture
-[api]: https://github.com/freerange/printer/wiki/API
-[LICENSE.txt]: https://raw.github.com/freerange/printer/master/LICENSE.txt
-[reporting-type]: https://github.com/freerange/printer/blob/master/printer.ino#L13
-[type-mapping]: https://github.com/freerange/printer/blob/master/lib/print_processor.rb
+[wiki]: https://github.com/exciting-io/printer/wiki
+[getting-a-printer]: https://github.com/exciting-io/printer/wiki/Making-your-own-printer
+[customised content]: https://github.com/exciting-io/printer/wiki/Building-content-services
+[share that content]: https://github.com/exciting-io/printer/wiki/Architecture
+[api]: https://github.com/exciting-io/printer/wiki/API
+[LICENSE.txt]: https://raw.github.com/exciting-io/printer/master/LICENSE.txt
+[reporting-type]: https://github.com/exciting-io/printer/blob/master/printer.ino#L13
+[type-mapping]: https://github.com/exciting-io/printer/blob/master/lib/print_processor.rb

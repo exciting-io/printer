@@ -23,7 +23,7 @@ var Printer = {
     callback(pageContent);
   },
 
-  backendURL: "http://printer.gofreerange.com",
+  backendURL: "http://printer.exciting.io",
 
   previewPage: function() {
     Printer.serializePage(function(page_content, width) {

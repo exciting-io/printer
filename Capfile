@@ -1,9 +1,9 @@
 require "recap/recipes/ruby"
 
-server "bastrop.lazyatom.com", :app
+server "printer.exciting.io", :app
 set :application, "printer"
 
-set :repository,  "git@github.com:lazyatom/printer.git"
+set :repository,  "git@github.com:exciting-io/printer.git"
 set :branch, "master"
 
 namespace :foreman do
@@ -14,7 +14,7 @@ end
 
 namespace :fonts do
   task :preview do
-    as_app "cd #{deploy_to} && phantomjs rasterise.js http://printer.gofreerange.com/font-test 384 #{deploy_to}/public/font-test.png"
+    as_app "cd #{deploy_to} && phantomjs rasterise.js http://printer.exciting.io/font-test 384 #{deploy_to}/public/font-test.png"
   end
 end
 

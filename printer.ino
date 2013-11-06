@@ -22,7 +22,7 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // physical mac address
 // a number and then .flipped, e.g. A2-raw.240.flipped
 const char printerType[] = "A2-raw";
 
-const char host[] = "printer.gofreerange.com"; // the host of the backend server
+const char host[] = "printer.exciting.io"; // the host of the backend server
 const unsigned int port = 80;
 
 const unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
@@ -178,7 +178,7 @@ void checkForDownload() {
     client.print("GET "); client.print("/printer/"); client.print(printerId); client.println(" HTTP/1.0");
     client.print("Host: "); client.print(host); client.print(":"); client.println(port);
     client.flush();
-    client.print("Accept: application/vnd.freerange.printer."); client.println(printerType);
+    client.print("Accept: application/vnd.exciting.printer."); client.println(printerType);
     client.print("X-Printer-Version: "); client.println(sketchVersion);
     client.println();
     boolean parsingHeader = true;

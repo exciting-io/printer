@@ -34,8 +34,8 @@ describe Printer::BackendServer::Polling do
       printer = Printer::RemotePrinter.new("1")
       Printer::RemotePrinter.stubs(:find).with("1").returns(printer)
       printer.stubs(:data_to_print).returns("data")
-      get "/printer/1", {}, {"HTTP_ACCEPT" => "application/vnd.freerange.printer.printer-type"}
-      last_response.headers["Content-Type"].must_equal "application/vnd.freerange.printer.printer-type"
+      get "/printer/1", {}, {"HTTP_ACCEPT" => "application/vnd.exciting.printer.printer-type"}
+      last_response.headers["Content-Type"].must_equal "application/vnd.exciting.printer.printer-type"
     end
   end
 
@@ -43,7 +43,7 @@ describe Printer::BackendServer::Polling do
     let(:printer) { Printer::RemotePrinter.new("1") }
 
     let(:cgi_env) do
-      {"HTTP_ACCEPT" => "application/vnd.freerange.printer.A2-bitmap",
+      {"HTTP_ACCEPT" => "application/vnd.exciting.printer.A2-bitmap",
        "REMOTE_ADDR" => "192.168.1.1",
        "HTTP_X_PRINTER_VERSION" => "1.0.1"}
     end
@@ -55,6 +55,11 @@ describe Printer::BackendServer::Polling do
     it "parses the type from the HTTP_ACCEPT header" do
       printer.expects(:update).with(has_entry(type: "A2-bitmap"))
       get "/printer/1", {}, cgi_env
+    end
+
+    it "handles the old vendor prefix in the HTTP_ACCEPT header" do
+      printer.expects(:update).with(has_entry(type: "A2-bitmap"))
+      get "/printer/1", {}, cgi_env.merge("HTTP_ACCEPT" => "application/vnd.freerange.printer.A2-bitmap")
     end
 
     it "extracts the remote IP" do
