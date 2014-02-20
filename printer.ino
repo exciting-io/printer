@@ -4,7 +4,7 @@
 #include <EEPROM.h>
 
 #include <SoftwareSerial.h>
-#include <Bounce.h>
+#include <Bounce2.h>
 
 // -- Settings for YOU to change if you want
 
@@ -39,7 +39,7 @@ const byte SD_Pin = 4;         // the SD Card SPI pin
 
 // -- Everything below here can be left alone
 
-const char sketchVersion[] = "1.0.5";
+const char sketchVersion[] = "1.0.6";
 
 // -- Debugging
 
@@ -135,6 +135,15 @@ inline void initNetwork() {
 }
 
 
+// -- Initialize debouncing of buttons
+
+Bounce bouncer = Bounce();
+
+void initBouncer() {
+  bouncer.attach(buttonPin);
+  bouncer.interval(5);
+}
+
 // -- Setup; runs once on boot.
 
 void setup(){
@@ -146,6 +155,7 @@ void setup(){
   initSD();
   initNetwork();
   initPrinter();
+  initBouncer();
 }
 
 // -- Check for new data and download if found
@@ -279,8 +289,6 @@ inline void printFromDownload() {
 
 
 // -- Check for new data, print if the button is pressed.
-
-Bounce bouncer = Bounce(buttonPin, 5); // 5 millisecond debounce
 
 void loop() {
   if (downloadWaiting) {
