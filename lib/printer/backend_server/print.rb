@@ -5,22 +5,32 @@ require "printer/content_store"
 
 class Printer::BackendServer::Print < Printer::BackendServer::Base
   get "/:printer_id" do
+    process
+  end
+
+  post "/:printer_id" do
+    process
+  end
+
+  private
+
+  def process
     if url_to_process
-      queue_print(params['printer_id'], url_to_process)
+      queue_print(printer_id, url_to_process)
+    elsif content_to_process
+      queue_print_from_content(printer_id, content_to_process)
     else
       erb :api_help
     end
   end
 
-  post "/:printer_id" do
-    if params['content']
-      queue_print_from_content(params['printer_id'], params['content'])
-    else
-      queue_print(params['printer_id'], url_to_process)
-    end
+  def printer_id
+    params['printer_id']
   end
 
-  private
+  def content_to_process
+    params['content']
+  end
 
   def url_to_process
     params['url']

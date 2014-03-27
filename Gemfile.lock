@@ -6,7 +6,7 @@ GIT
       serialport (~> 1.0.4)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     addressable (2.2.8)
     bcrypt-ruby (3.0.1)

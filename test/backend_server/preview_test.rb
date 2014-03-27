@@ -107,6 +107,12 @@ describe Printer::BackendServer::Preview do
       post "/preview", {content: "<p>Some content</p>", width: "123"}
     end
 
+    it "allows GET requests with content" do
+      Printer::ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
+      Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "http://example.org/path/to/abc123.html", anything, "abc123", "preview")
+      get "/preview", {content: "<p>Some content</p>"}
+    end
+
     it "uses a default width of 384" do
       Printer::ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
       Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, anything, "384", anything, anything)

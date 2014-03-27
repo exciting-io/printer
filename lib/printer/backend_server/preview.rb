@@ -21,22 +21,28 @@ class Printer::BackendServer::Preview < Printer::BackendServer::Base
   end
 
   get "/" do
+    process
+  end
+
+  post "/" do
+    process
+  end
+
+  private
+
+  def process
     if url_to_process
       queue_preview(url_to_process, width)
+    elsif content_to_process
+      queue_preview_from_content(content_to_process, width)
     else
       erb :api_help
     end
   end
 
-  post "/" do
-    if params['content']
-      queue_preview_from_content(params['content'], width)
-    else
-      queue_preview(url_to_process, width)
-    end
+  def content_to_process
+    params['content']
   end
-
-  private
 
   def url_to_process
     params['url']
