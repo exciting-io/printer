@@ -73,7 +73,7 @@ This will start the web application and the queue processors.
 
 ## Deployment
 
-Deployment is managed by `recap` (https://github.com/exciting-io/recap), a small, fast, git-based deployment strategy for capistrano.
+Deployment is managed by `recap` (https://github.com/freerange/recap), a small, fast, git-based deployment strategy for capistrano.
 
 Use bundler to install the dependencies
 
