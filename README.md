@@ -1,6 +1,7 @@
 Printer
 ===========
 
+<script async defer src="http://slackin-printer.herokuapp.com/slackin.js"></script>
 [![Build Status](https://secure.travis-ci.org/exciting-io/printer.png?branch=master)](http://travis-ci.org/exciting-io/printer)
 
 In a nutshell, Printer is a software system that makes it easy for **YOU** to:
