@@ -1,5 +1,8 @@
 rvm:
   - 1.9.3
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq postgresql-server-dev-9.1 libpq-dev
 before_script:
   - psql -c 'create database "printer-test";' -U postgres
   - psql -c 'create database "printer";' -U postgres

@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/lazyatom/recap.git
-  revision: d96cb8f9ed2b9e748dfaa30d7ba6c9813ab3587f
+  revision: fb02b9e1db38e9d9eb3db90b2153e429f92baed6
   branch: new-foreman-uses-env-file
   specs:
     recap (1.0.12)
