@@ -1,7 +1,7 @@
 /*
  * Qt+WebKit powered (mostly) headless test runner using Phantomjs
  *
- * Phantomjs installation: http://code.google.com/p/phantomjs/wiki/BuildInstructions
+ * Phantomjs installation: http://phantomjs.org/build.html
  *
  * Run with:
  *  phantomjs test.js [url-of-your-qunit-testsuite]
