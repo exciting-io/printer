@@ -8,5 +8,18 @@
         <a href="/archive/<%= @printer.id %>/image/<%= print.guid %>.png" />Image</a>
       </section>
     <% end %>
+
+    <% @prev_page = @page - 1 %>
+    <% @next_page = @page + 1 %>
+
+    <p class="pagination">
+      <% if @prev_page > 0 %>
+        <a href="/archive/<%= @printer.id %>?page=<%= @prev_page %>">&larr; Newer</a>
+      <% end %>
+      <%= ((@page - 1) * @per_page) + 1 %> - <%= [(@page * @per_page), @total].min %> of <%= @total %>
+      <% if @total > (@page * @per_page) %>
+        <a href="/archive/<%= @printer.id %>?page=<%= @next_page %>">Older &rarr;</a>
+      <% end %>
+    </p>
   </div>
 </div>

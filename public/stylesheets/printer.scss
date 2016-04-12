@@ -169,10 +169,10 @@ header {
 .archive {
   .print {
 
-    margin-bottom: 3em;
+    margin-top: 3em;
 
-    &:last-child {
-      margin-bottom: 0;
+    &:first-child {
+      margin-top: 0;
     }
 
     .metadata {
@@ -191,4 +191,10 @@ header {
       border-bottom: 1px dashed #ccc;
     }
   }
+
+  .pagination {
+    margin-top: 3em;
+    font-size: 14px;
+  }
 }
+

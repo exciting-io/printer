@@ -50,8 +50,10 @@ describe Printer::PrintArchive do
 
   describe "retrieving all prints" do
     it "returns all Prints" do
-      prints = stub('prints')
-      Printer::Print.stubs(:all).with(printer_guid: "printer-id").returns(prints)
+      prints = stub('paginated prints')
+      all_prints = stub('prints', all: prints)
+
+      Printer::Print.stubs(:all).with(printer_guid: "printer-id").returns(all_prints)
       subject.prints.must_equal prints
     end
   end

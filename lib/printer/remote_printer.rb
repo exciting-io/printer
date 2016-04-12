@@ -69,8 +69,12 @@ class Printer::RemotePrinter
     queue.enqueue(print_id: print.guid)
   end
 
-  def all_prints
-    archive.prints.sort_by { |p| p.created_at }.reverse
+  def all_prints(page=1, per_page=10)
+    archive.prints(page, per_page)
+  end
+
+  def total_prints
+    archive.count
   end
 
   def find_print(print_id)

@@ -11,8 +11,11 @@ class Printer::BackendServer::Archive < Printer::BackendServer::Base
   end
 
   get "/:printer_id" do
+    @per_page = 10
+    @page = (params[:page] || 1).to_i
     @printer = Printer::RemotePrinter.find(params[:printer_id])
-    @prints = @printer.all_prints
+    @prints = @printer.all_prints(@page, @per_page)
+    @total = @printer.total_prints
     erb :archive
   end
 end
