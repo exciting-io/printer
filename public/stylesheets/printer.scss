@@ -166,35 +166,22 @@ header {
   }
 }
 
-.archive {
-  .print {
-
-    margin-top: 3em;
-
-    &:first-child {
-      margin-top: 0;
-    }
-
-    .metadata {
-      font-size: 14px;
-      font-family: sans-serif;
-      color: #ccc;
-      margin-bottom: 0.5em;
-
-      p {
-        margin: 0;
-      }
-    }
-
-    img {
-      border-top: 1px dashed #ccc;
-      border-bottom: 1px dashed #ccc;
-    }
-  }
-
-  .pagination {
-    margin-top: 3em;
-    font-size: 14px;
-  }
+.paper.archive {
+  padding: 0;
 }
 
+.metadata, .pagination {
+  background-color: transparent;
+  font-size: 14px;
+}
+
+.pagination {
+  margin-bottom: 3em;
+  margin-top: 3em;
+}
+
+.metadata {
+  margin-top: 40px;
+  margin-bottom: -20px;
+  color: #999;
+}
