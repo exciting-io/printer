@@ -9,7 +9,7 @@ Connecting a printer to a Raspberry Pi and the Printer platform is very simple.
 5. Connect the printer and option LEDs
 6. Install the client
 7. Install the optional boot script
-8. FAQ
+8. History
 
 
 ## Download Minbian
@@ -75,7 +75,7 @@ To "install" the printer client software, you just need to copy `pi-printer.rb`
 from this repository onto the device. One simple way to do this is by SSHing
 onto the Pi and then running:
 
-    wget https://raw.githubusercontent.com/exciting-io/printer/master/pi-printer.rb
+    wget -N https://raw.githubusercontent.com/exciting-io/printer/master/pi-printer.rb
     chmod +x pi-printer.rb
 
 This will download the latest version of the printer client for the Raspberry Pi
@@ -109,7 +109,7 @@ Pi starts, rather than having to connect via SSH and run it manually. To do this
 you can use the sample "init.d" script provided. Having SSH'd onto the Pi,
 download the script:
 
-    wget https://raw.githubusercontent.com/exciting-io/printer/master/sample-init.d-script -O /etc/init.d/printer
+    wget -N https://raw.githubusercontent.com/exciting-io/printer/master/sample-init.d-script -O /etc/init.d/printer
 
 Next, make it executable and configure the system to load it on startup:
 
@@ -123,6 +123,11 @@ script to do so:
     /etc/init.d/printer stop     # stop the printer client
     /etc/init.d/printer start    # start the printer client
     /etc/init.d/printer restart  # restart the printer client
+
+To see the logging output when running the client like this, you can tail the
+logfile:
+
+    tail -f /var/log/printer.log
 
 
 ## History
