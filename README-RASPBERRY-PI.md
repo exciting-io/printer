@@ -54,6 +54,9 @@ pressing `ctrl-X` and answering `Y` to the prompt to write the file.
 
 ## Connect the printer and optional LEDS
 
+It's worth familiarising yourself with the GPIO pins on the Raspberry Pi before
+you tackle this. I found https://pinout.xyz very useful.
+
 The printer should be connected to the power, ground and serial transmission
 pins from the Raspberry Pi. Assuming your power supply can deliver enough
 current for the printer to work (I'd recommend at least 2 amps), you can connect
