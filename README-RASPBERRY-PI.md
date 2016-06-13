@@ -2,7 +2,7 @@
 
 Connecting a printer to a Raspberry Pi and the Printer platform is very simple.
 
-1. Download Minbian
+1. Download Minibian
 3. Install required packages
 4. Install required gems
 2. Configure the serial port
@@ -12,11 +12,11 @@ Connecting a printer to a Raspberry Pi and the Printer platform is very simple.
 8. History
 
 
-## Download Minbian
+## Download Minibian
 
-Minbian is a minimal linux system for the Raspberry Pi: https://minibianpi.wordpress.com
+Minibian is a minimal linux system for the Raspberry Pi: https://minibianpi.wordpress.com
 
-Download and copy the Minbian image onto your SD card (at least 1GB).
+Download and copy the Minibian image onto your SD card (at least 1GB).
 
 Once your Pi is booted using this image, you can SSH into it using the username
 `root` and the password `raspberry`.
