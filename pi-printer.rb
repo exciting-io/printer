@@ -8,11 +8,12 @@ require 'pi_piper'
 class PiPrinter
   POLLING_DELAY = 10 # seconds
   ID_PATH = "id.txt"
-  SERVER = "printer.exciting.io"
+  SERVER = "printer.exciting.io" # change this if connecting to your own server
   PRINTER_TYPE = "A2-raw"
-  VERSION = "1.0"
+  VERSION = "1.0.0"
 
   def initialize(serial_port: "/dev/ttyAMA0")
+    debug "Starting printer"
     reset_leds
     @all_leds.map(&:on)
     @serial_port = serial_port
@@ -86,7 +87,7 @@ class PiPrinter
   end
 
   def button_pressed?
-    true # hard coded until GPIO integration
+    true # hard coded until GPIO integration of buttons
   end
 
   def print_data
@@ -139,7 +140,6 @@ end
 if __FILE__ == $0
   loop do
     begin
-      puts "Starting printer"
       PiPrinter.new.run
     rescue => e
       puts "Exception while running: #{e}"
