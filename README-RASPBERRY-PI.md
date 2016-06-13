@@ -1,4 +1,4 @@
-# Connecting a Rasperry Pi to Printer
+# Connecting a Raspberry Pi to Printer
 
 Connecting a printer to a Raspberry Pi and the Printer platform is very simple.
 
