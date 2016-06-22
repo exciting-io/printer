@@ -15,6 +15,7 @@
         <h1>Printer Backend</h1>
         <p><a href="http://exciting.io/printer">An Exciting project.</a></p>
         <p>System status: <em>ONLINE</em></p>
+        <p>Backlog: <em><%= Redis.new.llen("resque:queue:printer_prepare_page") + Redis.new.llen("resque:queue:printer_images") %></em></p>
       </div>
       <%= yield %>
     </div>
