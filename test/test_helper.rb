@@ -1,7 +1,6 @@
-require "minitest/autorun"
-require "rubygems"
-require "bundler"
 Bundler.require(:default, :test)
+require "minitest/autorun"
+require "mocha/mini_test"
 
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 

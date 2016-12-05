@@ -85,6 +85,7 @@ GEM
     json_pure (1.8.3)
     kgio (2.10.0)
     metaclass (0.0.4)
+    minitest (5.10.1)
     mocha (1.2.1)
       metaclass (~> 0.0.1)
     mono_logger (1.1.0)
@@ -143,6 +144,7 @@ DEPENDENCIES
   data_mapper
   dm-postgres-adapter
   foreman
+  minitest
   mocha
   multi_json
   rack-test
