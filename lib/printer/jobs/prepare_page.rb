@@ -2,6 +2,7 @@ require "printer/configuration"
 require "printer/jobs/image_to_bits"
 require "printer/id_generator"
 require "printer/preview"
+require "timeout"
 
 class Printer::Jobs::PreparePage
   def self.queue
@@ -40,8 +41,10 @@ class Printer::Jobs::PreparePage
   end
 
   def self.run(cmd)
-    output = `#{cmd}`
+    output = ''
+    Timeout::timeout(15) do
+      output = `#{cmd}`
+    end
     {status: $?.exitstatus, error: output.strip}
   end
 end
-
