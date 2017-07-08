@@ -3,6 +3,7 @@ require "printer/jobs/image_to_bits"
 require "printer/id_generator"
 require "printer/preview"
 require "timeout"
+require "shellwords"
 
 class Printer::Jobs::PreparePage
   def self.queue
@@ -36,7 +37,7 @@ class Printer::Jobs::PreparePage
   end
 
   def self.save_url_to_path(url, width, path)
-    cmd = "phantomjs rasterise.js #{url} #{width} #{path}"
+    cmd = "phantomjs rasterise.js #{url.shellescape} #{width} #{path}"
     run(cmd)
   end
 
