@@ -14,7 +14,7 @@ class Printer::BackendServer::Preview < Printer::BackendServer::Base
   get "/pending/:preview_id" do
     preview = Printer::Preview.find(params['preview_id'])
     if preview
-      redirect "/preview/show/#{params['preview_id']}"
+      redirect to("/show/#{params['preview_id']}")
     else
       erb :preview_pending
     end
@@ -55,7 +55,7 @@ class Printer::BackendServer::Preview < Printer::BackendServer::Base
   def queue_preview(url, width)
     preview_id = Printer::IdGenerator.random_id
     Resque.enqueue(Printer::Jobs::PreparePage, url, width, preview_id, "preview")
-    redirect "/preview/pending/#{preview_id}"
+    redirect to("/pending/#{preview_id}")
   end
 
   def queue_preview_from_content(content, width)

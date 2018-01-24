@@ -7,7 +7,7 @@ describe Printer::Preview do
   describe "retrieving a preview" do
     it "returns nil if there is no preview data" do
       redis.stubs(:hget).with("previews", "id").returns(nil)
-      Printer::Preview.find("id").must_equal nil
+      Printer::Preview.find("id").must_be_nil
     end
 
     it "returns the data if preview does exist" do

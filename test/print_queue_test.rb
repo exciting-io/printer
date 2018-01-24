@@ -22,7 +22,7 @@ describe Printer::PrintQueue do
       end
 
       it "returns nil if no print data exists" do
-        subject.pop.must_equal nil
+        subject.pop.must_be_nil
       end
     end
 

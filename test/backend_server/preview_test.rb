@@ -121,7 +121,7 @@ describe Printer::BackendServer::Preview do
 
     it "redirects to the holding page" do
       Resque.stubs(:enqueue)
-      post "/preview", {content: "<p>Some content</p>"}
+      post "/preview", {content: "<p>Some content</p>"}, {'HTTP_ACCEPT' => 'text/html'}
       last_response.redirect?.must_equal true
       last_response.location.must_equal "http://example.org/preview/pending/abc123"
     end
