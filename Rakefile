@@ -45,7 +45,7 @@ namespace :test do
     server = WEBrick::HTTPServer.new(:Port => test_port, :DocumentRoot => File.expand_path("../test/javascript", __FILE__), :AccessLog => [], :Logger => WEBrick::Log.new("/dev/null", 7))
     server.mount("/app", WEBrick::HTTPServlet::FileHandler, File.expand_path("../public", __FILE__))
     server_thread = Thread.new do
-      puts "Starting the server"
+      puts "Starting the server on http://127.0.0.1:#{test_port}"
       server.start
     end
 
@@ -54,6 +54,7 @@ namespace :test do
 
     command = "phantomjs #{phantom_driver} #{runner}"
 
+    puts "Running: #{command}"
     IO.popen(command) do |test|
       puts test.read
     end

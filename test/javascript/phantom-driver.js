@@ -10,7 +10,9 @@
  *      phantomjs test.js http://localhost/qunit/test
  */
 
-var url = phantom.args[0];
+var system = require('system');
+var args = system.args;
+var url = args[1];
 
 var page = require('webpage').create();
 
