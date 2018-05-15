@@ -1,2 +1,3 @@
 https://github.com/heroku/heroku-buildpack-apt
+https://github.com/stomita/heroku-buildpack-phantomjs
 https://github.com/heroku/heroku-buildpack-ruby
