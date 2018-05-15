@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.2.8'
 
 gem 'foreman'
 gem 'sinatra'
@@ -10,7 +11,7 @@ gem "resque-pool"
 gem "rake"
 gem "yajl-ruby"
 gem "multi_json"
-gem "unicorn"
+gem "puma"
 gem "data_mapper"
 gem "dm-postgres-adapter"
 

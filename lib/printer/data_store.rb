@@ -11,7 +11,16 @@ module Printer::DataStore
     ENV["REDIS_PORT"] || "6379"
   end
 
+  def self.redis_url
+    ENV['REDIS_URL']
+  end
+
   def self.redis
-    @redis ||= Redis::Namespace.new(:printer, redis: Redis.new(host: redis_host, port: redis_port))
+    redis = if redis_url
+      Redis.new(url: redis_url)
+    else
+      Redis.new(host: redis_host, port: redis_port)
+    end
+    @redis ||= Redis::Namespace.new(:printer, redis: redis)
   end
 end

@@ -78,20 +78,19 @@ GEM
     do_postgres (0.10.17)
       data_objects (= 0.10.17)
     fastercsv (1.5.5)
-    ffi (1.9.18)
+    ffi (1.9.23)
     foreman (0.84.0)
       thor (~> 0.19.1)
     highline (1.7.10)
     json (1.8.6)
     json_pure (1.8.6)
-    kgio (2.11.1)
     metaclass (0.0.4)
-    minitest (5.11.1)
-    mocha (1.3.0)
+    minitest (5.11.3)
+    mocha (1.5.0)
       metaclass (~> 0.0.1)
     mono_logger (1.1.0)
     multi_json (1.13.1)
-    mustermann (1.0.1)
+    mustermann (1.0.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
@@ -100,15 +99,15 @@ GEM
     net-ssh-gateway (2.0.0)
       net-ssh (>= 4.0.0)
     open4 (1.3.4)
-    public_suffix (3.0.1)
-    rack (2.0.3)
-    rack-protection (2.0.0)
+    public_suffix (3.0.2)
+    puma (3.11.4)
+    rack (2.0.5)
+    rack-protection (2.0.1)
       rack
-    rack-test (0.8.2)
+    rack-test (1.0.0)
       rack (>= 1.0, < 3)
-    raindrops (0.19.0)
-    rake (12.3.0)
-    rb-fsevent (0.10.2)
+    rake (12.3.1)
+    rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
     redis (4.0.1)
@@ -124,27 +123,24 @@ GEM
       rake
       resque (~> 1.22)
     rmagick (2.16.0)
-    sass (3.5.5)
+    sass (3.5.6)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
     serialport (1.3.1)
-    sinatra (2.0.0)
+    sinatra (2.0.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.0)
+      rack-protection (= 2.0.1)
       tilt (~> 2.0)
     stringex (1.5.1)
     thor (0.19.4)
     tilt (2.0.8)
-    unicorn (5.4.0)
-      kgio (~> 2.6)
-      raindrops (~> 0.7)
     uuidtools (2.1.5)
     vegas (0.1.11)
       rack (>= 1.0.0)
-    yajl-ruby (1.3.1)
+    yajl-ruby (1.4.0)
 
 PLATFORMS
   ruby
@@ -157,6 +153,7 @@ DEPENDENCIES
   minitest
   mocha
   multi_json
+  puma
   rack-test
   rake
   recap!
@@ -165,7 +162,6 @@ DEPENDENCIES
   rmagick
   sass
   sinatra
-  unicorn
   yajl-ruby
 
 BUNDLED WITH
