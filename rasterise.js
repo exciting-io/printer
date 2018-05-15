@@ -1,13 +1,15 @@
-var page = new WebPage(),
-    address, output, size;
+"use strict";
+var page = require('webpage').create(),
+    system = require('system'),
+    address, output, width;
 
-if (phantom.args.length < 2 || phantom.args.length > 3) {
+if (system.args.length < 3 || system.args.length > 4) {
   console.log('Usage: rasterize.js URL width filename');
   phantom.exit();
 } else {
-  address = phantom.args[0];
-  width = phantom.args[1];
-  output = phantom.args[2];
+  address = system.args[1];
+  width = system.args[2];
+  output = system.args[3];
   page.viewportSize = { width: width, height: 10 };
   page.open(address, function (status) {
     if (status !== 'success') {
