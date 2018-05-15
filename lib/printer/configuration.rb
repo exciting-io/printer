@@ -12,6 +12,8 @@ require "printer/print"
 DataMapper.finalize
 DataMapper.auto_upgrade!
 
-if ENV["REDIS_HOST"] && ENV["REDIS_PORT"]
+if ENV["REDIS_URL"]
+  Resque.redis = Redis.new(url: ENV["REDUS_URL"])
+elsif ENV["REDIS_HOST"] && ENV["REDIS_PORT"]
   Resque.redis = "#{ENV["REDIS_HOST"]}:#{ENV["REDIS_PORT"]}"
 end
