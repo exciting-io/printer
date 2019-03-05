@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.2.8'
+ruby '2.2.10'
 
 gem 'foreman'
 gem 'sinatra'
@@ -7,7 +7,6 @@ gem 'sass'
 
 gem "rmagick"
 gem "resque"
-gem "resque-pool"
 gem "rake"
 gem "yajl-ruby"
 gem "multi_json"
