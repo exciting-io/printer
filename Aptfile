@@ -1,1 +1,2 @@
+:repo:deb http://us.archive.ubuntu.com/ubuntu/ xenial multiverse
 ttf-mscorefonts-installer xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
