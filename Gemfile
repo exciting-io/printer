@@ -16,8 +16,6 @@ gem "dm-postgres-adapter"
 
 gem "a2_printer", git: "https://github.com/lazyatom/a2_printer.git"
 
-gem "recap", git: "https://github.com/lazyatom/recap.git", branch: "new-foreman-uses-env-file"
-
 group :test do
   gem "minitest"
   gem "mocha"
