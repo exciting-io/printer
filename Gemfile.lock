@@ -78,7 +78,7 @@ GEM
     do_postgres (0.10.17)
       data_objects (= 0.10.17)
     fastercsv (1.5.5)
-    ffi (1.9.18)
+    ffi (1.14.2)
     foreman (0.84.0)
       thor (~> 0.19.1)
     highline (1.7.10)
