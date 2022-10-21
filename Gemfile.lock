@@ -74,8 +74,10 @@ GEM
     mono_logger (1.1.0)
     multi_json (1.13.1)
     mustermann (1.0.3)
+    nio4r (2.5.8)
     public_suffix (3.0.3)
-    puma (3.12.1)
+    puma (4.3.12)
+      nio4r (~> 2.0)
     rack (2.0.6)
     rack-protection (2.0.5)
       rack
