@@ -76,7 +76,7 @@ GEM
     mustermann (1.0.3)
     public_suffix (3.0.3)
     puma (3.12.1)
-    rack (2.0.6)
+    rack (2.2.4)
     rack-protection (2.0.5)
       rack
     rack-test (1.1.0)
