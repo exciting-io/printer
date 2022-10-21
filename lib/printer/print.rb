@@ -17,8 +17,6 @@ class Printer::Print
   before(:create) { |p| p.guid ||= Printer::IdGenerator.random_id }
 
   def to_image
-    require "RMagick" unless Object.const_defined?(:Magick)
-
     img = Magick::Image.new(width, height)
 
     magick_pixels = pixels.map do |bit|

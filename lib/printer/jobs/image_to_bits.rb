@@ -12,7 +12,6 @@ class Printer::Jobs::ImageToBits
     end
 
     def image_data(image_path)
-      require "RMagick" unless Object.const_defined?(:Magick)
       img = Magick::ImageList.new(image_path)[0]
       width = img.columns
       height = img.rows
