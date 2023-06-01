@@ -1,6 +1,7 @@
 require "data_mapper"
 require 'dm-timestamps'
 require "resque"
+require 'dotenv/load'
 
 # DataMapper::Logger.new(STDOUT, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/printer')

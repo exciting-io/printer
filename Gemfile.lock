@@ -61,6 +61,7 @@ GEM
       dm-core (~> 1.2.0)
     do_postgres (0.10.17)
       data_objects (= 0.10.17)
+    dotenv (2.8.1)
     fastercsv (1.5.5)
     ffi (1.10.0)
     foreman (0.85.0)
@@ -72,7 +73,7 @@ GEM
     mocha (1.8.0)
       metaclass (~> 0.0.1)
     mono_logger (1.1.0)
-    multi_json (1.13.1)
+    multi_json (1.15.0)
     mustermann (1.0.3)
     public_suffix (3.0.3)
     puma (3.12.1)
@@ -121,6 +122,7 @@ DEPENDENCIES
   a2_printer!
   data_mapper
   dm-postgres-adapter
+  dotenv
   foreman
   minitest
   mocha

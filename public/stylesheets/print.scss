@@ -8,28 +8,30 @@ body {
   }
 }
 
-body.preview {
-  background-color: #ccc;
+@media (min-width: 600px) {
+    body.preview {
+        background-color: #ccc;
 
-  .controls {
-    display: block;
-    position: absolute;
-    top: 10px;
-    left: 40px;
-  }
+        .controls {
+            display: block;
+            position: absolute;
+            top: 10px;
+            left: 40px;
+        }
 
-  .paper {
-    background-color: white;
-    width: 440px;
-    padding-top: 25px;
-    padding-bottom: 50px;
-    margin: 30px auto;
-    box-shadow: 10px 10px 5px rgba(40,40,40,0.5);
-  }
+        .paper {
+            background-color: white;
+            width: 440px;
+            padding-top: 25px;
+            padding-bottom: 50px;
+            margin: 30px auto;
+            box-shadow: 10px 10px 5px rgba(40,40,40,0.5);
+        }
 
-  .content {
-    -webkit-font-smoothing: antialiased;
-  }
+        .content {
+            -webkit-font-smoothing: antialiased;
+        }
+    }
 }
 
 body {

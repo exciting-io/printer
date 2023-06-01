@@ -13,7 +13,7 @@ use Rack::MethodOverride
 
 if ENV["RESQUE_SERVER"]
   require 'resque/server'
-  run Rack::Cascade.new [Printer::BackendServer::App, Rack::URLMap.new("/resque" => Resque::Server)]
+  run Rack::Cascade.new [Printer::BackendServer::App, Rack::Directory.new('public'), Rack::URLMap.new("/resque" => Resque::Server)]
 else
   run Printer::BackendServer::App
 end

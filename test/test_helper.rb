@@ -17,11 +17,11 @@ def url_regexp(path)
 end
 
 def png_image(width, height, pixels)
-  img = Magick::Image.new(width, height)
+  img = ::Magick::Image.new(width, height)
 
   magick_pixels = pixels.map do |bit|
-    v = Magick::QuantumRange * (1-bit)
-    Magick::Pixel.new(v,v,v,0)
+    v = ::Magick::QuantumRange * (1-bit)
+    ::Magick::Pixel.new(v,v,v,0)
   end
 
   img.store_pixels(0, 0, width, height, magick_pixels)

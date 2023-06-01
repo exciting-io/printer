@@ -11,13 +11,29 @@ describe Printer::Jobs::PreparePage do
 
     it "uses phantomjs to rasterise the url to a unique file" do
       job.stubs(:output_id).returns("unique_id")
-      job.expects(:run).with("phantomjs rasterise.js url 384 tmp/renders/unique_id.png").returns({status: 0})
+      expected_command = <<~EOC
+        curl -X POST
+        http://localhost/screenshot
+        -H 'Cache-Control: no-cache'
+        -H 'Content-Type: application/json'
+        -d '{"url":"url","viewport":{"width":"384"},"options":{"type":"png"}}'
+        -o 'tmp/renders/unique_id.png'
+      EOC
+      job.expects(:run).with(expected_command.strip.gsub("\n", ' ')).returns({status: 0})
       job.perform("url", "384", "printer_id")
     end
 
-    it "passes the specified width to phantomjs" do
+    it "passes the specified width to renderer" do
       job.stubs(:output_id).returns("unique_id")
-      job.expects(:run).with("phantomjs rasterise.js url 1000 tmp/renders/unique_id.png").returns({status: 0})
+      expected_command = <<~EOC
+        curl -X POST
+        http://localhost/screenshot
+        -H 'Cache-Control: no-cache'
+        -H 'Content-Type: application/json'
+        -d '{"url":"url","viewport":{"width":"1000"},"options":{"type":"png"}}'
+        -o 'tmp/renders/unique_id.png'
+      EOC
+      job.expects(:run).with(expected_command.strip.gsub("\n", ' ')).returns({status: 0})
       job.perform("url", "1000", "printer_id")
     end
 

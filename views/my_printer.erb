@@ -14,7 +14,7 @@
             <input type="submit" value="Update printer" />
             </form></p>
           <p>Print URL: <pre class="print_url"><%= print_url(printer) %></pre></p>
-          <p><a href="<%= print_url(printer) %>?url=<%= URI.escape(url("/#{printer.id}/test-page")) %>">Print test page</a></p>
+          <p><a href="<%= print_url(printer) %>?url=<%= URI::Parser.new.escape(url("/#{printer.id}/test-page")) %>">Print test page</a></p>
           <p><form action="<%= print_url(printer) %>" method="POST">
                <label for="url">URL: <input name="url" type="text" /></label>
                <input type="submit" value="Print URL" />
