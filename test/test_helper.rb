@@ -1,6 +1,7 @@
 Bundler.require(:default, :test)
 require "minitest/autorun"
 require "mocha/minitest"
+require "rmagick"
 
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 

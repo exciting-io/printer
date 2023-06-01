@@ -1,5 +1,6 @@
 require "printer/configuration"
 require "printer/remote_printer"
+require "rmagick"
 
 class Printer::Jobs::ImageToBits
   class << self
@@ -12,7 +13,7 @@ class Printer::Jobs::ImageToBits
     end
 
     def image_data(image_path)
-      img = Magick::ImageList.new(image_path)[0]
+      img = ::Magick::ImageList.new(image_path)[0]
       width = img.columns
       height = img.rows
       pixels = image_to_bits(img)

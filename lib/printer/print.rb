@@ -1,6 +1,7 @@
 require "printer"
 require "data_mapper"
 require "printer/id_generator"
+require "rmagick"
 
 class Printer::Print
   include DataMapper::Resource
