@@ -16,7 +16,7 @@ describe Printer::Jobs::PreparePage do
         http://localhost/screenshot
         -H 'Cache-Control: no-cache'
         -H 'Content-Type: application/json'
-        -d '{"url":"url","viewport":{"width":"384"},"options":{"type":"png"}}'
+        -d '{"url":"url","options":{"type":"png"},"viewport":{"width":"384","height":10},"waitFor":"function() { document.body.classList.remove(\\\"preview\\\") }"}'
         -o 'tmp/renders/unique_id.png'
       EOC
       job.expects(:run).with(expected_command.strip.gsub("\n", ' ')).returns({status: 0})
@@ -30,7 +30,7 @@ describe Printer::Jobs::PreparePage do
         http://localhost/screenshot
         -H 'Cache-Control: no-cache'
         -H 'Content-Type: application/json'
-        -d '{"url":"url","viewport":{"width":"1000"},"options":{"type":"png"}}'
+        -d '{"url":"url","options":{"type":"png"},"viewport":{"width":"1000","height":10},"waitFor":"function() { document.body.classList.remove(\\\"preview\\\") }"}'
         -o 'tmp/renders/unique_id.png'
       EOC
       job.expects(:run).with(expected_command.strip.gsub("\n", ' ')).returns({status: 0})
