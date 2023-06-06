@@ -37,15 +37,7 @@ class Printer::Jobs::PreparePage
   end
 
   def self.save_url_to_path(url, width, path)
-    FileUtils.mkdir_p(File.dirname(path))
-    chrome_url = ENV['CHROME_URL'] + "/screenshot"
-    pdf_options = {
-      url: url,
-      options: { type: 'png' },
-      viewport: { width: width, height: 10 },
-      waitFor: "function() { document.body.classList.remove(\"preview\") }"
-    }
-    cmd = ['curl', '-X POST', chrome_url, "-H 'Cache-Control: no-cache'", "-H 'Content-Type: application/json'", "-d '#{MultiJson.encode(pdf_options)}'", "-o '#{path}'"].join(' ')
+    cmd = "phantomjs rasterise.js #{url.shellescape} #{width} #{path}"
     run(cmd)
   end
 
