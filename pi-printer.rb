@@ -17,21 +17,21 @@ class PiPrinter
     reset_leds
     @all_leds.map(&:on)
     @serial_port = serial_port
-    generate_id unless id
+    generate_id unless ids.any?
     reset_download
     sleep(1)
     @all_leds.map(&:off)
   end
 
   def run
-    debug "Printer ID: #{id}"
-    loop do
+    debug "Printer IDs: #{ids.inspect}"
+    ids.cycle do |id|
       if download_waiting?
         if button_pressed?
           print_data
         end
       else
-        check_for_download
+        check_for_download(id)
         sleep(POLLING_DELAY) unless download_waiting?
       end
     end
@@ -39,18 +39,18 @@ class PiPrinter
 
   private
 
-  def id
-    @id ||= File.exist?(ID_PATH) && File.read(ID_PATH)
+  def ids
+    @ids ||= File.exist?(ID_PATH) && File.readlines(ID_PATH).map(&:strip)
   end
 
   def generate_id
-    @id = SecureRandom.hex(8)
-    File.open(ID_PATH, "w") { |f| f.write @id }
+    @ids = [SecureRandom.hex(8)]
+    File.open(ID_PATH, "w") { |f| f.puts @ids.join("\n") }
   end
 
-  def check_for_download
+  def check_for_download(id)
     @activity_led.on
-    debug "Checking for download"
+    debug "Checking for download on #{id}"
     uri = URI("http://#{SERVER}/printer/#{id}")
     req = Net::HTTP::Get.new(uri)
 
