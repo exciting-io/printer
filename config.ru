@@ -9,6 +9,12 @@ require 'sass/plugin/rack'
 Sass::Plugin.options[:template_location] = 'public/stylesheets'
 use Sass::Plugin::Rack
 
+require 'raygun4ruby'
+Raygun.setup do |config|
+  config.api_key = ENV['RAYGUN_API_KEY']
+end
+use Raygun::Middleware::RackExceptionInterceptor
+
 use Rack::MethodOverride
 
 if ENV["RESQUE_SERVER"]

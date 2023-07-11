@@ -14,6 +14,7 @@ gem "puma"
 gem "data_mapper"
 gem "dm-postgres-adapter"
 gem "dotenv"
+gem 'raygun4ruby'
 
 gem "a2_printer", git: "https://github.com/lazyatom/a2_printer.git"
 
