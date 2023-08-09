@@ -9,7 +9,7 @@
         $("#previewPage").click(Printer.previewPage);
         $("#printPage").click(function() {
           var printerID = prompt("Enter the URL of the printer to target");
-          Printer.printPage(printerID, function(result) {
+          Printer.printPage(printerUrl, function(result) {
             if (result.response == "ok") {
               alert("Page successfully sent for printing");
             } else {
