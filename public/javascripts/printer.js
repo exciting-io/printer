@@ -1,7 +1,7 @@
 var Printer = {
   serializePage: function(callback) {
     var isRelative = function(path) {
-      return !(path.match(/^https?:\/\//) || path.match(/^file:\/\//));
+      return !path.match(/^((https?|file):\/\/)|data:/);
     }
 
     var makeAbsolute = function(path) {
