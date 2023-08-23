@@ -11,13 +11,13 @@ describe Printer::Jobs::PreparePage do
 
     it "uses phantomjs to rasterise the url to a unique file" do
       job.stubs(:output_id).returns("unique_id")
-      job.expects(:run).with("phantomjs rasterise.js url 384 tmp/renders/unique_id.png").returns({status: 0})
+      job.expects(:run).with("phantomjs --ignore-ssl-errors=true rasterise.js url 384 tmp/renders/unique_id.png").returns({status: 0})
       job.perform("url", "384", "printer_id")
     end
 
     it "passes the specified width to phantomjs" do
       job.stubs(:output_id).returns("unique_id")
-      job.expects(:run).with("phantomjs rasterise.js url 1000 tmp/renders/unique_id.png").returns({status: 0})
+      job.expects(:run).with("phantomjs --ignore-ssl-errors=true rasterise.js url 1000 tmp/renders/unique_id.png").returns({status: 0})
       job.perform("url", "1000", "printer_id")
     end
 

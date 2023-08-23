@@ -37,7 +37,7 @@ class Printer::Jobs::PreparePage
   end
 
   def self.save_url_to_path(url, width, path)
-    cmd = "phantomjs rasterise.js #{url.shellescape} #{width} #{path}"
+    cmd = "phantomjs --ignore-ssl-errors=true rasterise.js #{url.shellescape} #{width} #{path}"
     run(cmd)
   end
 

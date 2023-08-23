@@ -14,7 +14,7 @@ end
 
 namespace :fonts do
   task :preview do
-    as_app "cd #{deploy_to} && phantomjs rasterise.js http://printer.exciting.io/font-test 384 #{deploy_to}/public/font-test.png"
+    as_app "cd #{deploy_to} && phantomjs --ignore-ssl-errors=true rasterise.js http://printer.exciting.io/font-test 384 #{deploy_to}/public/font-test.png"
   end
 end
 
