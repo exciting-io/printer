@@ -1,0 +1,178 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <style>
+     body {
+       margin: 0;
+       padding: 0;
+       background-color: white; 
+     }
+     
+     body .controls {
+       display: none; 
+     }
+
+     @media (min-width: 600px) {
+       body.preview {
+         background-color: #ccc; 
+       }
+       
+       body.preview .controls {
+         display: block;
+         margin: 30px; 
+       }
+       
+       body.preview .controls input[type=text] {
+         width: 300px;
+         margin: 0; 
+       }
+       
+       body.preview .controls .button {
+         display: inline-block;
+         padding: 10px;
+         background-color: #eee;
+         border-radius: 5px;
+         box-shadow: 2px 3px 1px rgba(40, 40, 40, 0.5);
+         text-decoration: none;
+         color: black;
+         margin-left: 10px; 
+       }
+       
+       body.preview .controls .button:hover {
+         background-color: #ddd; 
+       }
+       
+       body.preview .paper {
+         background-color: white;
+         width: 440px;
+         padding-top: 25px;
+         padding-bottom: 50px;
+         margin: 30px auto;
+         box-shadow: 10px 10px 5px rgba(40, 40, 40, 0.5); 
+       }
+       
+       body.preview .content {
+         -webkit-font-smoothing: antialiased; 
+       } 
+     }
+     
+     body .content {
+       -webkit-font-smoothing: none;
+       width: 384px;
+       overflow: hidden;
+       margin: 0 auto;
+       background-color: white; 
+     }
+    </style>
+
+    <script type="text/javascript" charset="utf-8">
+     const Printer = {
+       backendURL: "http://printer.exciting.io",
+
+       printerURL: function() {
+         return document.getElementById('printerURL').value;
+       },
+
+       isRelative: function(path) {
+         return !path.match(/^((https?|file):\/\/)|data:/);
+       },
+
+       makeAbsolute: function(path) {
+         return (this.isRelative(path) ? (window.location.protocol + "//" + window.location.host) : "") + path;
+       },
+
+       updateSrc: function(tagName) {
+         Array.prototype.forEach.call(document.getElementsByTagName(tagName), function(element) {
+           if (element.src) { element.src = this.makeAbsolute(element.src) }
+         }.bind(this));
+       },
+
+       updateHref: function() {
+         Array.prototype.forEach.call(document.querySelectorAll('link[rel=stylesheet]'), function(stylesheet) {
+           if (stylesheet.href) { stylesheet.href = this.makeAbsolute(stylesheet.href) }
+         }.bind(this));
+       },
+
+       serializePage: function(callback) {
+         this.updateSrc('img');
+         this.updateSrc('script');
+         this.updateHref();
+       },
+
+       withSerializedPage: function(callback) {
+         this.serializePage();
+         const page_content = document.documentElement.innerHTML;
+         callback(page_content);
+       },
+
+       previewPage: function() {
+         this.withSerializedPage((page_content) => {
+           let width = document.querySelector('.content').offsetWidth;
+           console.log("posting width", width);
+           let formData = new FormData();
+           formData.append('content', page_content);
+           formData.append('width', width);
+           fetch(Printer.backendURL + "/preview", {
+             method: 'POST',
+             body: formData
+           })
+             .then(response => response.json())
+             .then(json => window.location = json.location);
+         });
+         return false;
+       },
+
+       printPage: function(callback) {
+         this.withSerializedPage((page_content) => {
+           let formData = new FormData();
+           formData.append('content', page_content);
+           fetch(Printer.printerURL(), {
+             method: 'POST',
+             body: formData
+           })
+             .then(response => response.json())
+             .then(data => callback(data))
+         });
+         return false;
+       }
+     }
+
+     document.addEventListener('DOMContentLoaded', function() {
+       const printerURLInput = document.getElementById('printerURL');
+       printerURLInput.addEventListener('change', function() {
+         document.cookie = "printerURL=" + document.getElementById('printerURL').value;
+       });
+       printerURLInput.value = document.cookie.replace(/(?:(?:^|.*;\s*)printerURL\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+       document.getElementById('previewPage').addEventListener('click', Printer.previewPage.bind(Printer));
+       document.getElementById('serialize').addEventListener('click', Printer.serializePage.bind(Printer));
+
+       document.getElementById('printPage').addEventListener('click', function() {
+         Printer.printPage(function(result) {
+           if (result.response == "ok") {
+             alert("Page successfully sent for printing");
+           } else {
+             alert("There was a problem sending this content");
+             console.log("Error response", result);
+           }
+         });
+       });
+     })
+    </script>
+  </head>
+  <body class="preview">
+    <div class="controls">
+      <p>Printer URL: <input type="text" id="printerURL"/>
+      <a id="serialize" class="button" href="#">Serialize</a>
+      <a id="previewPage" class="button" href="#">Preview</a>
+      <a id="printPage" class="button" href="#">Print</a>
+      </p>
+    </div>
+    <div class="paper">
+      <div class="content">
+        <h1>OK, folks</h1>
+        <img src="https://images.unsplash.com/photo-1606115915090-be18fea23ec7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80">
+      </div>
+    </div>
+  </body>
+</html>
