@@ -1,7 +1,6 @@
 #!/bin/sh
 
-set -o errexit
-set -o xtrace
+set -eux pipefail
 
 # exit if we are not root
 if [ "$(id -u)" != "0" ]; then
@@ -13,8 +12,8 @@ fi
 if [ "$(raspi-config nonint get_serial_hw)" = "0" ]; then
   echo "Serial port is enabled"
   echo "Sending test print data"
-  stty aF /dev/serial0 19200
-  echo "Testing basic serial output of printer\n\n" > /dev/serial0
+  stty -F /dev/serial0 19200
+  echo "Testing basic serial output of\nprinter\n\n" > /dev/serial0
   echo "You should see a test print come out of the printer"
 else
   echo "Serial port is disabled"

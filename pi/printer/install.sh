@@ -1,7 +1,6 @@
 #!/bin/sh
 
-set -o errexit
-set -o xtrace
+set -eux pipefail
 
 # exit if we are not root
 if [ "$(id -u)" != "0" ]; then
