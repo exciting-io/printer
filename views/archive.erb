@@ -1,5 +1,8 @@
 <% @prints.each do |print| %>
-<p class="content metadata"><%= print.created_at %></p>
+<p class="content metadata">
+  <%= print.created_at %>
+  <a class="reprint" href="/archive/<%= @printer.id %>/reprint/<%= print.guid %>">re-print</a>
+</p>
 <div class="paper archive">
   <div class="content">
     <section class="print">

@@ -10,6 +10,13 @@ class Printer::BackendServer::Archive < Printer::BackendServer::Base
     [200, {"Content-Type" => "image/png"}, image.to_blob]
   end
 
+  get "/:printer_id/reprint/:image_id" do
+    printer = Printer::RemotePrinter.find(params[:printer_id])
+    print = printer.find_print(params[:image_id])
+    printer.queue_print(print)
+    redirect to("#{params[:printer_id]}")
+  end
+
   get "/:printer_id" do
     @per_page = 10
     @page = (params[:page] || 1).to_i
