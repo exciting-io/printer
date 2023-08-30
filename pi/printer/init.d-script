@@ -9,8 +9,8 @@
 # Description:       Connect to the printer server
 ### END INIT INFO
 
-dir="/root"
-cmd="/root/pi-printer.rb"
+dir="/boot/printer"
+cmd="/boot/printer/pi-printer.rb"
 
 name=`basename $0`
 pid_file="/var/run/$name.pid"
