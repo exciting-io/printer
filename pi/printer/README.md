@@ -17,3 +17,27 @@ Once it's ready, SSH onto the Pi and then
 This will set up the hardware and install the service to run the printer client software
 
 At this point, you should be able to view the printer at https://printer.exciting.io/my-printer
+
+
+
+## Raspberry Pi 4 notes
+
+I've had a couple of issues on the Raspberry Pi 4:
+
+### ffi problems
+
+    apt-get install libffi-dev
+    gem install ffi -- --enable-system-libffi
+
+### Segmentation fault via pi_piper gem
+
+Fix via https://raspberrypi.stackexchange.com/questions/135336/ruby-gem-pi-piper-crashing-with-bcm2835-init-gpio-mmap-failed-cannot-allocate
+
+    wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.71.tar.gz
+    tar zxvf bcm2835-1.71.tar.gz && cd bcm2835-1.71
+    ./configure && make
+    sudo make check
+    sudo make install
+    cd src && cc -shared bcm2835.o -o libbcm2835.so
+
+You then need to copy the compiled library into wherever the pi_piper gem is installed. Run `gem which pi_piper` and then copy the `libbcm2835.so` file into that directory.
