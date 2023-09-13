@@ -59,7 +59,7 @@ class Printer::RemotePrinter
       print = archive.find(print_info["print_id"])
       if print
         data = {"width" => print.width, "height" => print.height, "pixels" => print.pixels}
-        Printer::PrintProcessor.for(self).process(data)
+        print_info.merge(data: Printer::PrintProcessor.for(self).process(data))
       end
     end
   end

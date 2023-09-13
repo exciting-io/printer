@@ -8,7 +8,11 @@ class Printer::BackendServer::Polling < Printer::BackendServer::Base
     printer.update(remote_printer_params(params))
     Printer::PrinterIPLookup.update(printer, request.ip)
     headers "Content-Type" => env["HTTP_ACCEPT"]
-    printer.data_to_print
+    data = printer.data_to_print
+    if data
+      headers "X-Print-ID" => data["print_id"]
+      data["data"]
+    end
   end
 
   private

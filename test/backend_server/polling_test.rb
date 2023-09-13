@@ -25,15 +25,23 @@ describe Printer::BackendServer::Polling do
     it "returns the data as the message body" do
       printer = Printer::RemotePrinter.new("1")
       Printer::RemotePrinter.stubs(:find).with("1").returns(printer)
-      printer.stubs(:data_to_print).returns("data")
+      printer.stubs(:data_to_print).returns("print_id" => "abc", "data" => "data")
       get "/printer/1"
       last_response.body.must_equal "data"
+    end
+
+    it "responds with a print ID in the headers" do
+      printer = Printer::RemotePrinter.new("1")
+      Printer::RemotePrinter.stubs(:find).with("1").returns(printer)
+      printer.stubs(:data_to_print).returns("print_id" => "abc", "data" => "data")
+      get "/printer/1"
+      last_response.headers["X-Print-ID"].must_equal "abc"
     end
 
     it "responds with a content type that matches the printer type" do
       printer = Printer::RemotePrinter.new("1")
       Printer::RemotePrinter.stubs(:find).with("1").returns(printer)
-      printer.stubs(:data_to_print).returns("data")
+      printer.stubs(:data_to_print).returns("print_id" => "abc", "data" => "data")
       get "/printer/1", {}, {"HTTP_ACCEPT" => "application/vnd.exciting.printer.printer-type"}
       last_response.headers["Content-Type"].must_equal "application/vnd.exciting.printer.printer-type"
     end
