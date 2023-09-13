@@ -125,7 +125,7 @@ describe Printer::RemotePrinter do
         queue_for_printer.stubs(:pop).returns("print_id" => "print-id")
         Printer::PrintProcessor.expects(:for).with(subject).returns(processor = stub("processor"))
         processor.expects(:process).with(data).returns("data-for-printer")
-        subject.data_to_print[:data].must_equal "data-for-printer"
+        subject.data_to_print['data'].must_equal "data-for-printer"
       end
     end
 
