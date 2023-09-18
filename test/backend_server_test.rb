@@ -32,13 +32,23 @@ describe Printer::BackendServer::App do
     end
 
     it "enqueues the url with the printer id" do
-      Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "submitted-url", anything, "1")
+      Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "submitted-url", anything, "1", "print", anything)
       get "/print/1?url=submitted-url"
     end
 
     it "enqueues the job for rendering with a default width of 384 pixels" do
-      Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "submitted-url", "384", "1")
+      Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "submitted-url", "384", "1", "print", anything)
       get "/print/1?url=submitted-url"
+    end
+
+    it "enqueues the job with a unique ID that is returned as part of the response" do
+      Printer::IdGenerator.stubs(:random_id).returns("abc123")
+      Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "submitted-url", anything, "1", "print", "abc123")
+
+      header 'Accept', 'application/json'
+      get "/print/1?url=submitted-url"
+
+      MultiJson.decode(last_response.body).must_equal({"response" => "ok", "print_id" => "abc123"})
     end
 
     it "shows a success page" do
@@ -63,15 +73,16 @@ describe Printer::BackendServer::App do
 
       it "enqueues a job to generate a page from the content" do
         Printer::ContentStore.stubs(:write_html_content).returns("/path/to/abc123.html")
-        Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "http://example.org/path/to/abc123.html", anything, "1")
+        Resque.expects(:enqueue).with(Printer::Jobs::PreparePage, "http://example.org/path/to/abc123.html", anything, "1", "print", anything)
         post "/print/1", {content: "<p>Some content</p>"}
       end
 
       it "returns an JSON status if the request accepts JSON" do
+        Printer::IdGenerator.stubs(:random_id).returns("unique-id")
         header 'Accept', 'application/json'
         post "/print/1", {content: "<p>Some content</p>"}
         last_response.ok?.must_equal true
-        MultiJson.decode(last_response.body).must_equal({"response" => "ok"})
+        MultiJson.decode(last_response.body).must_equal({"response" => "ok", "print_id" => "unique-id"})
       end
 
       it "allows the returned JSON data to be loaded regardless of cross-domain" do

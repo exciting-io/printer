@@ -13,6 +13,7 @@ GEM
     bcrypt (3.1.12)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
+    byebug (11.1.3)
     concurrent-ruby (1.2.2)
     data_mapper (1.2.0)
       dm-aggregates (~> 1.2.0)
@@ -131,6 +132,7 @@ PLATFORMS
 
 DEPENDENCIES
   a2_printer!
+  byebug
   data_mapper
   dm-postgres-adapter
   dotenv

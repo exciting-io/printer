@@ -41,8 +41,8 @@ describe Printer::Jobs::ImageToBits do
     it "sends the data for printing" do
       printer = Printer::RemotePrinter.new("printer-id")
       Printer::RemotePrinter.stubs(:find).with("printer-id").returns(printer)
-      printer.expects(:add_print).with(data)
-      job.perform("file_path", "printer-id")
+      printer.expects(:add_print).with(data, "unique-id")
+      job.perform("file_path", "printer-id", "unique-id")
     end
   end
 end

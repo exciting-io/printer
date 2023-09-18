@@ -94,14 +94,19 @@ describe Printer::RemotePrinter do
       end
 
       it "adds the print data" do
-        archive_for_printer.expects(:store).with(data).returns(stub("print", guid: "print-id"))
-        subject.add_print(data)
+        archive_for_printer.expects(:store).with(data.merge(guid: "print-id")).returns(stub("print", guid: "print-id"))
+        subject.add_print(data, "print-id")
+      end
+
+      it "adds the print data with an explicit ID" do
+        archive_for_printer.expects(:store).with(data.merge(guid: "another-print-id")).returns(stub("print", guid: "another-print-id"))
+        subject.add_print(data, "another-print-id")
       end
 
       it "queues the print data" do
-        archive_for_printer.stubs(:store).with(data).returns(stub("print", guid: "print-id"))
+        archive_for_printer.stubs(:store).with(data.merge(guid: 'print-id')).returns(stub("print", guid: "print-id"))
         queue_for_printer.expects(:enqueue).with(print_id: "print-id")
-        subject.add_print(data)
+        subject.add_print(data, "print-id")
       end
     end
 

@@ -8,8 +8,8 @@ class Printer::Jobs::ImageToBits
       :printer_images
     end
 
-    def perform(image_path, printer_id)
-      Printer::RemotePrinter.find(printer_id).add_print(image_data(image_path))
+    def perform(image_path, printer_id, print_id)
+      Printer::RemotePrinter.find(printer_id).add_print(image_data(image_path), print_id)
     end
 
     def image_data(image_path)

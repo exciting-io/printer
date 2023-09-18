@@ -10,15 +10,11 @@ class Printer::Jobs::PreparePage
     :printer_prepare_page
   end
 
-  def self.output_id
-    Printer::IdGenerator.random_id
-  end
-
-  def self.perform(url, width, id, kind="print")
+  def self.perform(url, width, id, kind, print_id)
     FileUtils.mkdir_p("tmp/renders")
     case kind
     when "print"
-      output_filename = "tmp/renders/#{output_id}.png"
+      output_filename = "tmp/renders/#{print_id}.png"
     when "preview"
       output_filename = "public/previews/#{id}.png"
     end
@@ -30,7 +26,7 @@ class Printer::Jobs::PreparePage
     end
     case kind
     when "print"
-      Resque.enqueue(Printer::Jobs::ImageToBits, output_filename, id)
+      Resque.enqueue(Printer::Jobs::ImageToBits, output_filename, id, print_id)
     when "preview"
       Printer::Preview.store(id, url, result_data)
     end

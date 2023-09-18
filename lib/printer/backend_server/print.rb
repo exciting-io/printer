@@ -36,16 +36,24 @@ class Printer::BackendServer::Print < Printer::BackendServer::Base
     params['url']
   end
 
+  def print_id
+    Printer::IdGenerator.random_id
+  end
+
   def queue_print(printer_id, url)
-    Resque.enqueue(Printer::Jobs::PreparePage, url, "384", printer_id)
-    erb :queued
+    Resque.enqueue(Printer::Jobs::PreparePage, url, "384", printer_id, 'print', print_id)
+    if request.accept?('application/json')
+      respond_with_json(response: "ok", print_id: print_id)
+    else
+      erb :queued
+    end
   end
 
   def queue_print_from_content(printer_id, content)
     path = Printer::ContentStore.write_html_content(content)
-    Resque.enqueue(Printer::Jobs::PreparePage, absolute_url_for_path(path), "384", printer_id)
+    Resque.enqueue(Printer::Jobs::PreparePage, absolute_url_for_path(path), "384", printer_id, 'print', print_id)
     if request.accept?('application/json')
-      respond_with_json(response: "ok")
+      respond_with_json(response: "ok", print_id: print_id)
     else
       erb :queued
     end
