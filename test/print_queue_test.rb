@@ -18,7 +18,7 @@ describe Printer::PrintQueue do
   describe "#pop" do
     describe "when no data exists" do
       before do
-        redis.stubs(:lpop).with("printers:printer-123:queue").returns(nil)
+        redis.stubs(:rpop).with("printers:printer-123:queue").returns(nil)
       end
 
       it "returns nil if no print data exists" do
@@ -34,12 +34,12 @@ describe Printer::PrintQueue do
       end
 
       it "removes the print from the queue" do
-        redis.expects(:lpop).with("printers:printer-123:queue")
+        redis.expects(:rpop).with("printers:printer-123:queue")
         subject.pop
       end
 
       it "returns the json-decoded data" do
-        redis.stubs(:lpop).with("printers:printer-123:queue").returns(MultiJson.encode(data))
+        redis.stubs(:rpop).with("printers:printer-123:queue").returns(MultiJson.encode(data))
         subject.pop.must_equal data
       end
     end

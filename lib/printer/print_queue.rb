@@ -14,7 +14,7 @@ class Printer::PrintQueue
   end
 
   def pop
-    encoded_data = redis.lpop(key)
+    encoded_data = redis.rpop(key)
     MultiJson.decode(encoded_data) if encoded_data
   end
 
