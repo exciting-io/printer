@@ -51,8 +51,8 @@ class Printer::BackendServer::Print < Printer::BackendServer::Base
   end
 
   def queue_print_from_content(printer_id, content)
-    path = Printer::ContentStore.write_html_content(content)
     print_id = generate_print_id
+    path = Printer::ContentStore.write_html_content(content, print_id)
     Resque.enqueue(Printer::Jobs::PreparePage, absolute_url_for_path(path), "384", printer_id, 'print', print_id)
     if request.accept?('application/json')
       respond_with_json(response: "ok", print_id: print_id)
