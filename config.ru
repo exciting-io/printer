@@ -16,6 +16,8 @@ end
 use Raygun::Middleware::RackExceptionInterceptor
 
 use Rack::MethodOverride
+use Printer::BackendServer::EncodedStatusHeaderMiddleare
+use Rack::ContentLength
 
 if ENV["RESQUE_SERVER"]
   require 'resque/server'
